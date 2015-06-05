@@ -1,0 +1,2 @@
+# vsdatatable
+Simple AngularJS datatable
