@@ -311,13 +311,7 @@
 }
 
 @media screen and (max-width: 700px) {
-    .paginatorBtnNbr {
-        display: none
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    .paginatorBtnAll, .paginatorBtnPageSize, .paginatorPagesNbr, .paginatorTotalNbr, .paginatorTxt {
+    .paginatorBtnAll, .paginatorBtnPageSize, .paginatorPagesNbr, .paginatorTotalNbr {
         display: none
     }
 
@@ -327,6 +321,12 @@
 
     .vsdatatable .paginator td:nth-child(2) {
         width: 100%
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .paginatorBtnNbr, .paginatorTxt {
+        display: none
     }
 }
 

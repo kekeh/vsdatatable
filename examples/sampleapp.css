@@ -1,5 +1,5 @@
 body {
-    margin: 20px 100px 20px 100px;
+    margin: 20px 10px 20px 10px;
     min-width: 400px;
 }
 
@@ -14,12 +14,14 @@ p {
     font-size: 14px;
 }
 
+/*
 @media screen and (max-width: 1100px) {
     #pagemargin
     {
         margin: 20px 10px 20px 10px;
     }
 }
+*/
 
 
 
