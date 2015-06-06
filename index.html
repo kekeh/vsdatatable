@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Vsdatatable by kekeh</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Vsdatatable</h1>
+        <h2>Simple AngularJS single page datatable</h2>
+        <a href="https://github.com/kekeh/vsdatatable" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="vsdatatable" class="anchor" href="#vsdatatable" aria-hidden="true"><span class="octicon octicon-link"></span></a>vsdatatable</h1>
+
+<p><strong>Simple single page datatable - AngularJS UI component</strong></p>
+
+<h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h2>
+
+<p>AngularJS directive which implements the datatable with many useful and configurable features.</p>
+
+<h3>
+<a id="1-virtualization" class="anchor" href="#1-virtualization" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. virtualization</h3>
+
+<ul>
+<li>only visible items are rendered in the browser</li>
+</ul>
+
+<h3>
+<a id="2-paginator" class="anchor" href="#2-paginator" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. paginator</h3>
+
+<ul>
+<li>pagination from the external data source is also supported (for example database)</li>
+<li>configurable buttons
+
+<ul>
+<li>to first page</li>
+<li>to previous page</li>
+<li>to previous set of pages</li>
+<li>to page number</li>
+<li>to next set of pages</li>
+<li>to next page</li>
+<li>to last page</li>
+</ul>
+</li>
+<li>configurable page size selector</li>
+<li>scrollbar is not supported</li>
+</ul>
+
+<h3>
+<a id="2-filtering" class="anchor" href="#2-filtering" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. filtering</h3>
+
+<ul>
+<li>built in global filter</li>
+<li>column filter can be optionally added by using a HTML template</li>
+<li>the global and the column filter works also if the data is paginated from the external data source</li>
+<li>contain and exact match can be used</li>
+<li>internal filtering uses AngularJS filter</li>
+</ul>
+
+<h3>
+<a id="3-sorting" class="anchor" href="#3-sorting" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. sorting</h3>
+
+<ul>
+<li>built in sorting by column</li>
+<li>sorting works also if the data is paginated from the external data source</li>
+<li>internal sorting uses AngularJS filter</li>
+</ul>
+
+<h3>
+<a id="4-row-extender" class="anchor" href="#4-row-extender" aria-hidden="true"><span class="octicon octicon-link"></span></a>4. row extender</h3>
+
+<ul>
+<li>support for adding, editing, deleting and viewing data</li>
+<li>data manipulation is done inside the table by extending the row</li>
+<li>user of the vsdatatable is responsible to implement these HTML templates (add, edit, delete and view)</li>
+<li>the vsdatatable directive loads the template and extending the row when the user wants to manipulate the data</li>
+</ul>
+
+<h3>
+<a id="5-column-toggler" class="anchor" href="#5-column-toggler" aria-hidden="true"><span class="octicon octicon-link"></span></a>5. column toggler</h3>
+
+<ul>
+<li>columns can be show/hide from the menu</li>
+</ul>
+
+<h3>
+<a id="6-row-selection" class="anchor" href="#6-row-selection" aria-hidden="true"><span class="octicon octicon-link"></span></a>6. row selection</h3>
+
+<ul>
+<li>single ot multiple selection is possible</li>
+<li>the selected row data is passed to the parent</li>
+</ul>
+
+<h3>
+<a id="7-responsive-ui" class="anchor" href="#7-responsive-ui" aria-hidden="true"><span class="octicon octicon-link"></span></a>7. responsive UI</h3>
+
+<ul>
+<li>vsdatatable is UI responsive and scalable to different size of devices</li>
+</ul>
+
+<h3>
+<a id="8-tooltips" class="anchor" href="#8-tooltips" aria-hidden="true"><span class="octicon octicon-link"></span></a>8. tooltips</h3>
+
+<ul>
+<li>tooltips are used to shown the string which are not fit to the column</li>
+</ul>
+
+<h3>
+<a id="9-touch-and-keyboard" class="anchor" href="#9-touch-and-keyboard" aria-hidden="true"><span class="octicon octicon-link"></span></a>9. touch and keyboard</h3>
+
+<ul>
+<li>works also with touch devices</li>
+<li>works also with keyboars only</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/kekeh/vsdatatable/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/kekeh/vsdatatable/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/kekeh/vsdatatable"></a> is maintained by <a href="https://github.com/kekeh">kekeh</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
