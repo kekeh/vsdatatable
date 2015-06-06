@@ -216,7 +216,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 id: i + 1,
                 active: (i % 6 === 0 || i % 7 === 0) ? true : false,
                 balance: balance(1000000, 1000),
-                age: Math.round((Math.random() * 100) + 10),
+                age: Math.round((Math.random() * 85) + 5),
                 firstname: 'User ' + Math.round((Math.random() * 5000) + 10),
                 gender: (i % 4 === 0 || i % 7 === 0) ? 'male' : 'female',
                 date: Math.round((Math.random() * 25) + 1990) + '-' + date(12, 1) + '-' + date(28, 1),
