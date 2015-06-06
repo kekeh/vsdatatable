@@ -292,7 +292,7 @@ if the data is paginated from external data source and the parent handles paging
 Example of the function. See description of the parameters below the example.
 
 ```js
-vsdatatableEvent.setExtPaginationData($scope, pagedItems, totalItems, false, false);
+vsdatatableEvent.setExtPaginationData($scope, pagedItems, totalItems);
 ```
 
 | Function | Parameters | Description | 
