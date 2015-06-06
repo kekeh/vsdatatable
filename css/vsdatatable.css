@@ -8,6 +8,8 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
 .vsdatatable .caption,
@@ -19,8 +21,14 @@
     font-size: 14px;
 }
 
-.vsdatatable table {
+.vsdatatable table,
+.vsdatatable table tr,
+.vsdatatable table td,
+.vsdatatable table th {
     border-collapse: collapse;
+    border: none;
+    text-align: left;
+    line-height: 1.1;
 }
 
 .vsdatatable .caption,
@@ -197,6 +205,8 @@
 .vsdatatable .paginatorBtn {
     min-height: 30px;
     min-width: 36px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 .vsdatatable .paginatorBtn {
