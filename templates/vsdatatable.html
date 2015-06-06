@@ -1,0 +1,115 @@
+<div class="vsdatatable">
+
+    <div class="caption" ng-show="options.caption.visible">
+        <table style="width:100%;">
+            <tr>
+                <td class="captionColToggler" ng-show="options.columnToggler.visible" ng-click="$event.stopPropagation();">
+                    <div col-toggle-menu></div>
+                </td>
+                <td class="captionTitle">
+                    <span ng-if="options.caption.text!==undefined">{{options.caption.text}}</span>
+                </td>
+                <td class="captionFilter">
+                    <div ng-show="options.filter.global!==undefined&&options.filter.global||
+                                  options.filter.column!==undefined&&options.filter.column">
+                        <input ng-show="filterFocus&&options.filter.global"
+                               placeholder="{{options.filter.globalPlaceholder}}"
+                               type="text"
+                               ng-model="globalFilter"
+                               ng-model-options="{debounce:options.filter.autoFilter.useAutoFilter?options.filter.autoFilter.filterDelay:config.FILTER_EXECUTION_DELAY}"
+                               data-ng-trim="false"
+                               filter-focus/>
+                        <span class="icon icon-check actionIcon" ng-show="filterFocus&&options.filter.global&&options.filter.filterBtn.visible"
+                              overlay-window="{text:'{{options.filter.filterBtn.filterBtnTooltip}}',overflow:false}"
+                              ng-click="executeFilter();" ng-keydown="$event.which===13?executeFilter():null" tabindex="0"></span>
+                        <span class="icon icon-search actionIcon"
+                              overlay-window="{text:'{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}',overflow:false}"
+                              ng-click="filterBtnClick($event);"
+                              ng-keydown="filterBtnClick($event)"
+                              tabindex="0"></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <table class="tableRows">
+        <thead class="tableHeader" ng-if="options.headerVisible">
+        <tr class="headerRow">
+            <th class="headerCol textOverflow"
+                ng-show="h.visible===undefined||h.visible"
+                ng-style="{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}"
+                ng-class="sort.col===h.prop&&h.sorting?'selectedHeaderCol':''"
+                ng-repeat="h in options.columns"
+                ng-click="h.sorting?sortByCol($event,h.prop):null"
+                ng-keydown="h.sorting?sortByCol($event,h.prop):null"
+                overlay-window="{text:'{{h.label}}',overflow:true}">
+                {{h.label}}
+                    <span class="icon sortColIcon" ng-if="h.sorting"
+                          ng-class="{'selectedHeaderCol':sort.col===h.prop&&h.sorting,
+                          'icon-sort':h.sorting,           
+                          'icon-down':sort.col===h.prop&&sort.reverse,
+                          'icon-up':sort.col===h.prop&&!sort.reverse}" tabindex="0"></span>
+                    <span class="icon icon-cross sortColIcon" ng-if="h.sorting&&sort.col===h.prop"
+                          ng-click="sortByCol($event,'');" ng-keydown="sortByCol($event,'');" tabindex="0"></span>
+            </th>
+            <th class="headerCol headerColAction" ng-if="options.useTemplates">
+                <span>{{options.actionColumnText}}</span>
+                    <span class="icon icon-plus actionIcon addItemIcon" ng-if="options.templates.add.actionBtnShow"
+                          ng-click="addRow();" ng-keydown="$event.which===13?addRow():null"
+                          overlay-window="{text:'{{options.templates.add.btnTooltip}}',overflow:false}" tabindex="0"></span>
+            </th>
+        </tr>
+
+        <tr ng-if="options.filter.column!==undefined&&options.filter.column&&filterFocus">
+            <th class="headerCol" ng-repeat="h in options.columns" ng-show="h.visible===undefined||h.visible"
+                col-filter-template="h">
+            </th>
+            <th class="headerCol headerColAction"></th>
+        </tr>
+
+        </thead>
+        <tbody class="tableBody">
+        <tr class="bodyRow" ng-repeat="obj in !extDataPagination?
+                filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows): 
+                filteredItems track by $index"
+            ng-class-odd="'oddRow'" ng-class-even="'evenRow'"
+            ng-click="rowClicked($event, obj)"
+            ng-keydown="rowClicked($event, obj)"
+            ng-class="{'selectedRow':isRowSelected(obj)}"
+            table-body-row tabindex="0">
+            <td class="bodyCol" ng-repeat="k in options.columns track by $index" ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible">
+                <div class="textOverflow" ng-style="{'text-align':k.textAlign}" overlay-window="{text:'{{obj[k.prop]}}',overflow:true}">
+                    {{obj[k.prop]}}
+                </div>
+            </td>
+            <td class="bodyCol bodyColAction" ng-if="options.useTemplates">
+                    <span class="icon icon-edit actionIcon" ng-if="options.templates.edit.actionBtnShow"
+                          ng-click="editRow($event, obj);$event.stopPropagation();"
+                          ng-keydown="editRow($event, obj);$event.stopPropagation();"
+                          overlay-window="{text:'{{options.templates.edit.btnTooltip}}',overflow:false}"
+                          tabindex="0"></span> 
+                    <span class="icon icon-clear actionIcon" ng-if="options.templates.delete.actionBtnShow"
+                          ng-click="deleteRow($event, obj);$event.stopPropagation();"
+                          ng-keydown="deleteRow($event, obj);$event.stopPropagation();"
+                          overlay-window="{text:'{{options.templates.delete.btnTooltip}}',overflow:false}"
+                          tabindex="0"></span> 
+                    <span class="icon icon-view actionIcon" ng-if="options.templates.view.actionBtnShow"
+                          ng-click="viewRow($event, obj);$event.stopPropagation();"
+                          ng-keydown="viewRow($event, obj);$event.stopPropagation();"
+                          overlay-window="{text:'{{options.templates.view.btnTooltip}}',overflow:false}"
+                          tabindex="0"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="tableFooter" table-paginator></div>
+
+    <script type="text/ng-template" id="rowExtender.html">
+        <td class="bodyCol" colspan="{{visibleColCount+1}}">
+            <div ng-include src="template.path"></div>
+        </td>
+    </script>
+
+</div>

@@ -1,0 +1,37 @@
+<table style="width: 100%;">
+    <tbody>
+        <tr class="paginator" ng-if="options.paginator.visible">     
+            <td>
+                <div style="float:left;">
+                    <span class="paginatorTxt">{{options.paginator.totalItemsTxt}}</span>
+                    <span class="paginatorTotalNbr">{{totalCount}}</span>
+                    <span class="paginatorPagesNbr" ng-if="options.paginator.visible">({{paginator.visiblePageIdx+1}}/{{totalPages===0?1:totalPages}})</span>
+                </div>
+            </td>
+            <td>
+                <button class="paginatorBtn"
+                        ng-style="{'margin-left':$index>0?'-1px':'0'}"
+                        ng-class="{'selectedPaginatorBtn':b.id===paginator.visiblePageIdx+1,
+                                   'disabledPaginatorBtn':isDisabledBtn(b),
+                                   'paginatorBtnNbr': !isNavigateBtn(b),
+                                   'paginatorBtnSet': b===config.PAGINATOR_BTN_PREV_SET||b===config.PAGINATOR_BTN_NEXT_SET,
+                                   'paginatorBtnAll': b===config.PAGINATOR_BTN_FIRST||b===config.PAGINATOR_BTN_LAST}"
+                        ng-click="paginatorBtnClick(b,$index)" 
+                        ng-repeat="b in paginatorButtons track by $index">
+                            {{b.label}}
+                </button> 
+            </td>
+            <td>
+                <div style="float:right;">
+                    <span class="paginatorTxt">{{options.paginator.pageSizeTxt}}</span> 
+                    <button class="paginatorBtn paginatorBtnPageSize" 
+                            ng-style="{'margin-left':$index>0?'-1px':'0'}"  
+                            ng-class="{'selectedPaginatorBtn':o.rows===pageSize.rows}"
+                            ng-click="pageSizeButtonClick(o)"
+                            ng-repeat="o in pageSizeOptions track by $index">{{o.label}}</button>  
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

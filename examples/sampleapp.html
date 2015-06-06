@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Simple single page datatable</title>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+
+        <link href="vsdatatable.css" rel="stylesheet" type="text/css">
+        <link href="rowextender.css" rel="stylesheet" type="text/css">
+        <link href="columntemplates.css" rel="stylesheet" type="text/css">
+        <script src="vsdatatable.js"></script>
+
+        <link href="sampleapp.css" rel="stylesheet" type="text/css">
+        <script src="sampleapp.js"></script>
+    </head>
+
+    <body ng-app="sampleapp">
+        <div ng-controller="sampleappctrl">
+            <h3>Simple single page datatable - AngularJS UI component</h3>
+
+            <p>Homepage of the component is <a href="http://kekeh.github.io/vsdatatable" target="_blank">here</a>
+                <span>. This example prints the callback data to the console of the browser.</span></p>
+            <hr/>
+
+            <h5>Example 1. Internal pagination (the table contains 30000 items)</h5>
+
+            <vsdatatable options="opt"></vsdatatable>
+
+        </div>
+
+
+
+        <div ng-controller="sampleappctrl">
+
+            <h5>Example 2. External pagination</h5>
+
+            <p>Will be added later on.</p>
+
+        </div>
+    </body>
+
+</html>

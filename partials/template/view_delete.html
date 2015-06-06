@@ -1,0 +1,37 @@
+<form class="rowExtender" novalidate name="viewDeleteForm" ng-controller="extenderctrl">
+    <div class="extenderTitle" ng-init="objectInOper=getOperationDataObject()">
+        {{objectInOper.oper===config.OPER_VIEW?'Object properties':'Delete the object'}}
+    </div>
+    
+    <table class="rowExtender">
+        <thead>
+            <tr>
+                <th class="headerCol">Property</th>
+                <th class="headerCol">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="column in getColumns() track by $index">
+                <td class="labelCol">{{column.label}}</td>
+                <td class="valueCol">
+                    <div class="textField">
+                        {{objectInOper.data[column.prop]}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="tableFooter rowExtenderFooter">
+        <button class="rowExtenderBtn" ng-click="acceptClicked(objectInOper.oper)">
+            {{objectInOper.oper===config.OPER_VIEW?'Close':'Delete'}}
+            <span class="icon icon-check rowExtenderBtnIcon rowExtenderBtnIconGreen"></span>
+        </button>
+        <button class="rowExtenderBtn" ng-click="cancelClicked();" ng-if="objectInOper.oper===config.OPER_DELETE">
+            Cancel
+            <span class="icon icon-cross rowExtenderBtnIcon rowExtenderBtnIconRed"></span>
+        </button>
+    </div>
+    
+</form>
+

@@ -1,0 +1,21 @@
+<div>
+    <span class="icon icon-selections actionIcon" ng-click="colTogglerShowClicked($event);" ng-keydown="colTogglerShowClicked($event)" 
+            tabindex="0" overlay-window="{text:'{{options.columnToggler.btnTooltip}}',overflow:false}"></span>  
+    <div class="colTogglerMenu" ng-show="colTogglerShow">
+        <div class="colTogglerTitle" ng-show="options.columnToggler.menuTitle !== undefined">
+            <span class="colTogglerTitleTxt">{{options.columnToggler.menuTitle}}</span> 
+            <span class="icon icon-cross actionIcon colTogglerCloseIcon" ng-click="colTogglerShowClicked($event);" 
+                  ng-keydown="colTogglerShowClicked($event)" tabindex="0"></span> 
+        </div> 
+        <div class="colTogglerMenuItem" ng-repeat="h in options.columns" ng-class="{'selectedColTogglerMenuItem':h.visible}" 
+            ng-click="colToggleMenuClicked($event,h);" 
+            ng-keydown="colToggleMenuClicked($event,h);"
+            ng-model="h.visible" tabindex="0"> 
+            <div class="colTogglerMenuItemTxt">{{h.label}}</div>
+            <div class="colTogglerMenuItemIcon">
+                <span class="icon icon-check actionIcon" ng-show="h.visible"></span> 
+            </div>
+        </div>
+    </div>
+</div>
+
