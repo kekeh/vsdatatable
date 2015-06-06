@@ -1,0 +1,444 @@
+.vsdatatable {
+    width: 100%;
+    min-width: 400px;
+}
+
+.vsdatatable * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.vsdatatable .caption,
+.vsdatatable .bodyRow,
+.vsdatatable .headerRow,
+.vsdatatable .paginatorTxt,
+.vsdatatable .paginatorTotalNbr,
+.vsdatatable .paginatorPagesNbr {
+    font-size: 14px;
+}
+
+.vsdatatable table,
+.vsdatatable table tr,
+.vsdatatable table td,
+.vsdatatable table th {
+    border-collapse: collapse;
+    border: none;
+    text-align: left;
+    line-height: 1.1;
+}
+
+.vsdatatable .caption,
+.vsdatatable .colTogglerTitle,
+.vsdatatable .tableFooter,
+.vsdatatable .headerCol,
+.vsdatatable .extenderTitle,
+.vsdatatable .paginatorBtn {
+    background: #FAFAFA;
+    background-image: -webkit-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: -moz-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: -o-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: -ms-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+}
+
+.vsdatatable .actionIcon {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.vsdatatable .tableRows .sortColIcon {
+    font-size: 12px;
+}
+
+.vsdatatable .headerRow {
+    height: 32px;
+}
+
+.vsdatatable .bodyRow {
+    height: 32px;
+}
+
+.vsdatatable .caption {
+    width: 100%;
+    min-height: 30px;
+    margin-bottom: -1px;
+}
+
+.vsdatatable .caption table tr {
+    height: 32px;
+}
+
+.vsdatatable .captionColToggler {
+    padding-right: 4px;
+}
+
+.vsdatatable .colTogglerMenu {
+    background-color: #FFF;
+    z-index: 3;
+}
+
+.vsdatatable .colTogglerTitle {
+    font-size: 12px;
+    text-align: center;
+    border-bottom: 1px solid #C0C0C0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 2px 0;
+    cursor: default;
+    display: table;
+    height: 24px;
+    width: 100%;
+}
+
+.vsdatatable .colTogglerTitleTxt,
+.vsdatatable .colTogglerCloseIcon {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.vsdatatable .colTogglerTitleTxt {
+    padding-left: 20px;
+}
+
+.vsdatatable .colTogglerCloseIcon {
+    width: 20px;
+    font-size: 10px;
+}
+
+.vsdatatable .colTogglerMenuItem {
+    display: table;
+    cursor: pointer;
+    border-bottom: 1px solid #C0C0C0;
+    width: 100%;
+}
+
+.vsdatatable .addItemIcon {
+    font-size: 11px;
+}
+
+.vsdatatable .colTogglerMenuItem:last-child {
+    border-bottom: none;
+}
+
+.vsdatatable .colTogglerMenuItemTxt {
+    cursor: pointer;
+    display: table-cell;
+    min-width: 100px;
+    padding: 4px 8px;
+}
+
+.vsdatatable .colTogglerMenuItemIcon {
+    display: table-cell;
+    width: 20px;
+    text-align: right;
+    padding: 4px 8px;
+    box-sizing: content-box;
+}
+
+.vsdatatable .colTogglerMenuItemIcon span {
+    font-size: 12px;
+}
+
+.vsdatatable .selectedColTogglerMenuItem {
+    background-color: #FAFAFA;
+}
+
+.vsdatatable .captionTitle {
+    white-space: nowrap;
+    padding-right: 4px;
+    width: 50%;
+}
+
+.vsdatatable .captionTitle span {
+    font-weight: bold;
+}
+
+.vsdatatable .captionFilter {
+    text-align: right;
+    width: 50%;
+}
+
+.vsdatatable .captionFilter input {
+    padding-left: 4px;
+    width: 60%;
+    height: 30px;
+    background-color: #FAFAFA;
+    border: 1px solid #AAA;
+    -moz-box-shadow: inset 0 0 1px #1589FF;
+    -webkit-box-shadow: inset 0 0 1px #1589FF;
+    box-shadow: inset 0 0 1px #1589FF;
+}
+
+.vsdatatable .captionFilter span {
+    padding: 4px;
+    font-size: 15px;
+}
+
+.vsdatatable .tableFooter {
+    width: 100%;
+    min-height: 30px;
+    margin-top: -1px;
+}
+
+.vsdatatable .tableFooter table tr {
+    height: 32px;
+}
+
+.vsdatatable .paginator td {
+    vertical-align: middle;
+}
+
+.vsdatatable .paginator td:nth-child(1),
+.vsdatatable .paginator td:nth-child(3) {
+    width: 28.3%;
+}
+
+.vsdatatable .paginator td:nth-child(2) {
+    width: 43.3%;
+    text-align: center;
+}
+
+.vsdatatable .paginatorBtn {
+    min-height: 30px;
+    min-width: 36px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.vsdatatable .paginatorBtn {
+    border: 1px solid #988E8E;
+    color: #000;
+}
+
+.vsdatatable .paginatorBtn:enabled {
+    cursor: pointer;
+}
+
+.vsdatatable .paginatorBtn:hover:enabled {
+    background: #3BB9FF;
+}
+
+.vsdatatable .paginatorBtn:focus:enabled {
+    outline: #CCC dotted 1px;
+    outline-offset: -2px;
+    color: #1589FF;
+}
+
+.vsdatatable .bodyRow:focus,
+.vsdatatable .colTogglerMenuItem:focus,
+.vsdatatable .icon:focus {
+    color: #1589FF;
+    outline: none;
+}
+
+.vsdatatable .selectedPaginatorBtn {
+    color: #1589FF;
+    background: #CFECEC;
+}
+
+.vsdatatable .disabledPaginatorBtn {
+    pointer-events: none;
+    color: #BBB;
+}
+
+.vsdatatable .paginatorBtnIcon {
+    height: 14px;
+    font-size: 12px;
+}
+
+.vsdatatable .tableRows {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.vsdatatable .tableRows,
+.vsdatatable .tableRows .headerCol,
+.vsdatatable .tableRows .bodyCol,
+.vsdatatable .caption,
+.vsdatatable .extenderTitle,
+.vsdatatable .tableFooter {
+    border: 1px solid #C0C0C0;
+    padding: 5px;
+}
+
+.vsdatatable .tableRows tbody .oddRow {
+    background-color: #FFF;
+}
+
+.vsdatatable .tableRows tbody .evenRow {
+    background-color: #FAFAFA;
+}
+
+.vsdatatable .tableRows .selectedRow {
+    background-color: #CFECEC !important;
+}
+
+.vsdatatable .colTogglerMenuItem:hover,
+.vsdatatable .tableRows .hoverRow {
+    background-color: #CAFFCA !important;
+    cursor: pointer;
+}
+
+.vsdatatable .tableRows .bodyCol {
+
+}
+
+.vsdatatable .tableRows .bodyColAction {
+    text-align: center;
+}
+
+.vsdatatable .tableRows .headerCol {
+    text-align: center;
+}
+
+.vsdatatable .tableRows .selectedHeaderCol {
+    background: #CCE0FF;
+    background-image: -webkit-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: -moz-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: -o-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: -ms-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+}
+
+.vsdatatable .tableRows .headerCol:hover {
+
+}
+
+.vsdatatable .tableRows .headerColAction {
+    cursor: default;
+    width: 90px;
+}
+
+.vsdatatable .textOverflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.vsdatatable .overlay {
+    background-color: #FFFFCC;
+    color: #000;
+    padding: 6px;
+    z-index: 2;
+    max-width: 300px;
+    white-space: normal;
+}
+
+.vsdatatable .colTogglerMenu,
+.vsdatatable .overlay {
+    border: 1px solid #625D5D;
+    border-radius: 4px;
+    position: absolute;
+    -moz-box-shadow: 0 0 14px #000;
+    -webkit-box-shadow: 0 0 14px #000;
+    box-shadow: 0 0 14px #000;
+}
+
+.vsdatatable .icon:hover {
+    color: #3BB9FF;
+}
+
+.vsdatatable ::-ms-clear {
+    display: none;
+}
+
+.vsdatatable button::-moz-focus-inner {
+    border: 0;
+}
+
+@media screen and (max-width: 500px) {
+    .paginatorBtnSet
+    {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .paginatorBtnNbr
+    {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .paginatorBtnPageSize,
+    .paginatorTxt,
+    .paginatorTotalNbr,
+    .paginatorPagesNbr,
+    .paginatorBtnAll
+    {
+        display: none;
+    }
+
+    .vsdatatable .paginator td:nth-child(1),
+    .vsdatatable .paginator td:nth-child(3) {
+        width: 0;
+    }
+
+    .vsdatatable .paginator td:nth-child(2) {
+        width: 100%;
+    }
+}
+
+@font-face {
+    font-family: 'vsdatatable';
+    src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon {
+    font-family: 'vsdatatable';
+    color: #000;
+    background: transparent !important;
+    font-weight: normal;
+}
+
+.icon-edit:before {
+    content: "\e601";
+}
+
+.icon-selections:before {
+    content: "\e60a";
+}
+
+.icon-sort:before {
+    content: "\e609";
+}
+
+.icon-view:before {
+    content: "\e608";
+}
+
+.icon-plus:before {
+    content: "\e602";
+}
+
+.icon-search:before {
+    content: "\e603";
+}
+
+.icon-up:before {
+    content: "\e600";
+}
+
+.icon-down:before {
+    content: "\e604";
+}
+
+.icon-cross:before {
+    content: "\e605";
+}
+
+.icon-clear:before {
+    content: "\e606";
+}
+
+.icon-check:before {
+    content: "\e607";
+}

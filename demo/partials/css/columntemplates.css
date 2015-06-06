@@ -1,0 +1,15 @@
+.columnTemplate .inputField,
+.columnTemplate .selectMenu {
+    padding-left: 4px;
+    width: 100%;
+    background-color: #FAFAFA;
+    height: 24px;
+    border:1px solid #AAA;
+    -moz-box-shadow: inset 0 0 1px #1589FF;
+    -webkit-box-shadow: inset 0 0 1px #1589FF;
+    box-shadow: inset 0 0 1px #1589FF;
+}
+
+.columnTemplate .selectMenu {
+    cursor: pointer;
+}

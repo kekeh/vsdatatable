@@ -1,0 +1,144 @@
+.rowExtender table {
+    width: 100%;
+}
+
+.rowExtender table tr,
+.rowExtender .extenderTitle,
+.rowExtender .labelCol,
+.rowExtender .valueCol,
+.rowExtender .textInput,
+.rowExtender .textArea {
+    font-size: 14px;
+}
+
+.rowExtender table tr {
+    height: 32px;
+    background-color: #FFF;
+}
+
+.rowExtender .labelCol,
+.rowExtender .valueCol {
+    border: 1px solid #C0C0C0;
+    text-align: left;
+}
+
+.rowExtender .labelCol {
+    padding-left: 6px;
+    font-weight: bold;
+}
+
+.rowExtender .valueCol {
+    padding: 4px;
+}
+
+.rowExtender .textInput,
+.rowExtender .textArea {
+    width: 100%;
+    padding: 4px;
+    background-color: #F5F9F3;
+    border: 1px solid #CCC;
+}
+
+.rowExtender .textInput {
+
+}
+
+.rowExtender .textArea {
+    resize: none;
+}
+
+.rowExtender .textField {
+    width: 100%;
+    padding: 4px;
+}
+
+.rowExtender .checkbox,
+.rowExtender .radioBtn {
+    cursor: pointer;
+}
+
+.rowExtender tr th:first-child {
+    width: 40%;
+}
+
+.rowExtender tr th:last-child {
+    width: 60%;
+}
+
+.rowExtender .extenderTitle {
+    margin-bottom: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.rowExtender .rowExtenderBtn {
+    background: #FAFAFA;
+    background-image: -webkit-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: -moz-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: -o-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: -ms-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    border-radius: 2px;
+    border: 1px solid #A9A9A9;
+    padding: 2px;
+    min-width: 85px;
+    height: 30px;
+}
+
+.vsdatatable .rowExtenderBtn:enabled {
+    cursor: pointer;
+}
+
+.vsdatatable .rowExtenderBtn:hover:enabled {
+    background: #A0CFEC !important;
+    color: #0066CC;
+}
+
+.vsdatatable .rowExtenderBtn:focus:enabled {
+    color: #1589FF;
+    outline: none;
+}
+
+.rowExtender .rowExtenderFooter {
+    border: 1px solid #CCC;
+    padding: 5px;
+    text-align: center;
+    margin-top: -1px;
+}
+
+.rowExtender .rowExtenderBtnIcon {
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.rowExtender .rowExtenderBtnIconGreen,
+.rowExtender .rowExtenderBtnIconGreen:hover {
+    color: #78FA89;
+}
+
+.rowExtender .rowExtenderBtnIconRed,
+.rowExtender .rowExtenderBtnIconRed:hover {
+    color: #FA787E;
+}
+
+.rowExtender .error {
+    padding: 4px;
+    border-radius: 2px;
+    background-color: #F2DEDE;
+    color: #A94444;
+    margin: 4px 0px 0px 0px;
+    text-align: left;
+}
+
+.rowExtender .error,
+.rowExtender input.ng-invalid.ng-touched,
+.rowExtender textarea.ng-invalid.ng-touched {
+    border: 1px solid #FA787E;
+    -moz-box-shadow: 0 0 3px #FF0000;
+    -webkit-box-shadow: 0 0 3px #FF0000;
+    box-shadow: 0 0 3px #FF0000;
+}
+
+.rowExtender input.ng-valid.ng-touched {
+//border: 1px solid #78FA89;
+}
