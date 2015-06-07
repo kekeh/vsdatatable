@@ -1079,6 +1079,12 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
             }
         };
     }])
+
+/**
+ * @ngdoc object
+ * @name colResizer
+ * @description colResizer directive implements column resize of the table.
+ */
     .directive('colResizer', ['$compile', '$document', '$timeout', 'vsdatatableService', function ($compile, $document, $timeout, vsdatatableService) {
         return {
             restrict: 'A',
