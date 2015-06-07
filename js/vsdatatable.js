@@ -24,6 +24,10 @@ angular.module('vsdatatable', [])
         OPER_EDIT: 'EDIT',
         OPER_DELETE: 'DELETE',
         OPER_VIEW: 'VIEW',
+        EXT_INIT: 'i',
+        EXT_SORT: 's',
+        EXT_FLT: 'f',
+        EXT_BTN: 'b',
         FILTER_CONTAIN: 'contain',
         FILTER_EXACT: 'exact',
         ROW_SELECT: 'SELECT',
@@ -43,9 +47,9 @@ angular.module('vsdatatable', [])
          * @ngdoc function
          * @description External pagination function to the parent.
          * @name setExtPaginationData
-         * @param scope of the parent (caller)
-         * @param array of objects used in the vsdatatable. Array length is same as page size.
-         * @param total count of the items match the search criteria.
+         * @param $scope of the parent (caller)
+         * @param data array of objects used in the vsdatatable. Array length is same as page size.
+         * @param totalCount count of the items match the search criteria.
          */
         factory.setExtPaginationData = function ($scope, data, totalCount) {
             $scope.$broadcast(vsdatatableConfig.SET_EXT_PAGINATION_DATA_EVENT, {data: data, totalCount: totalCount});
@@ -76,8 +80,8 @@ angular.module('vsdatatable', [])
             scope.$broadcast(vsdatatableConfig.FILTER_FOCUS_EVENT);
         };
 
-        service.paginatorEvent = function (scope, reason) {
-            scope.$broadcast(vsdatatableConfig.PAGINATOR_EVENT, {reason: reason});
+        service.paginatorEvent = function (scope) {
+            scope.$broadcast(vsdatatableConfig.PAGINATOR_EVENT);
         };
         return service;
     }])
@@ -108,7 +112,7 @@ angular.module('vsdatatable', [])
                 scope.globalFilter = '';
                 scope.columnFilter = {contain: {}, exact: {}};
 
-                var extInitDone = false;
+                var extPendingOper = null;
                 var rowExtender = null;
                 var operObject = {};
                 var filterFocusWatch = null;
@@ -164,8 +168,11 @@ angular.module('vsdatatable', [])
                             execFilter();
                         }
                     }
-                    else if (vsdatatableService.isEqual(operObject.oper, scope.config.OPER_ADD) || vsdatatableService.isEqual(operObject.oper, scope.config.OPER_DELETE)) {
-                        vsdatatableService.paginatorEvent(scope, '');
+                    else {
+                        dataOperation(scope.config.OPER_PHASE_END);
+                        if (!vsdatatableService.isEqual(operObject.oper, scope.config.OPER_VIEW)) {
+                            scope.paginationOperation(operObject.oper);
+                        }
                     }
                     removeFromSelectedRows(operObject.dataOld);
                 };
@@ -187,7 +194,7 @@ angular.module('vsdatatable', [])
                             }
                             execSort();
                         }
-                        scope.paginationOperation();
+                        scope.paginationOperation(vsdatatableConfig.EXT_SORT);
                     }
                 };
 
@@ -201,9 +208,10 @@ angular.module('vsdatatable', [])
                     // External pagination event contains paged data and total count
                     scope.filteredItems = value.data;
                     scope.totalCount = value.totalCount;
-                    if (!extInitDone) {
-                        vsdatatableService.paginatorEvent(scope, 'extInit');
-                        extInitDone = true;
+
+                    if (!vsdatatableService.isEqual(extPendingOper, vsdatatableConfig.EXT_BTN)
+                        && !vsdatatableService.isEqual(extPendingOper, vsdatatableConfig.OPER_EDIT)) {
+                        vsdatatableService.paginatorEvent(scope);
                     }
                 });
 
@@ -220,8 +228,18 @@ angular.module('vsdatatable', [])
                     }
                 };
 
-                scope.paginationOperation = function () {
+                scope.paginationOperation = function (oper) {
                     if (scope.extDataPagination) {
+                        extPendingOper = oper;
+
+                        if (vsdatatableService.isEqual(oper, vsdatatableConfig.OPER_ADD)
+                            || vsdatatableService.isEqual(oper, vsdatatableConfig.OPER_DELETE)
+                            || vsdatatableService.isEqual(oper, vsdatatableConfig.EXT_FLT)) {
+                            // Reset paginator
+                            scope.paginator.visiblePageIdx = 0;
+                        }
+
+                        // Notify parent
                         scope.options.data.extPaginationOperationCb(
                             {
                                 columnFilter: scope.columnFilter,
@@ -246,9 +264,11 @@ angular.module('vsdatatable', [])
                     if (!scope.extDataPagination) {
                         execFilter();
                         execSort();
+                        vsdatatableService.paginatorEvent(scope);
                     }
-                    reset(false, false);
-                    vsdatatableService.paginatorEvent(scope, '');
+                    else {
+                        scope.paginationOperation(vsdatatableConfig.EXT_FLT);
+                    }
                 };
 
                 scope.resetFilter = function () {
@@ -370,7 +390,7 @@ angular.module('vsdatatable', [])
                     scope.filteredItems = scope.options.data.items;
                     scope.totalCount = scope.filteredItems.length;
                     reset(true, true);
-                    vsdatatableService.paginatorEvent(scope, '');
+                    vsdatatableService.paginatorEvent(scope);
                 }
 
                 function getTableRow(event) {
@@ -585,7 +605,10 @@ angular.module('vsdatatable', [])
                 scope.pageSizeButtonClick = function (value) {
                     scope.pageSize = scope.pageSizeOptions[scope.pageSizeOptions.indexOf(value)];
                     reset();
-                    extPaginationOperation('btn_click');
+
+                    if (scope.extDataPagination) {
+                        scope.paginationOperation(vsdatatableConfig.EXT_BTN);
+                    }
                 };
 
                 scope.paginatorBtnClick = function (val, idx) {
@@ -596,7 +619,10 @@ angular.module('vsdatatable', [])
                         else {
                             setPaginatorValues(val.id - 1, scope.paginator.pageFirstIdx, idx - 2);
                         }
-                        extPaginationOperation('btn_click');
+
+                        if (scope.extDataPagination) {
+                            scope.paginationOperation(vsdatatableConfig.EXT_BTN);
+                        }
                     }
                 };
 
@@ -613,31 +639,9 @@ angular.module('vsdatatable', [])
                     return scope.isNavigateBtn(val) && !vsdatatableService.isEqual(scope.disabledButtons.indexOf(val), -1);
                 };
 
-                scope.$on(vsdatatableConfig.PAGINATOR_EVENT, function (event, data) {
-                    if (vsdatatableService.isEqual(scope.extDataPagination, true)) {
-                        if (vsdatatableService.isEqual(data.reason, 'extInit')) {
-                            reset();
-                        }
-                        else {
-                            extPaginationOperation('event');
-                        }
-                    }
-                    else {
-                        reset();
-                    }
+                scope.$on(vsdatatableConfig.PAGINATOR_EVENT, function () {
+                    reset();
                 });
-
-                function extPaginationOperation(val) {
-                    if (scope.extDataPagination) {
-                        if (vsdatatableService.isEqual(val, 'btn_click')) {
-                            scope.paginationOperation();
-                        }
-                        else if (vsdatatableService.isEqual(val, 'event')) {
-                            setPaginatorValues(0, 0);
-                            scope.paginationOperation();
-                        }
-                    }
-                }
 
                 function pageNavigated(val) {
                     if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_FIRST)) {
@@ -774,7 +778,8 @@ angular.module('vsdatatable', [])
                         scope.config.PAGINATOR_MAX_BTN_COUNT : scope.options.paginator.buttonCount;
                     var idx = 0;
                     for (var i in scope.pageSizeOptions) {
-                        if (angular.equals(scope.pageSizeOptions[i].default, true)) {
+                        if (scope.pageSizeOptions[i].hasOwnProperty('default') && angular.equals(scope.pageSizeOptions[i].default, true)) {
+                            console.log('ggggggggggggg')
                             idx = i;
                             break;
                         }
