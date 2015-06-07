@@ -1,20 +1,20 @@
 # vsdatatable
 
-**Simple single page datatable - AngularJS UI component**
+**Simple single page datatable - AngularJS UI reusable component**
 
 ## Description
 AngularJS directive which implements the datatable with many useful and configurable features.
 
 ### 1. virtualization
-* only visible items are rendered in the browser
+* only visible items are rendered in the browser.
 
 ### 2. paginator
-* pagination from the external data source is also supported (for example database). Not yet tested well!
+* pagination from the external data source is also supported (for example database).
 * configurable buttons
  - to first page
  - to previous page
  - to previous set of pages
- - to page number
+ - to page numbered
  - to next set of pages
  - to next page
  - to last page
@@ -40,21 +40,22 @@ AngularJS directive which implements the datatable with many useful and configur
 * the vsdatatable directive loads the template and extending the row when the user wants to manipulate the data
 
 ### 5. column toggler
-* columns can be show/hide from the menu
+* columns can be shown/hidden from the menu
 
 ### 6. row selection
-* single ot multiple selection is possible
+* enable or disable
+* single or multiple selection is possible if enabled
 * the selected row data is passed to the parent
 
 ### 7. responsive UI
-* vsdatatable is UI responsive and scalable to different size of devices
+* vsdatatable UI is responsive and scalable to different size of devices
 
 ### 8. tooltips
 * tooltips are used to shown the string which are not fit to the column
 
 ### 9. touch and keyboard
-* works also with touch devices
-* works also with keyboars only
+* works with touch devices
+* works with keyboard
 
 
 ## Usage
