@@ -3,7 +3,8 @@
     <div class="caption" ng-show="options.caption.visible">
         <table style="width:100%;">
             <tr>
-                <td class="captionColToggler" ng-show="options.columnToggler.visible" ng-click="$event.stopPropagation();">
+                <td class="captionColToggler" ng-show="options.columnToggler.visible"
+                    ng-click="$event.stopPropagation()">
                     <div col-toggle-menu></div>
                 </td>
                 <td class="captionTitle">
@@ -24,7 +25,7 @@
                               ng-click="executeFilter();" ng-keydown="$event.which===13?executeFilter():null" tabindex="0"></span>
                         <span class="icon icon-search actionIcon"
                               overlay-window="{text:'{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}',overflow:false}"
-                              ng-click="filterBtnClick($event);"
+                              ng-click="filterBtnClick($event)"
                               ng-keydown="filterBtnClick($event)"
                               tabindex="0"></span>
                     </div>
@@ -51,7 +52,7 @@
                           'icon-down':sort.col===h.prop&&sort.reverse,
                           'icon-up':sort.col===h.prop&&!sort.reverse}" tabindex="0"></span>
                     <span class="icon icon-cross sortColIcon" ng-if="h.sorting&&sort.col===h.prop"
-                          ng-click="sortByCol($event,'');" ng-keydown="sortByCol($event,'');" tabindex="0"></span>
+                          ng-click="sortByCol($event,'')" ng-keydown="sortByCol($event,'')" tabindex="0"></span>
             </th>
             <th class="headerCol headerColAction" ng-if="options.useTemplates">
                 <span>{{options.actionColumnText}}</span>
@@ -85,18 +86,18 @@
             </td>
             <td class="bodyCol bodyColAction" ng-if="options.useTemplates">
                     <span class="icon icon-edit actionIcon" ng-if="options.templates.edit.actionBtnShow"
-                          ng-click="editRow($event, obj);$event.stopPropagation();"
-                          ng-keydown="editRow($event, obj);$event.stopPropagation();"
+                          ng-click="editRow($event, obj);$event.stopPropagation()"
+                          ng-keydown="editRow($event, obj);$event.stopPropagation()"
                           overlay-window="{text:'{{options.templates.edit.btnTooltip}}',overflow:false}"
                           tabindex="0"></span> 
                     <span class="icon icon-clear actionIcon" ng-if="options.templates.delete.actionBtnShow"
-                          ng-click="deleteRow($event, obj);$event.stopPropagation();"
-                          ng-keydown="deleteRow($event, obj);$event.stopPropagation();"
+                          ng-click="deleteRow($event, obj);$event.stopPropagation()"
+                          ng-keydown="deleteRow($event, obj);$event.stopPropagation()"
                           overlay-window="{text:'{{options.templates.delete.btnTooltip}}',overflow:false}"
                           tabindex="0"></span> 
                     <span class="icon icon-view actionIcon" ng-if="options.templates.view.actionBtnShow"
-                          ng-click="viewRow($event, obj);$event.stopPropagation();"
-                          ng-keydown="viewRow($event, obj);$event.stopPropagation();"
+                          ng-click="viewRow($event, obj);$event.stopPropagation()"
+                          ng-keydown="viewRow($event, obj);$event.stopPropagation()"
                           overlay-window="{text:'{{options.templates.view.btnTooltip}}',overflow:false}"
                           tabindex="0"></span>
             </td>

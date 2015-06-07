@@ -11,17 +11,17 @@ angular.module('template-vsdatatable-0.0.1.html', ['templates/vscoltogglemenu.ht
 angular.module("templates/vscoltogglemenu.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vscoltogglemenu.html",
     "<div>\n" +
-    "    <span class=\"icon icon-selections actionIcon\" ng-click=\"colTogglerShowClicked($event);\" ng-keydown=\"colTogglerShowClicked($event)\" \n" +
+    "    <span class=\"icon icon-selections actionIcon\" ng-click=\"colTogglerShowClicked($event)\" ng-keydown=\"colTogglerShowClicked($event)\"\n" +
     "            tabindex=\"0\" overlay-window=\"{text:'{{options.columnToggler.btnTooltip}}',overflow:false}\"></span>  \n" +
     "    <div class=\"colTogglerMenu\" ng-show=\"colTogglerShow\">\n" +
     "        <div class=\"colTogglerTitle\" ng-show=\"options.columnToggler.menuTitle !== undefined\">\n" +
     "            <span class=\"colTogglerTitleTxt\">{{options.columnToggler.menuTitle}}</span> \n" +
-    "            <span class=\"icon icon-cross actionIcon colTogglerCloseIcon\" ng-click=\"colTogglerShowClicked($event);\" \n" +
+    "            <span class=\"icon icon-cross actionIcon colTogglerCloseIcon\" ng-click=\"colTogglerShowClicked($event)\"\n" +
     "                  ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\"></span> \n" +
     "        </div> \n" +
     "        <div class=\"colTogglerMenuItem\" ng-repeat=\"h in options.columns\" ng-class=\"{'selectedColTogglerMenuItem':h.visible}\" \n" +
-    "            ng-click=\"colToggleMenuClicked($event,h);\" \n" +
-    "            ng-keydown=\"colToggleMenuClicked($event,h);\"\n" +
+    "            ng-click=\"colToggleMenuClicked($event,h)\"\n" +
+    "            ng-keydown=\"colToggleMenuClicked($event,h)\"\n" +
     "            ng-model=\"h.visible\" tabindex=\"0\"> \n" +
     "            <div class=\"colTogglerMenuItemTxt\">{{h.label}}</div>\n" +
     "            <div class=\"colTogglerMenuItemIcon\">\n" +
@@ -41,7 +41,7 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "    <div class=\"caption\" ng-show=\"options.caption.visible\">\n" +
     "        <table style=\"width:100%;\">\n" +
     "            <tr>\n" +
-    "                <td class=\"captionColToggler\" ng-show=\"options.columnToggler.visible\" ng-click=\"$event.stopPropagation();\">\n" +
+    "                <td class=\"captionColToggler\" ng-show=\"options.columnToggler.visible\" ng-click=\"$event.stopPropagation()\">\n" +
     "                    <div col-toggle-menu></div>\n" +
     "                </td>\n" +
     "                <td class=\"captionTitle\">\n" +
@@ -62,7 +62,7 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "                              ng-click=\"executeFilter();\" ng-keydown=\"$event.which===13?executeFilter():null\" tabindex=\"0\"></span>\n" +
     "                        <span class=\"icon icon-search actionIcon\"\n" +
     "                              overlay-window=\"{text:'{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}',overflow:false}\"\n" +
-    "                              ng-click=\"filterBtnClick($event);\"\n" +
+    "                              ng-click=\"filterBtnClick($event)\"\n" +
     "                              ng-keydown=\"filterBtnClick($event)\"\n" +
     "                              tabindex=\"0\"></span>\n" +
     "                    </div>\n" +
@@ -89,7 +89,7 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "                          'icon-down':sort.col===h.prop&&sort.reverse,\n" +
     "                          'icon-up':sort.col===h.prop&&!sort.reverse}\" tabindex=\"0\"></span>\n" +
     "                    <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\"\n" +
-    "                          ng-click=\"sortByCol($event,'');\" ng-keydown=\"sortByCol($event,'');\" tabindex=\"0\"></span>\n" +
+    "                          ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=\"0\"></span>\n" +
     "            </th>\n" +
     "            <th class=\"headerCol headerColAction\" ng-if=\"options.useTemplates\">\n" +
     "                <span>{{options.actionColumnText}}</span>\n" +
@@ -123,18 +123,18 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "            </td>\n" +
     "            <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
     "                    <span class=\"icon icon-edit actionIcon\" ng-if=\"options.templates.edit.actionBtnShow\"\n" +
-    "                          ng-click=\"editRow($event, obj);$event.stopPropagation();\"\n" +
-    "                          ng-keydown=\"editRow($event, obj);$event.stopPropagation();\"\n" +
+    "                          ng-click=\"editRow($event, obj);$event.stopPropagation()\"\n" +
+    "                          ng-keydown=\"editRow($event, obj);$event.stopPropagation()\"\n" +
     "                          overlay-window=\"{text:'{{options.templates.edit.btnTooltip}}',overflow:false}\"\n" +
     "                          tabindex=\"0\"></span> \n" +
     "                    <span class=\"icon icon-clear actionIcon\" ng-if=\"options.templates.delete.actionBtnShow\"\n" +
-    "                          ng-click=\"deleteRow($event, obj);$event.stopPropagation();\"\n" +
-    "                          ng-keydown=\"deleteRow($event, obj);$event.stopPropagation();\"\n" +
+    "                          ng-click=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
+    "                          ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
     "                          overlay-window=\"{text:'{{options.templates.delete.btnTooltip}}',overflow:false}\"\n" +
     "                          tabindex=\"0\"></span> \n" +
     "                    <span class=\"icon icon-view actionIcon\" ng-if=\"options.templates.view.actionBtnShow\"\n" +
-    "                          ng-click=\"viewRow($event, obj);$event.stopPropagation();\"\n" +
-    "                          ng-keydown=\"viewRow($event, obj);$event.stopPropagation();\"\n" +
+    "                          ng-click=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
+    "                          ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
     "                          overlay-window=\"{text:'{{options.templates.view.btnTooltip}}',overflow:false}\"\n" +
     "                          tabindex=\"0\"></span>\n" +
     "            </td>\n" +

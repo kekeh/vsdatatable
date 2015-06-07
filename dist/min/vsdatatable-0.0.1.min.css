@@ -36,6 +36,15 @@
     background-image: linear-gradient(#FAFAFA 40%, #CCE0FF 100%)
 }
 
+.vsdatatable .tableRows .selectedHeaderCol {
+    background: #CCE0FF;
+    background-image: -webkit-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: -moz-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: -o-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: -ms-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: linear-gradient(#CCE0FF 30%, #FAFAFA 100%)
+}
+
 .vsdatatable .actionIcon {
     cursor: pointer;
     font-size: 14px
@@ -64,8 +73,7 @@
     font-size: 12px;
     text-align: center;
     border-bottom: 1px solid silver;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-radius: 4px;
     padding: 2px 0;
     cursor: default;
     display: table;
@@ -94,12 +102,13 @@
     width: 100%
 }
 
-.vsdatatable .addItemIcon {
-    font-size: 11px
+.vsdatatable .colTogglerMenuItem:last-child {
+    border-radius: 0 0 4px 4px;
+    border-bottom: none
 }
 
-.vsdatatable .colTogglerMenuItem:last-child {
-    border-bottom: none
+.vsdatatable .addItemIcon {
+    font-size: 11px
 }
 
 .vsdatatable .colTogglerMenuItemTxt {
@@ -251,15 +260,6 @@
 
 .vsdatatable .tableRows .bodyColAction, .vsdatatable .tableRows .headerCol {
     text-align: center
-}
-
-.vsdatatable .tableRows .selectedHeaderCol {
-    background: #CCE0FF;
-    background-image: -webkit-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: -moz-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: -o-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: -ms-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: linear-gradient(#CCE0FF 30%, #FAFAFA 100%)
 }
 
 .vsdatatable .tableRows .headerColAction {
