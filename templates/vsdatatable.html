@@ -36,7 +36,7 @@
 
     <table class="tableRows">
         <thead class="tableHeader" ng-if="options.headerVisible">
-        <tr class="headerRow" col-resizer="{enabled:options.columnResize,minColWidth:config.COL_RESIZER_MIN_COL_WIDTH}">
+        <tr class="headerRow" col-resizer>
             <th class="headerCol textOverflow"
                 ng-if="h.visible===undefined||h.visible"
                 ng-style="{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}"

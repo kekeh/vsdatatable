@@ -195,7 +195,7 @@ angular.module('vsdatatable', [])
                             }
                             execSort();
                         }
-                        scope.paginationOperation(vsdatatableConfig.EXT_SORT);
+                        scope.paginationOperation(scope.config.EXT_SORT);
                     }
                 };
 
@@ -205,13 +205,13 @@ angular.module('vsdatatable', [])
                     }
                 };
 
-                scope.$on(vsdatatableConfig.SET_EXT_PAGINATION_DATA_EVENT, function (event, value) {
+                scope.$on(scope.config.SET_EXT_PAGINATION_DATA_EVENT, function (event, value) {
                     // External pagination event contains paged data and total count
                     scope.filteredItems = value.data;
                     scope.totalCount = value.totalCount;
 
-                    if (!vsdatatableService.isEqual(extPendingOper, vsdatatableConfig.EXT_BTN)
-                        && !vsdatatableService.isEqual(extPendingOper, vsdatatableConfig.OPER_EDIT)) {
+                    if (!vsdatatableService.isEqual(extPendingOper, scope.config.EXT_BTN)
+                        && !vsdatatableService.isEqual(extPendingOper, scope.config.OPER_EDIT)) {
                         vsdatatableService.paginatorEvent(scope);
                     }
                 });
@@ -233,9 +233,9 @@ angular.module('vsdatatable', [])
                     if (scope.extDataPagination) {
                         extPendingOper = oper;
 
-                        if (vsdatatableService.isEqual(oper, vsdatatableConfig.OPER_ADD)
-                            || vsdatatableService.isEqual(oper, vsdatatableConfig.OPER_DELETE)
-                            || vsdatatableService.isEqual(oper, vsdatatableConfig.EXT_FLT)) {
+                        if (vsdatatableService.isEqual(oper, scope.config.OPER_ADD)
+                            || vsdatatableService.isEqual(oper, scope.config.OPER_DELETE)
+                            || vsdatatableService.isEqual(oper, scope.config.EXT_FLT)) {
                             // Reset paginator
                             scope.paginator.visiblePageIdx = 0;
                         }
@@ -268,7 +268,7 @@ angular.module('vsdatatable', [])
                         vsdatatableService.paginatorEvent(scope);
                     }
                     else {
-                        scope.paginationOperation(vsdatatableConfig.EXT_FLT);
+                        scope.paginationOperation(scope.config.EXT_FLT);
                     }
                 };
 
@@ -461,7 +461,7 @@ angular.module('vsdatatable', [])
                     if (!vsdatatableService.isEqual(itemsLengthWatch, null)) {
                         itemsLengthWatch();
                     }
-                    scope.$off(vsdatatableConfig.SET_EXT_PAGINATION_DATA_EVENT);
+                    scope.$off(scope.config.SET_EXT_PAGINATION_DATA_EVENT);
                     element.off('click', tableAreaClick);
                 });
 
@@ -475,19 +475,19 @@ angular.module('vsdatatable', [])
  * @name filterFocus
  * @description filterFocus is directive which set focus to the global filter input box when the filter icon is clicked.
  */
-    .directive('filterFocus', ['$timeout', 'vsdatatableConfig', function ($timeout, vsdatatableConfig) {
+    .directive('filterFocus', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
-            scope: {},
+            scope: false,
             link: function (scope, element, attrs) {
-                scope.$on(vsdatatableConfig.FILTER_FOCUS_EVENT, function () {
+                scope.$on(scope.config.FILTER_FOCUS_EVENT, function () {
                     $timeout(function () {
                         element[0].focus();
                     });
                 });
 
                 scope.$on('$destroy', function () {
-                    scope.$off(vsdatatableConfig.FILTER_FOCUS_EVENT);
+                    scope.$off(scope.config.FILTER_FOCUS_EVENT);
                 });
             }
         };
@@ -512,7 +512,6 @@ angular.module('vsdatatable', [])
                     var elem = angular.element(colTpl);
                     $compile(elem)(scope);
                     element.append(elem);
-
                 }
             }
         };
@@ -591,7 +590,7 @@ angular.module('vsdatatable', [])
  * @name tablePaginator
  * @description tablePaginator directive implements paginator.
  */
-    .directive('tablePaginator', ['vsdatatableService', 'vsdatatableConfig', function (vsdatatableService, vsdatatableConfig) {
+    .directive('tablePaginator', ['vsdatatableService', function (vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
@@ -608,7 +607,7 @@ angular.module('vsdatatable', [])
                     reset();
 
                     if (scope.extDataPagination) {
-                        scope.paginationOperation(vsdatatableConfig.EXT_BTN);
+                        scope.paginationOperation(scope.config.EXT_BTN);
                     }
                 };
 
@@ -622,7 +621,7 @@ angular.module('vsdatatable', [])
                         }
 
                         if (scope.extDataPagination) {
-                            scope.paginationOperation(vsdatatableConfig.EXT_BTN);
+                            scope.paginationOperation(scope.config.EXT_BTN);
                         }
                     }
                 };
@@ -640,7 +639,7 @@ angular.module('vsdatatable', [])
                     return scope.isNavigateBtn(val) && !vsdatatableService.isEqual(scope.disabledButtons.indexOf(val), -1);
                 };
 
-                scope.$on(vsdatatableConfig.PAGINATOR_EVENT, function () {
+                scope.$on(scope.config.PAGINATOR_EVENT, function () {
                     reset();
                 });
 
@@ -789,7 +788,7 @@ angular.module('vsdatatable', [])
                 }
 
                 scope.$on('$destroy', function () {
-                    scope.$off(vsdatatableConfig.PAGINATOR_EVENT);
+                    scope.$off(scope.config.PAGINATOR_EVENT);
                 });
 
                 init();
@@ -889,20 +888,20 @@ angular.module('vsdatatable', [])
     .directive('colResizer', ['$compile', '$document', '$timeout', 'vsdatatableService', function ($compile, $document, $timeout, vsdatatableService) {
         return {
             restrict: 'A',
-            scope: {
-                options: '=colResizer'
-            },
+            scope: false,
             link: function (scope, element, attrs) {
-                var startPos = 0;
-                var currElem = 0, nextElem = 0, currWidth = 0, nextWidth = 0, headerWidth = 0;
+                var startPos = 0, currElem = 0, nextElem = 0, currWidth = 0, nextWidth = 0, headerWidth = 0;
 
                 function onResizeStart(event) {
                     event.preventDefault();
                     startPos = event.clientX;
+
+                    // Get elements (currElem is left column and nextElem is right column)
                     currElem = angular.element(event.target).parent();
                     nextElem = currElem.next();
 
                     if (!vsdatatableService.isEqual(nextElem.prop('id'), 'headerColAction')) {
+                        // Get elements initial width values
                         currWidth = currElem.prop('offsetWidth');
                         nextWidth = nextElem.prop('offsetWidth');
                         headerWidth = element.prop('offsetWidth');
@@ -914,20 +913,23 @@ angular.module('vsdatatable', [])
                 }
 
                 function onResizeMove(event) {
+                    // if newPos > 0 move id forward - if newPos < 0 move is backward
                     var newPos = event.clientX - startPos;
                     var newCurrWidth = currWidth + newPos;
                     var newNextWidth = nextWidth - newPos;
-                    if (newPos > 0 && newNextWidth < scope.options.minColWidth) {
+                    if (newPos > 0 && newNextWidth < scope.config.COL_RESIZER_MIN_COL_WIDTH) {
                         return;
                     }
-                    else if (newPos < 0 && newCurrWidth < scope.options.minColWidth) {
+                    else if (newPos < 0 && newCurrWidth < scope.config.COL_RESIZER_MIN_COL_WIDTH) {
                         return;
                     }
+                    // Change to the percent value
                     currElem.css('width', (newCurrWidth / headerWidth * 100) + '%');
                     nextElem.css('width', (newNextWidth / headerWidth * 100) + '%');
                 }
 
                 function onResizeEnd() {
+                    // Deregister events
                     $document.off('mousemove', onResizeMove);
                     $document.off('mouseup', onResizeEnd);
                     setCursor('default');
@@ -937,33 +939,35 @@ angular.module('vsdatatable', [])
                     $document.prop('body').style.cursor = type;
                 }
 
-                function setHeaderStyle(elem) {
-                    elem.css('background-clip', 'padding-box');
-                    elem.css('position', 'relative');
+                function setColumnStyle(thElem) {
+                    thElem.css('background-clip', 'padding-box');
+                    thElem.css('position', 'relative');
                 }
 
                 function init() {
-                    var style = 'position:absolute;' +
-                        'border:1px solid transparent;' +
-                        'background-color:transparent;' +
-                        'top:0;' +
-                        'bottom:0;' +
-                        'right:0;' +
-                        'width:6px;' +
-                        'cursor:col-resize;';
+                    // Column resizer styles
+                    var style = 'position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;';
 
-                    var children = element.children();
-                    for (var i = 0; i < children.length - 2; i++) {
+                    // Get all childrens (th - elements) and append the column resizer element each of them
+                    var columns = element[0].querySelectorAll('th');
+                    for (var i = 0; i < columns.length - 2; i++) {
+                        var thElem = angular.element(columns[i]);
                         var colResizer = angular.element('<div class="colresizer" ng-click="$event.stopPropagation()" style="' + style + '"></div>');
                         colResizer.on('mousedown', onResizeStart);
-                        var elem = angular.element(children[i]);
-                        setHeaderStyle(elem);
-                        elem.append(colResizer);
+                        setColumnStyle(thElem);
+                        thElem.append(colResizer);
                         $compile(colResizer)(scope);
                     }
                 }
 
-                if (scope.options.enabled) {
+                scope.$on('$destroy', function () {
+                    var resizers = element[0].querySelectorAll('.colresizer');
+                    for (var i = 0; i < resizers.length; i++) {
+                        elements[i].off('mousedown', onResizeStart);
+                    }
+                });
+
+                if (scope.options.columnResize) {
                     $timeout(init);
                 }
             }
