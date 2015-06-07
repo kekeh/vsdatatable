@@ -42,18 +42,21 @@ AngularJS directive which implements the datatable with many useful and configur
 ### 5. column toggler
 * columns can be shown/hidden from the menu
 
-### 6. row selection
+### 6. column resize
+* columns can resized
+
+### 7. row selection
 * enable or disable
 * single or multiple selection is possible if enabled
 * the selected row data is passed to the parent
 
-### 7. responsive UI
+### 8. responsive UI
 * vsdatatable UI is responsive and scalable to different size of devices
 
-### 8. tooltips
+### 9. tooltips
 * tooltips are used to shown the string which are not fit to the column
 
-### 9. touch and keyboard
+### 10. touch and keyboard
 * works with touch devices
 * works with keyboard
 
@@ -102,6 +105,7 @@ angular.module('vssampleapp', ['vsdatatable']);
 | caption.**visible** | Is vsdatatable caption visible or not. | true or false | yes |
 | caption.**text** | Caption text. | User defined text. | no |
 | **headerVisible** | Is vsdatatable header visible or not. | true or false | yes |
+| **columnResize** | Is column resize enable ot not. | true or false | yes |
 | **columns** | Array of objects defining the columns of the vsdatatable. | See the **column configuration object** chapter below. | yes |
 | **row** | Object which contain sub properties. | See below. | yes |
 | row.**selection** | Is row selection enabled or not. | 0=No selection enabled, 1=Single row selection enabled or 2=Multiple row selection enabled | yes |
@@ -138,6 +142,7 @@ angular.module('vssampleapp', ['vsdatatable']);
 | **templates** | Object containing objects which each define template configuration. | See the **template configuration object** chapter below. | no |
 
 
+
 #### dataOperationCb
 
 Example of the function. See description of the parameters below the example.
@@ -166,6 +171,7 @@ var onDataOperation = function (phase, operation, dataOld, dataNew) {
 * dataNew - the new data of the row if the data has changed during the operation.
 
 
+
 #### extPaginationOperationCb
 
 Example of the function. See description of the parameters below the example.
@@ -181,6 +187,7 @@ var onPaginationOperation = function (paginationOpt) {
 
 ##### Parameters
 * paginationOpt - JSON object containing the pagination options.
+
 
 
 #### column configuration object
@@ -210,6 +217,7 @@ Example of the column configuration. See description of the properties below the
 | visible | Is column initially visible or not.(true or false) If this is false the user can later toggle column visible from the column toggle menu. |
 
 
+
 ##### column filter template
 
 ```html
@@ -219,6 +227,7 @@ Example of the column configuration. See description of the properties below the
 </div>;
 
 ```
+
 
 
 #### rowSelectCb
@@ -239,6 +248,7 @@ var onRowSelect = function (operation, rowData) {
 * rowData - JSON object containing the selected/deselected row data.
 
 
+
 #### page size options
 
 Example of the configuration of the page size options. See description of the properties below the example.
@@ -256,6 +266,7 @@ pageSizeOptions: [
 | label | Visible label on the page size selection button. |
 | rows | How many row(s) is visible when the button is selected. This is number value. |
 | default | Default value when the vsdatatable is loaded. The value can be true or false. |
+
 
 
 #### template configuration object

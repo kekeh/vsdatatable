@@ -86,12 +86,14 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             text: 'vsdatatable example'
         },
         headerVisible: true,
+        columnResize: true,
         columns: [
             {
                 prop: 'id',
                 label: 'Id number',
                 sorting: false,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
+                width: {number: 5, unit: '%'},
                 visible: true
             },
             {
@@ -100,7 +102,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'center',
                 sorting: true,
                 filter: {template: colSelectActiveFilterTemplate, match: 'exact'},
-                width: {number: 10, unit: '%'},
+                width: {number: 5, unit: '%'},
                 visible: true
             },
             {
@@ -109,7 +111,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 14, unit: '%'},
+                width: {number: 10, unit: '%'},
                 visible: true
             },
             {
@@ -134,7 +136,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 label: 'Gender',
                 sorting: true,
                 filter: {template: colSelectGenderFilterTemplate, match: 'exact'},
-                width: {number: 14, unit: '%'},
+                width: {number: 10, unit: '%'},
                 visible: true
             },
             {
@@ -143,7 +145,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 16, unit: '%'},
+                width: {number: 10, unit: '%'},
                 visible: true
             },
             {
@@ -151,8 +153,8 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 label: 'About',
                 textAlign: 'left',
                 sorting: false,
-                width: {number: 16, unit: '%'},
-                visible: false
+                width: {number: 20, unit: '%'},
+                visible: true
             }
         ],
         row: {

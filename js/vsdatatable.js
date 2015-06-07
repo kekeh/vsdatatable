@@ -31,7 +31,8 @@ angular.module('vsdatatable', [])
         FILTER_CONTAIN: 'contain',
         FILTER_EXACT: 'exact',
         ROW_SELECT: 'SELECT',
-        ROW_DESELECT: 'DESELECT'
+        ROW_DESELECT: 'DESELECT',
+        COL_RESIZER_MIN_COL_WIDTH: 35
     })
 
 /**
@@ -875,6 +876,89 @@ angular.module('vsdatatable', [])
                 function cancelTimer() {
                     $timeout.cancel(timer);
                     timer = null;
+                }
+            }
+        };
+    }])
+    .directive('colResizer', ['$compile', '$document', '$timeout', 'vsdatatableService', function ($compile, $document, $timeout, vsdatatableService) {
+        return {
+            restrict: 'A',
+            scope: {
+                options: '=colResizer'
+            },
+            link: function (scope, element, attrs) {
+                var startPos = 0;
+                var currElem = 0, nextElem = 0, currWidth = 0, nextWidth = 0, headerWidth = 0;
+
+                function onResizeStart(event) {
+                    event.preventDefault();
+                    startPos = event.clientX;
+                    currElem = angular.element(event.target).parent();
+                    nextElem = currElem.next();
+
+                    if (!vsdatatableService.isEqual(nextElem.prop('id'), 'headerColAction')) {
+                        currWidth = currElem.prop('offsetWidth');
+                        nextWidth = nextElem.prop('offsetWidth');
+                        headerWidth = element.prop('offsetWidth');
+
+                        $document.on('mousemove', onResizeMove);
+                        $document.on('mouseup', onResizeEnd);
+                        setCursor('col-resize');
+                    }
+                }
+
+                function onResizeMove(event) {
+                    var newPos = event.clientX - startPos;
+                    var newCurrWidth = currWidth + newPos;
+                    var newNextWidth = nextWidth - newPos;
+                    if (newPos > 0 && newNextWidth < scope.options.minColWidth) {
+                        return;
+                    }
+                    else if (newPos < 0 && newCurrWidth < scope.options.minColWidth) {
+                        return;
+                    }
+                    currElem.css('width', (newCurrWidth / headerWidth * 100) + '%');
+                    nextElem.css('width', (newNextWidth / headerWidth * 100) + '%');
+                }
+
+                function onResizeEnd() {
+                    $document.off('mousemove', onResizeMove);
+                    $document.off('mouseup', onResizeEnd);
+                    setCursor('default');
+                }
+
+                function setCursor(type) {
+                    $document.prop('body').style.cursor = type;
+                }
+
+                function setHeaderStyle(elem) {
+                    elem.css('background-clip', 'padding-box');
+                    elem.css('position', 'relative');
+                }
+
+                function init() {
+                    var style = 'position:absolute;' +
+                        'border:1px solid transparent;' +
+                        'background-color:transparent;' +
+                        'top:0;' +
+                        'bottom:0;' +
+                        'right:0;' +
+                        'width:6px;' +
+                        'cursor:col-resize;';
+
+                    var children = element.children();
+                    for (var i = 0; i < children.length - 2; i++) {
+                        var colResizer = angular.element('<div class="colresizer" ng-click="$event.stopPropagation()" style="' + style + '"></div>');
+                        colResizer.on('mousedown', onResizeStart);
+                        var elem = angular.element(children[i]);
+                        setHeaderStyle(elem);
+                        elem.append(colResizer);
+                        $compile(colResizer)(scope);
+                    }
+                }
+
+                if (scope.options.enabled) {
+                    $timeout(init);
                 }
             }
         };
