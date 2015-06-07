@@ -977,7 +977,6 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     var idx = 0;
                     for (var i in scope.pageSizeOptions) {
                         if (scope.pageSizeOptions[i].hasOwnProperty('default') && angular.equals(scope.pageSizeOptions[i].default, true)) {
-                            console.log('ggggggggggggg')
                             idx = i;
                             break;
                         }
