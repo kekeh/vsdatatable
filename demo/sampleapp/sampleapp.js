@@ -92,6 +92,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             text: 'vsdatatable example'
         },
         headerVisible: true,
+        columnResize: true,
         columns: [
             {
                 prop: 'id',
