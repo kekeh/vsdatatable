@@ -9,7 +9,7 @@ AngularJS directive which implements the datatable with many useful and configur
 * only visible items are rendered in the browser
 
 ### 2. paginator
-* pagination from the external data source is also supported (for example database)
+* pagination from the external data source is also supported (for example database). Not yet tested well!
 * configurable buttons
  - to first page
  - to previous page
