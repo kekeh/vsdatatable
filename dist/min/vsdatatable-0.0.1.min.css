@@ -263,8 +263,7 @@
 }
 
 .vsdatatable .tableRows .headerColAction {
-    cursor: default;
-    width: 90px
+    cursor: default
 }
 
 .vsdatatable .textOverflow {

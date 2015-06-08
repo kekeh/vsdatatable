@@ -36,8 +36,9 @@
 
     <table class="tableRows">
         <thead class="tableHeader" ng-if="options.headerVisible">
-        <tr class="headerRow" col-resizer>
+        <tr class="headerRow">
             <th class="headerCol textOverflow"
+                col-resizer
                 ng-if="h.visible===undefined||h.visible"
                 ng-style="{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}"
                 ng-class="sort.col===h.prop&&h.sorting?'selectedHeaderCol':''"
@@ -53,7 +54,8 @@
                     <span class="icon icon-cross sortColIcon" ng-if="h.sorting&&sort.col===h.prop"
                           ng-click="sortByCol($event,'')" ng-keydown="sortByCol($event,'')" tabindex="0"></span>
             </th>
-            <th id="headerColAction" class="headerCol headerColAction" ng-if="options.useTemplates">
+            <th id="headerColAction" class="headerCol headerColAction" ng-if="options.useTemplates"
+                ng-style="{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}">
                 <span>{{options.actionColumnText}}</span>
                     <span class="icon icon-plus actionIcon addItemIcon" ng-if="options.templates.add.actionBtnShow"
                           ng-click="addRow();" ng-keydown="$event.which===13?addRow():null"

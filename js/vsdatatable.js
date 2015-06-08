@@ -32,7 +32,8 @@ angular.module('vsdatatable', [])
         FILTER_EXACT: 'exact',
         ROW_SELECT: 'SELECT',
         ROW_DESELECT: 'DESELECT',
-        COL_RESIZER_MIN_COL_WIDTH: 35
+        COL_RESIZER_MIN_COL_WIDTH: 35,
+        DEFAULT_ACTION_COL_WIDTH: 90
     })
 
 /**
@@ -102,6 +103,7 @@ angular.module('vsdatatable', [])
             },
             controller: ['$scope', function ($scope) {
                 $scope.config = vsdatatableConfig;
+                $scope.colInitDone = false;
                 $scope.filteredItems = [];
                 $scope.totalCount = 0;
                 $scope.selectedRows = [];
@@ -435,7 +437,7 @@ angular.module('vsdatatable', [])
                 }
 
                 function initColumns() {
-                    var width = parseInt(100 / scope.options.columns.length - 1);
+                    var width = 90 / scope.options.columns.length;
                     scope.visibleColCount = 0;
                     angular.forEach(scope.options.columns, function (col) {
                         scope.visibleColCount = vsdatatableService.isUndefined(col.visible) || col.visible ? scope.visibleColCount + 1 : scope.visibleColCount;
@@ -817,6 +819,7 @@ angular.module('vsdatatable', [])
                     if (scope.checkEvent(event)) {
                         scope.visibleColCount = col.visible ? scope.visibleColCount - 1 : scope.visibleColCount + 1;
                         col.visible = !col.visible;
+                        scope.colInitDone = true;
                     }
                 };
             }
@@ -883,29 +886,25 @@ angular.module('vsdatatable', [])
 /**
  * @ngdoc object
  * @name colResizer
- * @description colResizer directive implements column resize of the table.
+ * @description colResizer directive implements column resize of the vsdatatable.
  */
-    .directive('colResizer', ['$compile', '$document', '$timeout', 'vsdatatableService', function ($compile, $document, $timeout, vsdatatableService) {
+    .directive('colResizer', ['$compile', '$document', 'vsdatatableService', function ($compile, $document, vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
             link: function (scope, element, attrs) {
-                var startPos = 0, currElem = 0, nextElem = 0, currWidth = 0, nextWidth = 0, headerWidth = 0;
+                var startPos = 0, nextElem = 0, currWidth = 0, nextWidth = 0, headerWidth = 0;
 
                 function onResizeStart(event) {
                     event.preventDefault();
                     startPos = event.clientX;
-
-                    // Get elements (currElem is left column and nextElem is right column)
-                    currElem = angular.element(event.target).parent();
-                    nextElem = currElem.next();
-
+                    nextElem = element.next();
                     if (!vsdatatableService.isEqual(nextElem.prop('id'), 'headerColAction')) {
-                        // Get elements initial width values
-                        currWidth = currElem.prop('offsetWidth');
+                        currWidth = element.prop('offsetWidth');
                         nextWidth = nextElem.prop('offsetWidth');
-                        headerWidth = element.prop('offsetWidth');
+                        headerWidth = element.parent().prop('offsetWidth');
 
+                        // Register events
                         $document.on('mousemove', onResizeMove);
                         $document.on('mouseup', onResizeEnd);
                         setCursor('col-resize');
@@ -924,7 +923,7 @@ angular.module('vsdatatable', [])
                         return;
                     }
                     // Change to the percent value
-                    currElem.css('width', (newCurrWidth / headerWidth * 100) + '%');
+                    element.css('width', (newCurrWidth / headerWidth * 100) + '%');
                     nextElem.css('width', (newNextWidth / headerWidth * 100) + '%');
                 }
 
@@ -939,37 +938,43 @@ angular.module('vsdatatable', [])
                     $document.prop('body').style.cursor = type;
                 }
 
-                function setColumnStyle(thElem) {
-                    thElem.css('background-clip', 'padding-box');
-                    thElem.css('position', 'relative');
+                function colDefaultWidth() {
+                    var colSpace = 100 - (scope.config.DEFAULT_ACTION_COL_WIDTH / element.parent().prop('offsetWidth') * 100);
+                    return colSpace / scope.visibleColCount;
+                }
+
+                function resetColumnsWidth() {
+                    var width = colDefaultWidth();
+                    angular.forEach(scope.options.columns, function (col) {
+                        if (col.visible) {
+                            col.width = {number: width, unit: '%'};
+                        }
+                    });
                 }
 
                 function init() {
-                    // Column resizer styles
-                    var style = 'position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;';
-
-                    // Get all childrens (th - elements) and append the column resizer element each of them
-                    var columns = element[0].querySelectorAll('th');
-                    for (var i = 0; i < columns.length - 2; i++) {
-                        var thElem = angular.element(columns[i]);
+                    if (scope.options.columnResize) {
+                        // Column resizer styles
+                        var style = 'position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;';
                         var colResizer = angular.element('<div class="colresizer" ng-click="$event.stopPropagation()" style="' + style + '"></div>');
                         colResizer.on('mousedown', onResizeStart);
-                        setColumnStyle(thElem);
-                        thElem.append(colResizer);
+                        element.css('background-clip', 'padding-box');
+                        element.css('position', 'relative');
+                        element.append(colResizer);
                         $compile(colResizer)(scope);
+                    }
+                    if (scope.colInitDone) {
+                        resetColumnsWidth();
                     }
                 }
 
                 scope.$on('$destroy', function () {
-                    var resizers = element[0].querySelectorAll('.colresizer');
-                    for (var i = 0; i < resizers.length; i++) {
-                        elements[i].off('mousedown', onResizeStart);
-                    }
+                    var colResizer = element[0].querySelector('.colresizer');
+                    angular.element(colResizer).off('mousedown', onResizeStart);
+                    resetColumnsWidth();
                 });
 
-                if (scope.options.columnResize) {
-                    $timeout(init);
-                }
+                init();
             }
         };
     }]);
