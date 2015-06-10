@@ -120,7 +120,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "            ng-class=\"{'selectedRow':isRowSelected(obj)}\"\n" +
     "            table-body-row tabindex=\"0\">\n" +
     "            <td class=\"bodyCol\" ng-repeat=\"k in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\">\n" +
-    "                <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\" overlay-window=\"{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}\">\n" +
+    "                <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\"\n" +
+    "                     overlay-window=\"{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}\">\n" +
     "                    {{getPropertyValue(obj,k.prop)}}\n" +
     "                </div>\n" +
     "            </td>\n" +
