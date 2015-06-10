@@ -98,7 +98,7 @@
 }
 
 .vsdatatable .rowExtenderBtn:hover:enabled {
-    background: #A0CFEC !important;
+    background: #CAFFCA !important;
     color: #0066CC;
 }
 
@@ -121,12 +121,12 @@
 
 .rowExtender .rowExtenderBtnIconGreen,
 .rowExtender .rowExtenderBtnIconGreen:hover {
-    color: #78FA89;
+    color: #21AF17;
 }
 
 .rowExtender .rowExtenderBtnIconRed,
 .rowExtender .rowExtenderBtnIconRed:hover {
-    color: #FA787E;
+    color: #DD0000;
 }
 
 .rowExtender .error {
