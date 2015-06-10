@@ -228,7 +228,8 @@
 .vsdatatable .paginatorBtn {
     min-height: 30px;
     min-width: 36px;
-    padding: 0 3px;
+    padding-left: 3px;
+    padding-right: 3px;
     font-size: 13px;
 }
 
