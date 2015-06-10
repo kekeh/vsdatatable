@@ -16,6 +16,7 @@ sampleapp.controller('extenderctrl', function ($scope) {
         var nextId = Math.floor((Math.random() * 50000000) + 100);
         return nextId;
     };
+
 });
 
 /**
@@ -23,13 +24,7 @@ sampleapp.controller('extenderctrl', function ($scope) {
  * @name sampleappctrl
  * @description Sample application controller. This controller uses the vsdatatable.
  */
-sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig, vsdatatableEvent, vsdatatableConfig) {
-
-    // Se paginator button labels
-    vsdatatableConfig.PAGINATOR_BTN_BACK.label = '<';
-    vsdatatableConfig.PAGINATOR_BTN_NEXT.label = '>';
-    vsdatatableConfig.PAGINATOR_BTN_FIRST.label = '<<';
-    vsdatatableConfig.PAGINATOR_BTN_LAST.label = '>>';
+sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig, vsdatatableEvent) {
 
     // Header column filter templates
     var colInputFilterTemplate =
@@ -39,17 +34,17 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
 
     var colSelectActiveFilterTemplate =
         '<div class="columnTemplate">' +
-        '<select class="selectMenu" ng-click="$event.stopPropagation();" ng-model="COLUMN_PROP_VALUE" ng-options="active.value as active.label for active in [{label: \'Choose\', value:\'\'},{label: \'True\', value:\'true\'},{label: \'False\', value:\'false\'}]"></select>' +
+        '<select class="selectMenu" ng-click="$event.stopPropagation();" ng-model="COLUMN_PROP_VALUE" ng-options="active.value as active.label for active in [{label: \'Choose\', value:undefined},{label: \'True\', value:\'true\'},{label: \'False\', value:\'false\'}]"></select>' +
         '</div>';
 
-    var colSelectGenderFilterTemplate =
+    var colSelectCarFeaturesFilterTemplate =
         '<div class="columnTemplate">' +
-        '<select class="selectMenu" ng-click="$event.stopPropagation();" ng-model="COLUMN_PROP_VALUE" ng-options="gender.value as gender.label for gender in [{label: \'Choose\', value:\'\'},{label: \'Male\', value:\'male\'},{label: \'Female\', value:\'female\'}]"></select>' +
+        '<select class="selectMenu" ng-click="$event.stopPropagation();" ng-model="COLUMN_PROP_VALUE" ng-options="features.value as features.label for features in [{label: \'Choose\', value:undefined},{label: \'Set 1\', value:\'1\'},{label: \'Set 2\', value:\'2\'},{label: \'Set 3\', value:\'3\'}]"></select>' +
         '</div>';
 
     $scope.jsonData = [];
 
-    // data operation (add, edit or delete )callback
+    // data operation (add, edit or delete) callback
     var onDataOperation = function (phase, operation, dataOld, dataNew) {
         console.log('*** PARENT - onDataOperation: phase: ', phase, ' - operation: ', operation, ' - dataOld: ', dataOld, ' - dataNew: ', dataNew);
         if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_ADD) {
@@ -85,7 +80,6 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             items: '',
             dataOperationCb: onDataOperation,
             extDataPagination: false
-            //extPaginationOperationCb: onPaginationOperation
         },
         caption: {
             visible: true,
@@ -100,7 +94,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 sorting: false,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
                 width: {number: 5, unit: '%'},
-                visible: true
+                visible: false
             },
             {
                 prop: 'active',
@@ -108,21 +102,12 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'center',
                 sorting: true,
                 filter: {template: colSelectActiveFilterTemplate, match: 'exact'},
-                width: {number: 5, unit: '%'},
+                width: {number: 10, unit: '%'},
                 visible: true
             },
             {
-                prop: 'balance',
-                label: 'Balance',
-                textAlign: 'right',
-                sorting: true,
-                filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 15, unit: '%'},
-                visible: true
-            },
-            {
-                prop: 'age',
-                label: 'Age',
+                prop: 'car.price',  // Value from second level (property price from the car object)
+                label: 'Car.price',
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
@@ -130,19 +115,29 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 visible: true
             },
             {
-                prop: 'firstname',
-                label: 'Firstname',
+                prop: 'car.features',  // Value from second level (property class from the car object)
+                label: 'Car.features',
+                textAlign: 'center',
+                sorting: true,
+                filter: {template: colSelectCarFeaturesFilterTemplate, match: 'exact'},
+                width: {number: 10, unit: '%'},
+                visible: true
+            },
+            {
+                prop: 'car.age',
+                label: 'Car.age',
+                textAlign: 'right',
+                sorting: true,
+                filter: {template: colInputFilterTemplate, match: 'contain'},
+                width: {number: 10, unit: '%'},
+                visible: false
+            },
+            {
+                prop: 'name',
+                label: 'Name',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
                 width: {number: 20, unit: '%'},
-                visible: true
-            },
-            {
-                prop: 'gender',
-                label: 'Gender',
-                sorting: true,
-                filter: {template: colSelectGenderFilterTemplate, match: 'exact'},
-                width: {number: 10, unit: '%'},
                 visible: true
             },
             {
@@ -151,7 +146,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 10, unit: '%'},
+                width: {number: 15, unit: '%'},
                 visible: true
             },
             {
@@ -159,7 +154,8 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 label: 'About',
                 textAlign: 'left',
                 sorting: false,
-                width: {number: 15, unit: '%'},
+                filter: {template: colInputFilterTemplate, match: 'contain'},
+                width: {number: 25, unit: '%'},
                 visible: true
             }
         ],
@@ -192,35 +188,44 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             visible: true,
             buttonCount: 3,
             pageNavBtnVisible: true,
-            setNavBtnVisible: false,
+            setNavBtnVisible: true,
             allNavBtnVisible: true,
             pageSizeOptions: [
-                {label: '4', rows: 4, default: true},
-                {label: '7', rows: 7},
-                {label: '15', rows: 15}],
+                {label: '4', rows: 4},
+                {label: '7', rows: 7, default: true},
+                {label: '15', rows: 15},
+                {label: '20', rows: 20}],
             pageSizeTxt: 'Page size: ',
             totalItemsTxt: 'Total: '
         },
         useTemplates: true,
         actionColumnText: 'Action',
         templates: {
-            add: {path: 'demo/partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Add'},
-            edit: {path: 'demo/partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Edit'},
-            delete: {path: 'demo/partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'Delete'},
-            view: {path: 'demo/partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'View'}
+            add: {
+                path: 'partials/template/add_edit.html',
+                actionBtnShow: true,
+                btnTooltip: 'Add',
+                defaultValues: {car: {features: 1}, active: false} // Set car features default to 1 and active to false
+            },
+            edit: {path: 'partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Edit'},
+            delete: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'Delete'},
+            view: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'View'}
         }
     };
 
     // Helper function to generate sample data to the vsdatatable
     function generateData() {
         for (var i = 0; i < generatedItemCount; i++) {
+            var pr = price(300000, 10000);
             var item = {
                 id: i + 1,
                 active: (i % 6 === 0 || i % 7 === 0) ? true : false,
-                balance: balance(1000000, 1000),
-                age: Math.round((Math.random() * 85) + 5),
-                firstname: 'User ' + Math.round((Math.random() * 5000) + 10),
-                gender: (i % 4 === 0 || i % 7 === 0) ? 'male' : 'female',
+                car: {
+                    price: pr,
+                    features: pr <= 100000 ? 1 : pr <= 200000 ? 2 : 3,
+                    age: Math.round((Math.random() * 58) + 1)
+                },
+                name: 'User ' + Math.round((Math.random() * 5000) + 10),
                 date: Math.round((Math.random() * 25) + 1990) + '-' + date(12, 1) + '-' + date(28, 1),
                 about: 'About number ' + Math.round((Math.random() * 5000000) + 1, 2) + ' with lorem ipsum dolor sit amet, consectetuer adipiscing elit sed posuere interdum sem sini rea dolor amet elit number ' + Math.round((Math.random() * 5000000) + 1, 2) + '.'
             };
@@ -240,7 +245,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
     }
 
     // Helper function to generate sample data to the vsdatatable
-    function balance(max, min) {
+    function price(max, min) {
         var b = Math.round((Math.random() * max) + min) + '.' + Math.round((Math.random() * 99) + 1).toString();
         return parseFloat(b);
     }
@@ -248,5 +253,4 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
     generateData();
 
 });
-
 

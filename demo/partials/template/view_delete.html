@@ -15,7 +15,7 @@
             <td class="labelCol">{{column.label}}</td>
             <td class="valueCol">
                 <div class="textField">
-                    {{objectInOper.data[column.prop]}}
+                    {{getPropertyValue(objectInOper.data, column.prop)}}
                 </div>
             </td>
         </tr>
@@ -23,11 +23,12 @@
     </table>
 
     <div class="tableFooter rowExtenderFooter">
-        <button class="rowExtenderBtn" ng-click="acceptClicked(objectInOper.oper)">
+        <button class="rowExtenderBtn rowExtenderBtnColor" ng-click="acceptClicked(objectInOper.oper)">
             {{objectInOper.oper===config.OPER_VIEW?'Close':'Delete'}}
             <span class="icon icon-check rowExtenderBtnIcon rowExtenderBtnIconGreen"></span>
         </button>
-        <button class="rowExtenderBtn" ng-click="cancelClicked();" ng-if="objectInOper.oper===config.OPER_DELETE">
+        <button class="rowExtenderBtn rowExtenderBtnColor" ng-click="cancelClicked();"
+                ng-if="objectInOper.oper===config.OPER_DELETE">
             Cancel
             <span class="icon icon-cross rowExtenderBtnIcon rowExtenderBtnIconRed"></span>
         </button>

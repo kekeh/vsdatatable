@@ -12,6 +12,7 @@
         </tr>
         </thead>
         <tbody>
+
         <tr>
             <td class="labelCol">{{column[0].label}}</td>
             <td class="valueCol">
@@ -19,52 +20,57 @@
                 <div class="textField" ng-if="objectInOper.oper===config.OPER_EDIT">{{objectInOper.data[column[0].prop]}}</div>
             </td>
         </tr>
+
         <tr>
             <td class="labelCol">{{column[1].label}}</td>
             <td class="valueCol">
-                <input class="checkbox" ng-init="objectInOper.data[column[1].prop]=true" ng-model="objectInOper.data[column[1].prop]" type="checkbox" ng-if="objectInOper.oper===config.OPER_ADD"/>
-                <input class="checkbox" ng-model="objectInOper.data[column[1].prop]" type="checkbox" ng-if="objectInOper.oper===config.OPER_EDIT"/>
+                <input class="checkbox" ng-model="objectInOper.data[column[1].prop]" type="checkbox"/>
             </td>
         </tr>
+
         <tr>
             <td class="labelCol">{{column[2].label}}</td>
             <td class="valueCol">
                 <input class="textInput"
-                       ng-model="objectInOper.data[column[2].prop]"
+                       ng-model="objectInOper.data['car']['price']"
                        placeholder="{{column[2].label}}"
                        type="text"
-                       name="balance" ng-pattern="/^[+-]?\d{1,9}\.\d{1,2}$/" required/>
+                       name="car_price" ng-pattern="/^[+-]?\d{1,9}\.\d{1,2}$/" required/>
             </td>
         </tr>
+
         <tr>
             <td class="labelCol">{{column[3].label}}</td>
             <td class="valueCol">
-                <input class="textInput"
-                       ng-model="objectInOper.data[column[3].prop]"
-                       placeholder="{{column[3].label}}"
-                       type="number"
-                       name="age" min="1" max="100" required/>
+                <select class="selectMenu"
+                        name="class"
+                        ng-model="objectInOper.data['car']['features']"
+                        ng-options="features.value as features.label for features in [{label: 'Set 1', value: 1}, {label: 'Set 2', value: 2}, {label: 'Set 3', value: 3}]"></select>
             </td>
         </tr>
+
         <tr>
             <td class="labelCol">{{column[4].label}}</td>
             <td class="valueCol">
                 <input class="textInput"
-                       ng-model="objectInOper.data[column[4].prop]"
+                       ng-model="objectInOper.data['car']['age']"
                        placeholder="{{column[4].label}}"
-                       type="text"
-                       name="firstname" ng-maxlength="50" required/>
+                       type="number"
+                       name="car_age" min="1" max="60" required/>
             </td>
         </tr>
+
         <tr>
             <td class="labelCol">{{column[5].label}}</td>
             <td class="valueCol">
-                <span ng-if="objectInOper.oper===config.OPER_ADD"><input class="radioBtn" ng-init="objectInOper.data[column[5].prop]='male'" ng-model="objectInOper.data[column[5].prop]" type="radio" name="gender" value="male"/>Male</span>
-                <span ng-if="objectInOper.oper===config.OPER_EDIT"><input class="radioBtn" ng-model="objectInOper.data[column[5].prop]" type="radio" name="gender" value="male"/>Male</span>
-
-                <span><input class="radioBtn" ng-model="objectInOper.data[column[5].prop]" type="radio" name="gender" value="female"/>Female</span>
+                <input class="textInput"
+                       ng-model="objectInOper.data[column[5].prop]"
+                       placeholder="{{column[5].label}}"
+                       type="text"
+                       name="name" ng-maxlength="50" required/>
             </td>
         </tr>
+
         <tr>
             <td class="labelCol">{{column[6].label}}</td>
             <td class="valueCol">
@@ -75,6 +81,7 @@
                        name="date" ng-pattern="/^\d{4}[-/.]\d{2,2}[-/.]\d{2,2}$/" required/>
             </td>
         </tr>
+
         <tr>
             <td class="labelCol">{{column[7].label}}</td>
             <td class="valueCol">
@@ -89,24 +96,38 @@
     </table>
 
     <div class="tableFooter rowExtenderFooter">
-        <button class="rowExtenderBtn" ng-click="acceptClicked(objectInOper.oper)" ng-disabled="!editForm.$valid">
+        <button class="rowExtenderBtn rowExtenderBtnColor" ng-click="acceptClicked(objectInOper.oper)"
+                ng-disabled="!editForm.$valid">
             OK
             <span class="icon icon-check rowExtenderBtnIcon rowExtenderBtnIconGreen"></span>
         </button>
-        <button class="rowExtenderBtn" ng-click="cancelClicked();">
+        <button class="rowExtenderBtn rowExtenderBtnColor" ng-click="cancelClicked();">
             Cancel
             <span class="icon icon-cross rowExtenderBtnIcon rowExtenderBtnIconRed"></span>
         </button>
     </div>
 
-    <div class="error" ng-show="editForm.balance.$error.required && !editForm.balance.$pristine">{{column[2].label}} - value is required!</div>
-    <div class="error" ng-show="editForm.balance.$error.pattern && !editForm.balance.$pristine">{{column[2].label}} - number with two decimals is allowed!</div>
+    <div class="error" ng-show="editForm.car_price.$error.required && !editForm.car_price.$pristine">{{column[2].label}}
+        - value is required!
+    </div>
+    <div class="error" ng-show="editForm.car_price.$error.pattern && !editForm.car_price.$pristine">{{column[2].label}}
+        - number with two decimals is allowed!
+    </div>
 
-    <div class="error" ng-show="editForm.age.$error.required && !editForm.age.$pristine">{{column[3].label}} - value is required!</div>
-    <div class="error" ng-show="(editForm.age.$error.min || editForm.age.$error.max || editForm.age.$error.number) && !editForm.age.$pristine">{{column[3].label}} - integer between 1 and 100 is allowed!</div>
+    <div class="error" ng-show="editForm.car_age.$error.required && !editForm.car_age.$pristine">{{column[4].label}} -
+        value is required!
+    </div>
+    <div class="error"
+         ng-show="(editForm.car_age.$error.min || editForm.car_age.$error.max || editForm.car_age.$error.number) && !editForm.car_age.$pristine">
+        {{column[4].label}} - integer between 1 and 60 is allowed!
+    </div>
 
-    <div class="error" ng-show="editForm.firstname.$error.required && !editForm.firstname.$pristine">{{column[4].label}} - value is required!</div>
-    <div class="error" ng-show="editForm.firstname.$error.maxlength && !editForm.firstname.$pristine">{{column[4].label}} - maximum length is 60 characters!</div>
+    <div class="error" ng-show="editForm.name.$error.required && !editForm.name.$pristine">{{column[5].label}} - value
+        is required!
+    </div>
+    <div class="error" ng-show="editForm.name.$error.maxlength && !editForm.name.$pristine">{{column[5].label}} -
+        maximum length is 60 characters!
+    </div>
 
     <div class="error" ng-show="editForm.date.$error.required && !editForm.date.$pristine">{{column[6].label}} - value is required!</div>
     <div class="error" ng-show="editForm.date.$error.pattern && !editForm.date.$pristine">{{column[6].label}} - is not in the valid format (YYYY-MM-dd)!</div>
