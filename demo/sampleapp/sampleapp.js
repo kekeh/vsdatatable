@@ -26,6 +26,12 @@ sampleapp.controller('extenderctrl', function ($scope) {
  */
 sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig, vsdatatableEvent) {
 
+    // Se paginator button labels
+    vsdatatableConfig.PAGINATOR_BTN_BACK.label = '<';
+    vsdatatableConfig.PAGINATOR_BTN_NEXT.label = '>';
+    vsdatatableConfig.PAGINATOR_BTN_FIRST.label = '<<';
+    vsdatatableConfig.PAGINATOR_BTN_LAST.label = '>>';
+
     // Header column filter templates
     var colInputFilterTemplate =
         '<div class="columnTemplate">' +
@@ -102,8 +108,8 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'center',
                 sorting: true,
                 filter: {template: colSelectActiveFilterTemplate, match: 'exact'},
-                width: {number: 10, unit: '%'},
-                visible: true
+                width: {number: 8, unit: '%'},
+                visible: false
             },
             {
                 prop: 'car.price',  // Value from second level (property price from the car object)
@@ -111,7 +117,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 10, unit: '%'},
+                width: {number: 15, unit: '%'},
                 visible: true
             },
             {
@@ -120,7 +126,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'center',
                 sorting: true,
                 filter: {template: colSelectCarFeaturesFilterTemplate, match: 'exact'},
-                width: {number: 10, unit: '%'},
+                width: {number: 18, unit: '%'},
                 visible: true
             },
             {
@@ -129,15 +135,15 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 10, unit: '%'},
-                visible: false
+                width: {number: 15, unit: '%'},
+                visible: true
             },
             {
                 prop: 'name',
                 label: 'Name',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 20, unit: '%'},
+                width: {number: 14, unit: '%'},
                 visible: true
             },
             {
@@ -146,7 +152,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 15, unit: '%'},
+                width: {number: 13, unit: '%'},
                 visible: true
             },
             {
@@ -155,7 +161,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'left',
                 sorting: false,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 25, unit: '%'},
+                width: {number: 15, unit: '%'},
                 visible: true
             }
         ],
@@ -188,13 +194,12 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             visible: true,
             buttonCount: 3,
             pageNavBtnVisible: true,
-            setNavBtnVisible: true,
+            setNavBtnVisible: false,
             allNavBtnVisible: true,
             pageSizeOptions: [
-                {label: '4', rows: 4},
-                {label: '7', rows: 7, default: true},
-                {label: '15', rows: 15},
-                {label: '20', rows: 20}],
+                {label: '4', rows: 4, default: true},
+                {label: '8', rows: 8},
+                {label: '16', rows: 16}],
             pageSizeTxt: 'Page size: ',
             totalItemsTxt: 'Total: '
         },
@@ -202,14 +207,14 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
         actionColumnText: 'Action',
         templates: {
             add: {
-                path: 'partials/template/add_edit.html',
+                path: 'demo/partials/template/add_edit.html',
                 actionBtnShow: true,
                 btnTooltip: 'Add',
                 defaultValues: {car: {features: 1}, active: false} // Set car features default to 1 and active to false
             },
-            edit: {path: 'partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Edit'},
-            delete: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'Delete'},
-            view: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'View'}
+            edit: {path: 'demo/partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Edit'},
+            delete: {path: 'demo/partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'Delete'},
+            view: {path: 'demo/partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'View'}
         }
     };
 

@@ -229,9 +229,7 @@
     min-height: 30px;
     min-width: 36px;
     padding: 0 3px;
-}
-
-.vsdatatable .paginatorBtn {
+    font-size: 13px;
     border: 1px solid #988E8E;
     color: #000;
 }
