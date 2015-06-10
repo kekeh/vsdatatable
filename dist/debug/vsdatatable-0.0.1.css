@@ -38,14 +38,22 @@
 .vsdatatable .colTogglerTitle,
 .vsdatatable .tableFooter,
 .vsdatatable .headerCol,
-.vsdatatable .extenderTitle,
-.vsdatatable .paginatorBtn {
+.vsdatatable .extenderTitle {
     background: #FAFAFA;
     background-image: -webkit-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: -moz-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: -o-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: -ms-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+}
+
+.vsdatatable .paginatorBtn {
+    background: #FAFAFA;
+    background-image: -webkit-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -moz-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -o-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -ms-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
 }
 
 .vsdatatable .tableRows .selectedHeaderCol {
@@ -220,8 +228,8 @@
 .vsdatatable .paginatorBtn {
     min-height: 30px;
     min-width: 36px;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding: 0 4px;
+    font-size: 13px;
 }
 
 .vsdatatable .paginatorBtn {

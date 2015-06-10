@@ -81,8 +81,9 @@
             ng-class="{'selectedRow':isRowSelected(obj)}"
             table-body-row tabindex="0">
             <td class="bodyCol" ng-repeat="k in options.columns track by $index" ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible">
-                <div class="textOverflow" ng-style="{'text-align':k.textAlign}" overlay-window="{text:'{{obj[k.prop]}}',overflow:true}">
-                    {{obj[k.prop]}}
+                <div class="textOverflow" ng-style="{'text-align':k.textAlign}"
+                     overlay-window="{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}">
+                    {{getPropertyValue(obj,k.prop)}}
                 </div>
             </td>
             <td class="bodyCol bodyColAction" ng-if="options.useTemplates">
@@ -107,11 +108,5 @@
     </table>
 
     <div class="tableFooter" table-paginator></div>
-
-    <script type="text/ng-template" id="rowExtender.html">
-        <td class="bodyCol" colspan="{{visibleColCount+1}}">
-            <div ng-include src="template.path"></div>
-        </td>
-    </script>
 
 </div>

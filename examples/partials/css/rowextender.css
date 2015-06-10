@@ -10,6 +10,7 @@
 .rowExtender .textInput,
 .rowExtender .textArea,
 .rowExtender .error,
+.rowExtender .selectMenu,
 .rowExtender input.ng-invalid.ng-touched,
 .rowExtender textarea.ng-invalid.ng-touched {
     font-size: 14px;
@@ -36,7 +37,8 @@
 }
 
 .rowExtender .textInput,
-.rowExtender .textArea {
+.rowExtender .textArea,
+.rowExtender .selectMenu {
     width: 100%;
     padding: 4px;
     background-color: #F5F9F3;
@@ -75,14 +77,16 @@
     text-align: center;
 }
 
-.rowExtender .rowExtenderBtn {
+.rowExtender .rowExtenderBtnColor {
     background: #FAFAFA;
-    background-image: -webkit-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: -moz-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: -o-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: -ms-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    border-radius: 2px;
+    background-image: -webkit-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -moz-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -o-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -ms-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: linear-gradient(#F0F0F0 30%, #AEC2E1 100%)
+}
+
+.rowExtender .rowExtenderBtn {
     border: 1px solid #A9A9A9;
     padding: 2px;
     min-width: 85px;

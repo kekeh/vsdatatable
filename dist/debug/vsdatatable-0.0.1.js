@@ -4,7 +4,7 @@
 *  Version: 0.0.1 
 *  Author: kekeh 
 *  License: MIT 
- *  Date: 2015-06-08
+ *  Date: 2015-06-10
 */ 
 angular.module('template-vsdatatable-0.0.1.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
@@ -93,7 +93,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "                    <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\"\n" +
     "                          ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=\"0\"></span>\n" +
     "            </th>\n" +
-    "            <th id=\"headerColAction\" class=\"headerCol headerColAction\" ng-if=\"options.useTemplates\" ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\">\n" +
+    "            <th id=\"headerColAction\" class=\"headerCol headerColAction\" ng-if=\"options.useTemplates\"\n" +
+    "                ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\">\n" +
     "                <span>{{options.actionColumnText}}</span>\n" +
     "                    <span class=\"icon icon-plus actionIcon addItemIcon\" ng-if=\"options.templates.add.actionBtnShow\"\n" +
     "                          ng-click=\"addRow();\" ng-keydown=\"$event.which===13?addRow():null\"\n" +
@@ -119,8 +120,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "            ng-class=\"{'selectedRow':isRowSelected(obj)}\"\n" +
     "            table-body-row tabindex=\"0\">\n" +
     "            <td class=\"bodyCol\" ng-repeat=\"k in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\">\n" +
-    "                <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\" overlay-window=\"{text:'{{obj[k.prop]}}',overflow:true}\">\n" +
-    "                    {{obj[k.prop]}}\n" +
+    "                <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\" overlay-window=\"{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}\">\n" +
+    "                    {{getPropertyValue(obj,k.prop)}}\n" +
     "                </div>\n" +
     "            </td>\n" +
     "            <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
@@ -145,12 +146,6 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "    </table>\n" +
     "\n" +
     "    <div class=\"tableFooter\" table-paginator></div>\n" +
-    "\n" +
-    "    <script type=\"text/ng-template\" id=\"rowExtender.html\">\n" +
-    "        <td class=\"bodyCol\" colspan=\"{{visibleColCount+1}}\">\n" +
-    "            <div ng-include src=\"template.path\"></div>\n" +
-    "        </td>\n" +
-    "    </script>\n" +
     "\n" +
     "</div>\n" +
     "");
@@ -234,6 +229,15 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
         ROW_DESELECT: 'DESELECT',
         COL_RESIZER_MIN_COL_WIDTH: 35,
         DEFAULT_ACTION_COL_WIDTH: 90
+    })
+
+/**
+ * @ngdoc object
+ * @name run
+ * @description run adds the row extender template to the template cache.
+ */
+    .run(function ($templateCache) {
+        $templateCache.put('rowExtender.html', '<td class="bodyCol" colspan="{{visibleColCount+1}}"><div ng-include src="template.path"></div></td>');
     })
 
 /**
@@ -326,7 +330,11 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                 var filterItems = $filter('filter');
 
                 scope.addRow = function () {
-                    operObject = {oper: scope.config.OPER_ADD, dataOld: {}, dataNew: {}};
+                    operObject = {
+                        oper: scope.config.OPER_ADD,
+                        dataOld: {},
+                        dataNew: vsdatatableService.isUndefined(scope.options.templates.add.defaultValues) ? {} : angular.copy(scope.options.templates.add.defaultValues)
+                    };
                     dataOperation(scope.config.OPER_PHASE_BEGIN);
                     scope.template = scope.options.templates.add;
                     var bodyElem = angular.element(element[0].querySelector('.tableRows .tableBody'));
@@ -413,7 +421,8 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     scope.totalCount = value.totalCount;
 
                     if (!vsdatatableService.isEqual(extPendingOper, scope.config.EXT_BTN)
-                        && !vsdatatableService.isEqual(extPendingOper, scope.config.OPER_EDIT)) {
+                        && !vsdatatableService.isEqual(extPendingOper, scope.config.OPER_EDIT)
+                        && !vsdatatableService.isEqual(extPendingOper, scope.config.EXT_SORT)) {
                         vsdatatableService.paginatorEvent(scope);
                     }
                 });
@@ -429,6 +438,18 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     else {
                         return {oper: operObject.oper, data: operObject.dataOld};
                     }
+                };
+
+                scope.getPropertyValue = function (obj, prop) {
+                    if (vsdatatableService.isEqual(prop.indexOf('.'), -1)) {
+                        return obj[prop];
+                    }
+                    var parts = prop.split('.');
+                    var tempVal = angular.copy(obj);
+                    angular.forEach(parts, function (p) {
+                        tempVal = tempVal[p];
+                    });
+                    return tempVal;
                 };
 
                 scope.paginationOperation = function (oper) {
@@ -566,7 +587,6 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     var filterExp = '';
                     angular.forEach(scope.options.columns, function (col) {
                         if (!vsdatatableService.isUndefined(col.filter) && !vsdatatableService.isUndefined(col.filter.template)) {
-                            scope.columnFilter[col.filter.match][col.prop] = '';
                             filterExp += 'columnFilter.' + col.filter.match + '.' + col.prop + ' + ';
                         }
                     });
@@ -649,8 +669,8 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
 
                 function init() {
                     scope.extDataPagination = scope.options.data.extDataPagination;
-                    initColumns();
                     initWatchers();
+                    initColumns();
                 }
 
                 scope.$on('$destroy', function () {
@@ -700,21 +720,24 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
  * @name colFilterTemplate
  * @description colFilterTemplate adds column filter (for example input box) to the each column defined in the configuration.
  */
-    .directive('colFilterTemplate', ['$compile', function ($compile) {
+    .directive('colFilterTemplate', ['$compile', 'vsdatatableService', function ($compile, vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
             link: function (scope, element, attrs) {
-                var colOpt = scope.$eval(attrs.colFilterTemplate);
-                if (scope.columnFilter[scope.config.FILTER_CONTAIN].hasOwnProperty(colOpt.prop) ||
-                    scope.columnFilter[scope.config.FILTER_EXACT].hasOwnProperty(colOpt.prop)) {
-                    var colTpl = angular.copy(colOpt.filter.template);
-                    var match = scope.columnFilter[scope.config.FILTER_CONTAIN].hasOwnProperty(colOpt.prop) ? scope.config.FILTER_CONTAIN : scope.config.FILTER_EXACT;
-                    colTpl = colTpl.replace('COLUMN_PROP_VALUE', 'columnFilter.' + match + '.' + colOpt.prop + '"');
-                    var elem = angular.element(colTpl);
-                    $compile(elem)(scope);
-                    element.append(elem);
+                function init() {
+                    var colOpt = scope.$eval(attrs.colFilterTemplate);
+                    if (!vsdatatableService.isUndefined(colOpt.filter) && !vsdatatableService.isUndefined(colOpt.filter.template)
+                        && !vsdatatableService.isUndefined(colOpt.filter.match)) {
+                        var colTpl = angular.copy(colOpt.filter.template);
+                        colTpl = colTpl.replace('COLUMN_PROP_VALUE', 'columnFilter.' + colOpt.filter.match + '.' + colOpt.prop + '"');
+                        var elem = angular.element(colTpl);
+                        $compile(elem)(scope);
+                        element.append(elem);
+                    }
                 }
+
+                init();
             }
         };
     }])

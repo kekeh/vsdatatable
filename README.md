@@ -60,6 +60,10 @@ AngularJS directive which implements the datatable with many useful and configur
 * works with touch devices
 * works with keyboard
 
+### 11. accepts nested objects
+* input object is array of objects (items)
+* item of the array can contain nested objects
+
 
 ## Usage
 
@@ -93,6 +97,8 @@ angular.module('vssampleapp', ['vsdatatable']);
 
 
 ### Options data (an option attribute in the vsdatatable directive)
+
+* The **sampleapp.js** file contain example configuration. The file is [here](https://github.com/kekeh/vsdatatable/blob/master/examples/sampleapp.js)
 
 | Attribute | Description | Values | Mandatory |
 | :------------ |:---------------|:---------------|:---------------|
@@ -273,11 +279,12 @@ pageSizeOptions: [
 
 Example of the configuration of the template options. See description of the properties below the example. 
 The **templates** can contain **add**, **edit**, **delete** or **view** templates. The template configuration is an
-object which contain properties **path**, **actionBtnShow** and **btnTooltip**.
+object which contain properties **path**, **actionBtnShow** and **btnTooltip**. The **add** configuration can contain also the 
+**defaultValues** property.
 
 ```js
 templates: {
-    add: {path: 'partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Add'},
+    add: {path: 'partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Add', defaultValues: {car: {class: 1}, active: false}},
     edit: {path: 'partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Edit'},
     delete: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'Delete'},
     view: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'View'}
@@ -289,7 +296,7 @@ templates: {
 | path | Path to the HTML template. |
 | actionBtnShow | Is the action button visible in the action column. |
 | btnTooltip | Action button tooltip. |
-
+| defaultValues | Object containing the default values of the **add** operation. |
 
 ### Javascript example
 ```js

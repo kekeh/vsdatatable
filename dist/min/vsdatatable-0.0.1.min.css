@@ -27,13 +27,22 @@
     line-height: 1.1
 }
 
-.vsdatatable .caption, .vsdatatable .colTogglerTitle, .vsdatatable .extenderTitle, .vsdatatable .headerCol, .vsdatatable .paginatorBtn, .vsdatatable .tableFooter {
+.vsdatatable .caption, .vsdatatable .colTogglerTitle, .vsdatatable .extenderTitle, .vsdatatable .headerCol, .vsdatatable .tableFooter {
     background: #FAFAFA;
     background-image: -webkit-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: -moz-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: -o-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: -ms-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
     background-image: linear-gradient(#FAFAFA 40%, #CCE0FF 100%)
+}
+
+.vsdatatable .paginatorBtn {
+    background: #FAFAFA;
+    background-image: -webkit-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -moz-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -o-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -ms-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: linear-gradient(#F0F0F0 30%, #AEC2E1 100%)
 }
 
 .vsdatatable .tableRows .selectedHeaderCol {
@@ -191,8 +200,8 @@
 .vsdatatable .paginatorBtn {
     min-height: 30px;
     min-width: 36px;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding: 0 4px;
+    font-size: 13px;
     border: 1px solid #988E8E;
     color: #000
 }
