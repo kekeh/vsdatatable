@@ -4,7 +4,7 @@
  *  Version: 0.0.1
  *  Author: kekeh
  *  License: MIT
- *  Date: 2015-06-10
+ *  Date: 2015-06-11
  */
 angular.module('template-vsdatatable-0.0.1.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
@@ -87,7 +87,7 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
         "                {{h.label}}\n" +
         "                    <span class=\"icon sortColIcon\" ng-if=\"h.sorting\"\n" +
         "                          ng-class=\"{'selectedHeaderCol':sort.col===h.prop&&h.sorting,\n" +
-        "                          'icon-sort':h.sorting,           \n" +
+        "                          'icon-sort':h.sorting&&sort.col!==h.prop,\n" +
         "                          'icon-down':sort.col===h.prop&&sort.reverse,\n" +
         "                          'icon-up':sort.col===h.prop&&!sort.reverse}\" tabindex=\"0\"></span>\n" +
         "                    <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\"\n" +
@@ -120,7 +120,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
         "            ng-class=\"{'selectedRow':isRowSelected(obj)}\"\n" +
         "            table-body-row tabindex=\"0\">\n" +
         "            <td class=\"bodyCol\" ng-repeat=\"k in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\">\n" +
-        "                <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\" overlay-window=\"{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}\">\n" +
+        "                <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\"\n" +
+        "                     overlay-window=\"{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}\">\n" +
         "                    {{getPropertyValue(obj,k.prop)}}\n" +
         "                </div>\n" +
         "            </td>\n" +
