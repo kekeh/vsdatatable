@@ -48,7 +48,7 @@
                 {{h.label}}
                     <span class="icon sortColIcon" ng-if="h.sorting"
                           ng-class="{'selectedHeaderCol':sort.col===h.prop&&h.sorting,
-                          'icon-sort':h.sorting,           
+                          'icon-sort':h.sorting&&sort.col!==h.prop,
                           'icon-down':sort.col===h.prop&&sort.reverse,
                           'icon-up':sort.col===h.prop&&!sort.reverse}" tabindex="0"></span>
                     <span class="icon icon-cross sortColIcon" ng-if="h.sorting&&sort.col===h.prop"
