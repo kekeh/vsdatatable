@@ -119,7 +119,7 @@ angular.module('vsdatatable', [])
                 $scope.colTogglerShow = false;
             }],
             link: function (scope, element, attrs) {
-                scope.filterFocus = false;
+                scope.filterFocus = false, scope.busyIcon = false;
                 scope.sort = {col: '', reverse: false};
                 scope.globalFilter = '';
                 scope.columnFilter = {contain: {}, exact: {}};
@@ -230,6 +230,10 @@ angular.module('vsdatatable', [])
                         && !vsdatatableService.isEqual(extPendingOper, scope.config.EXT_SORT)) {
                         vsdatatableService.paginatorEvent(scope);
                     }
+
+                    if (scope.options.busyIcon.visible) {
+                        scope.busyIcon = false;
+                    }
                 });
 
                 scope.getColumns = function () {
@@ -259,6 +263,10 @@ angular.module('vsdatatable', [])
 
                 scope.paginationOperation = function (oper) {
                     if (scope.extDataPagination) {
+                        if (scope.options.busyIcon.visible) {
+                            scope.busyIcon = true;
+                        }
+
                         extPendingOper = oper;
 
                         if (vsdatatableService.isEqual(oper, scope.config.OPER_ADD)
@@ -310,7 +318,7 @@ angular.module('vsdatatable', [])
                 };
 
                 scope.checkEvent = function (event) {
-                    return vsdatatableService.isEqual(event.which, 1) || vsdatatableService.isEqual(event.which, 13);
+                    return (vsdatatableService.isEqual(event.which, 1) || vsdatatableService.isEqual(event.which, 13)) && !scope.busyIcon;
                 };
 
                 var tableAreaClick = element.on("click", function (event) {

@@ -110,6 +110,9 @@ angular.module('vssampleapp', ['vsdatatable']);
 | **caption** | Object which contain sub properties. | See below. | yes |
 | caption.**visible** | Is vsdatatable caption visible or not. | true or false | yes |
 | caption.**text** | Caption text. | User defined text. | no |
+| **busyIcon** | Object which contain sub properties. | See below. | yes |
+| busyIcon.**visible** | Is busy icon visible or not. Busy icon works only if external pagination is used. The **data.extDataPagination** is **true**. The busy icon blocks the vsdatatable UI during data load. | true or false | yes |
+| busyIcon.**text** | Busy icon text. | User defined text. | yes |
 | **headerVisible** | Is vsdatatable header visible or not. | true or false | yes |
 | **columnResize** | Is column resize enable ot not. | true or false | yes |
 | **columns** | Array of objects defining the columns of the vsdatatable. | See the **column configuration object** chapter below. | yes |

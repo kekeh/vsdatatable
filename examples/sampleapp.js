@@ -85,6 +85,10 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             visible: true,
             text: 'vsdatatable example'
         },
+        busyIcon: {         // Currently this works only if the extDataPagination is true
+            visible: false,
+            text: 'Loading data...'
+        },
         headerVisible: true,
         columnResize: true,
         columns: [
