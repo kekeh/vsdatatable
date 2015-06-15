@@ -323,6 +323,9 @@ vsdatatableEvent.setExtPaginationData($scope, pagedItems, totalItems);
 * pagedItems - array of objects viewed in the table. Size of the array is one page in the vsdatatable.
 * totalItems - number of total items match to the search criteria.
 
+## Build
+Execute the **grunt** command without parameters and it will create the **dist/debug** and the **dist/min** directories. Needed CSS and javascript files are located in these directories.
+
 ## Demo
 In the **examples** folder of this project has the sample application and the online demo is [here](http://kekeh.github.io/vsdatatable)
 
@@ -334,6 +337,7 @@ Depends on AngularJS. Implemented using the AngularJS version 1.3.15. No other d
 * Firefox 36.0.4
 * Google Chrome 41.0.2272.101
 * Opera 28.0
+* Safari 5.1
 
 ## Licence
 * License: MIT
