@@ -4,7 +4,7 @@
 *  Version: 0.0.1 
 *  Author: kekeh 
 *  License: MIT 
- *  Date: 2015-06-15
+ *  Date: 2015-06-16
 */ 
 angular.module('template-vsdatatable-0.0.1.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
@@ -65,9 +65,11 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                                   ng-model-options=\"{debounce:options.filter.autoFilter.useAutoFilter?options.filter.autoFilter.filterDelay:config.FILTER_EXECUTION_DELAY}\"\n" +
       "                                   data-ng-trim=\"false\"\n" +
       "                                   filter-focus/>\n" +
-      "                            <span class=\"icon icon-check actionIcon\" ng-show=\"filterFocus&&options.filter.global&&options.filter.filterBtn.visible\"\n" +
+      "                            <span class=\"icon icon-check actionIcon\"\n" +
+      "                                  ng-show=\"filterFocus&&options.filter.global&&options.filter.filterBtn.visible\"\n" +
       "                                  overlay-window=\"{text:'{{options.filter.filterBtn.filterBtnTooltip}}',overflow:false}\"\n" +
-      "                                  ng-click=\"executeFilter();\" ng-keydown=\"checkEvent($event)?executeFilter():null\" tabindex=\"0\"></span>\n" +
+      "                                  ng-click=\"executeFilter();\" ng-keydown=\"checkEvent($event)?executeFilter():null\"\n" +
+      "                                  tabindex=\"0\"></span>\n" +
       "                            <span class=\"icon icon-search actionIcon\"\n" +
       "                                  overlay-window=\"{text:'{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}',overflow:false}\"\n" +
       "                                  ng-click=\"filterBtnClick($event)\"\n" +
@@ -104,7 +106,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                    <span>{{options.actionColumnText}}</span>\n" +
       "                        <span class=\"icon icon-plus actionIcon addItemIcon\" ng-if=\"options.templates.add.actionBtnShow\"\n" +
       "                              ng-click=\"addRow();\" ng-keydown=\"checkEvent($event)?addRow():null\"\n" +
-      "                              overlay-window=\"{text:'{{options.templates.add.btnTooltip}}',overflow:false}\" tabindex=\"0\"></span>\n" +
+      "                              overlay-window=\"{text:'{{options.templates.add.btnTooltip}}',overflow:false}\"\n" +
+      "                              tabindex=\"0\"></span>\n" +
       "                </th>\n" +
       "            </tr>\n" +
     "\n" +
@@ -117,21 +120,22 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "\n" +
       "            </thead>\n" +
       "            <tbody class=\"tableBody\">\n" +
-      "                <tr class=\"bodyRow\" ng-repeat=\"obj in !extDataPagination?\n" +
+      "            <tr class=\"bodyRow\" ng-repeat=\"obj in !extDataPagination?\n" +
       "                        filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):\n" +
       "                        filteredItems track by $index\"\n" +
-      "                    ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\"\n" +
-      "                    ng-click=\"rowClicked($event, obj)\"\n" +
-      "                    ng-keydown=\"rowClicked($event, obj)\"\n" +
-      "                    ng-class=\"{'selectedRow':isRowSelected(obj)}\"\n" +
-      "                    table-body-row tabindex=\"0\">\n" +
-      "                    <td class=\"bodyCol\" ng-repeat=\"k in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\">\n" +
-      "                        <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\"\n" +
-      "                             overlay-window=\"{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}\">\n" +
-      "                            {{getPropertyValue(obj,k.prop)}}\n" +
-      "                        </div>\n" +
-      "                    </td>\n" +
-      "                    <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
+      "                ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\"\n" +
+      "                ng-click=\"rowClicked($event, obj)\"\n" +
+      "                ng-keydown=\"rowClicked($event, obj)\"\n" +
+      "                ng-class=\"{'selectedRow':isRowSelected(obj)}\"\n" +
+      "                table-body-row tabindex=\"0\">\n" +
+      "                <td class=\"bodyCol\" ng-repeat=\"k in options.columns track by $index\"\n" +
+      "                    ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\">\n" +
+      "                    <div class=\"textOverflow\" ng-style=\"{'text-align':k.textAlign}\"\n" +
+      "                         overlay-window=\"{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}\">\n" +
+      "                        {{getPropertyValue(obj,k.prop)}}\n" +
+      "                    </div>\n" +
+      "                </td>\n" +
+      "                <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
       "                            <span class=\"icon icon-edit actionIcon\" ng-if=\"options.templates.edit.actionBtnShow\"\n" +
       "                                  ng-click=\"editRow($event, obj);$event.stopPropagation()\"\n" +
       "                                  ng-keydown=\"editRow($event, obj);$event.stopPropagation()\"\n" +
@@ -147,8 +151,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                                  ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
       "                                  overlay-window=\"{text:'{{options.templates.view.btnTooltip}}',overflow:false}\"\n" +
       "                                  tabindex=\"0\"></span>\n" +
-      "                    </td>\n" +
-      "                </tr>\n" +
+      "                </td>\n" +
+      "            </tr>\n" +
       "            </tbody>\n" +
       "        </table>\n" +
     "\n" +
@@ -191,7 +195,8 @@ angular.module("templates/vspaginator.html", []).run(["$templateCache", function
     "                        ng-style=\"{'margin-left':$index>0?'-1px':'0'}\"\n" +
     "                        ng-class=\"{'selectedPaginatorBtn':o.rows===pageSize.rows}\"\n" +
     "                        ng-click=\"pageSizeButtonClick(o)\"\n" +
-    "                        ng-repeat=\"o in pageSizeOptions track by $index\">{{o.label}}</button>\n" +
+    "                        ng-repeat=\"o in pageSizeOptions track by $index\">{{o.label}}\n" +
+    "                </button>\n" +
     "            </div>\n" +
     "        </td>\n" +
     "    </tr>\n" +

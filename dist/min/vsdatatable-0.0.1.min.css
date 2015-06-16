@@ -4,7 +4,8 @@
 
 .vsdatatable {
     width: 100%;
-    min-width: 400px
+    min-width: 400px;
+    position: relative
 }
 
 .vsdatatable * {
@@ -287,7 +288,7 @@
 }
 
 .vsdatatable .busyIconContainer, .vsdatatable .colTogglerMenu, .vsdatatable .overlay {
-    border: 1px solid #625D5D;
+    border: 1px solid #AAA;
     border-radius: 4px;
     position: absolute;
     -moz-box-shadow: 0 0 14px #000;
