@@ -108,8 +108,20 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'center',
                 sorting: true,
                 filter: {template: colSelectActiveFilterTemplate, match: 'exact'},
-                width: {number: 8, unit: '%'},
-                visible: false
+                width: {number: 15, unit: '%'},
+                visible: true,
+                rules: [
+                    {
+                        style: 'activeStyle',
+                        prop: 'active',
+                        expression: 'active === true'
+                    },
+                    {
+                        style: 'inactiveStyle',
+                        prop: 'active',
+                        expression: 'active === false'
+                    }
+                ]
             },
             {
                 prop: 'car.price',  // Value from second level (property price from the car object)
@@ -117,8 +129,20 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 15, unit: '%'},
-                visible: true
+                width: {number: 20, unit: '%'},
+                visible: true,
+                rules: [
+                    {
+                        style: 'carPriceStyleGreen',
+                        prop: 'car.price',
+                        expression: 'car.price >= 150000 && car.price <= 250000'
+                    },
+                    {
+                        style: 'carPriceStyleRed',
+                        prop: 'car.price',
+                        expression: 'car.price < 30000'
+                    }
+                ]
             },
             {
                 prop: 'car.features',  // Value from second level (property class from the car object)
@@ -127,7 +151,24 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 sorting: true,
                 filter: {template: colSelectCarFeaturesFilterTemplate, match: 'exact'},
                 width: {number: 18, unit: '%'},
-                visible: true
+                visible: false,
+                rules: [
+                    {
+                        style: 'carFeatures1Style',
+                        prop: 'car.features',
+                        expression: 'car.features === 1'
+                    },
+                    {
+                        style: 'carFeatures2Style',
+                        prop: 'car.features',
+                        expression: 'car.features === 2'
+                    },
+                    {
+                        style: 'carFeatures3Style',
+                        prop: 'car.features',
+                        expression: 'car.features === 3'
+                    }
+                ]
             },
             {
                 prop: 'car.age',
@@ -136,14 +177,14 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
                 width: {number: 15, unit: '%'},
-                visible: true
+                visible: false
             },
             {
                 prop: 'name',
                 label: 'Name',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 14, unit: '%'},
+                width: {number: 20, unit: '%'},
                 visible: true
             },
             {
@@ -152,7 +193,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 13, unit: '%'},
+                width: {number: 15, unit: '%'},
                 visible: true
             },
             {
@@ -161,7 +202,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 textAlign: 'left',
                 sorting: false,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
-                width: {number: 15, unit: '%'},
+                width: {number: 20, unit: '%'},
                 visible: true
             }
         ],
