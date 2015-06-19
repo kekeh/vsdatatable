@@ -33,6 +33,7 @@ module.exports = function (grunt) {
                     '*  Description: <%= grunt.config.get("pkg.description") %> \n' +
                     '*  Version: <%= grunt.config.get("pkg.version") %> \n' +
                     '*  Author: <%= grunt.config.get("pkg.author") %> \n' +
+                    '*  Homepage: <%= grunt.config.get("pkg.homepage") %> \n' +
                     '*  License: <%= grunt.config.get("pkg.license") %> \n' +
                     '*  Date: <%= grunt.template.today("yyyy-mm-dd") %> \n' +
                     '*/ \n',
