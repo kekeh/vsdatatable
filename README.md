@@ -64,17 +64,20 @@ AngularJS directive which implements the datatable with many useful and configur
 * input object is array of objects (items)
 * item of the array can contain nested objects
 
-### 12. column styles
+### 12. block the vsdatatable UI
+* built in UI blocker in case of external pagination
+
+### 13. column styles
 * column styles can be added to the body columns
 * styles are rendered if given expression rules are met
 
 
 ## Usage
 
-* add the **vsdatatable-0.0.1.min.js** and the **vsdatatable-0.0.1.min.css** files into your project. The files can be found from the **dist/min/** folder of this project.
+* add the **vsdatatable-<version>.min.js** and the **vsdatatable-<version>.min.css** files into your project. The files can be found from the **dist/min/** folder of this project.
 ```html
-<script src="vsdatatable-0.0.1.min.js"></script>
-<link href="vsdatatable-0.0.1.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.0.2.min.js"></script>
+<link href="vsdatatable-0.0.2.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
