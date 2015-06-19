@@ -34,7 +34,8 @@ angular.module('vsdatatable', [])
         ROW_DESELECT: 'DESELECT',
         COL_RESIZER_MIN_COL_WIDTH: 35,
         DEFAULT_ACTION_COL_WIDTH: 90,
-        COLUMN_PROP_VALUE: 'COLUMN_PROP_VALUE'
+        COLUMN_PROP_VALUE: 'COLUMN_PROP_VALUE',
+        DOT_SEPARATOR: '.'
     })
 
 /**
@@ -251,10 +252,11 @@ angular.module('vsdatatable', [])
                 };
 
                 scope.getPropertyValue = function (obj, prop) {
-                    if (vsdatatableService.isEqual(prop.indexOf('.'), -1)) {
+                    if (vsdatatableService.isEqual(prop.indexOf(scope.config.DOT_SEPARATOR), -1)) {
                         return obj[prop];
                     }
-                    var parts = prop.split('.');
+                    // Nested object
+                    var parts = prop.split(scope.config.DOT_SEPARATOR);
                     var tempVal = angular.copy(obj);
                     angular.forEach(parts, function (p) {
                         tempVal = tempVal[p];
@@ -264,12 +266,14 @@ angular.module('vsdatatable', [])
 
                 scope.getColumnStyle = function (obj, colOpt) {
                     if (!vsdatatableService.isUndefined(colOpt.rules)) {
-                        // Get column value, evaluate the rule and return style class
+                        // Get the column value, evaluate the rule and return the style class
                         var style = '';
                         for (var i in colOpt.rules) {
                             var val = scope.getPropertyValue(obj, colOpt.rules[i].prop);
-                            var temp = val.toString() + colOpt.rules[i].expression.toString();
-                            if (scope.$eval(temp)) {
+                            var exp = angular.copy(colOpt.rules[i].expression.toString());
+                            // Replace the prop names string to value string fron the expression
+                            exp = exp.split(colOpt.rules[i].prop).join(val.toString());
+                            if (scope.$eval(exp)) {
                                 style = colOpt.rules[i].style;
                                 break;
                             }
@@ -417,7 +421,7 @@ angular.module('vsdatatable', [])
                     var filterExp = '';
                     angular.forEach(scope.options.columns, function (col) {
                         if (!vsdatatableService.isUndefined(col.filter) && !vsdatatableService.isUndefined(col.filter.template)) {
-                            filterExp += 'columnFilter.' + col.filter.match + '.' + col.prop + ' + ';
+                            filterExp += 'columnFilter.' + col.filter.match + scope.config.DOT_SEPARATOR + col.prop + ' + ';
                         }
                     });
                     return filterExp;
@@ -561,7 +565,7 @@ angular.module('vsdatatable', [])
                         && !vsdatatableService.isUndefined(colOpt.filter.match)) {
                         // Add column filter
                         var colTpl = angular.copy(colOpt.filter.template);
-                        colTpl = colTpl.replace(vsdatatableConfig.COLUMN_PROP_VALUE, 'columnFilter.' + colOpt.filter.match + '.' + colOpt.prop + '"');
+                        colTpl = colTpl.replace(vsdatatableConfig.COLUMN_PROP_VALUE, 'columnFilter' + scope.config.DOT_SEPARATOR + colOpt.filter.match + scope.config.DOT_SEPARATOR + colOpt.prop + '"');
                         var elem = angular.element(colTpl);
                         $compile(elem)(scope);
                         element.append(elem);

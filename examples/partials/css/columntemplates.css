@@ -31,8 +31,16 @@
 /*
     Body column styles: car.price column
 */
-.carPriceStyle {
+.carPriceStyleGreen {
     color: #21af17;
+}
+
+.carPriceStyleRed {
+    color: #DD0000;
+}
+
+.carPriceStyleGreen,
+.carPriceStyleRed {
     font-weight: bold;
     font-style: italic;
 }

@@ -64,6 +64,10 @@ AngularJS directive which implements the datatable with many useful and configur
 * input object is array of objects (items)
 * item of the array can contain nested objects
 
+### 12. column styles
+* column styles can be added to the body columns
+* styles are rendered if given expression rules are met
+
 
 ## Usage
 
@@ -205,13 +209,18 @@ Example of the column configuration. See description of the properties below the
 
 ```js
 {
-    prop: 'balance',
-    label: 'Balance',
+    prop: 'car.price',
+    label: 'Car price',
     textAlign: 'right',
     sorting: true,
     filter: {template: colInputFilterTemplate, match: 'contain'},
     width: {number: 14, unit: '%'},
-    visible: true
+    visible: true,
+    rules: [
+        {style: 'carPriceStyleGreen', prop: 'car.price', expression: 'car.price >= 150000 && car.price <= 250000'},
+        {style: 'carPriceStyleRed', prop: 'car.price', expression: 'car.price < 30000'},
+        {style: 'carPriceStyleRed', prop: 'car.age', expression: 'car.age > 50'}
+    ]
 }
 ```
 
@@ -224,7 +233,10 @@ Example of the column configuration. See description of the properties below the
 | filter | Column filter. HTML template is needed. Each filter template must contain this **ng-model="COLUMN_PROP_VALUE"**. See example **column filter template** of the input box filter below. Also type of match needs to defined. It can be **exact** or **contain** |
 | width | Width of the column. Contains number and unit. Unit can be **%** or **px** |
 | visible | Is column initially visible or not.(true or false) If this is false the user can later toggle column visible from the column toggle menu. |
-
+| rules | Array of objects. Each object contains the style definition to the column. If array has more than on object, first style of match is used and the rest styles are ignored.|
+| rules.style | CSS class name containing the style definitions of the column. |
+| rules.prop | Property name used in the rule. Same value have to be also in the expression property. Property can be also other property than the column property. See the example above (car.age). |
+| rules.expression | Expression which can be evaluated using the $eval() function. |
 
 
 ##### column filter template
@@ -233,8 +245,7 @@ Example of the column configuration. See description of the properties below the
 <div class="columnTemplate">
 <input type="text" class="inputField" ng-click="$event.stopPropagation();" ng-model="COLUMN_PROP_VALUE" 
         ng-model-options="{debounce:600}" placeholder="Type filter...">
-</div>;
-
+</div>
 ```
 
 

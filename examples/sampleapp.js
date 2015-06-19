@@ -109,8 +109,16 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 width: {number: 8, unit: '%'},
                 visible: true,
                 rules: [
-                    {style: 'activeStyle', prop: 'active', expression: '===true'},
-                    {style: 'inactiveStyle', prop: 'active', expression: '===false'}
+                    {
+                        style: 'activeStyle',
+                        prop: 'active',
+                        expression: 'active === true'
+                    },
+                    {
+                        style: 'inactiveStyle',
+                        prop: 'active',
+                        expression: 'active === false'
+                    }
                 ]
             },
             {
@@ -122,7 +130,16 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 width: {number: 10, unit: '%'},
                 visible: true,
                 rules: [
-                    {style: 'carPriceStyle', prop: 'car.price', expression: '>200000'}
+                    {
+                        style: 'carPriceStyleGreen',
+                        prop: 'car.price',
+                        expression: 'car.price >= 150000 && car.price <= 250000'
+                    },
+                    {
+                        style: 'carPriceStyleRed',
+                        prop: 'car.price',
+                        expression: 'car.price < 30000'
+                    }
                 ]
             },
             {
@@ -134,9 +151,21 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 width: {number: 10, unit: '%'},
                 visible: true,
                 rules: [
-                    {style: 'carFeatures1Style', prop: 'car.features', expression: '===1'},
-                    {style: 'carFeatures2Style', prop: 'car.features', expression: '===2'},
-                    {style: 'carFeatures3Style', prop: 'car.features', expression: '===3'}
+                    {
+                        style: 'carFeatures1Style',
+                        prop: 'car.features',
+                        expression: 'car.features === 1'
+                    },
+                    {
+                        style: 'carFeatures2Style',
+                        prop: 'car.features',
+                        expression: 'car.features === 2'
+                    },
+                    {
+                        style: 'carFeatures3Style',
+                        prop: 'car.features',
+                        expression: 'car.features === 3'
+                    }
                 ]
             },
             {
