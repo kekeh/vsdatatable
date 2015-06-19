@@ -1,7 +1,10 @@
+/*
+    Header column template styles
+*/
 .columnTemplate .inputField,
 .columnTemplate .selectMenu {
     padding-left: 4px;
-    width: 100%; 
+    width: 100%;
     background-color: #FAFAFA;
     height: 24px;
     border:1px solid #AAA;
@@ -12,4 +15,39 @@
 
 .columnTemplate .selectMenu {
     cursor: pointer;
+}
+
+/*
+    Body column styles: active column
+*/
+.activeStyle {
+    color: #21af17;
+}
+
+.inactiveStyle {
+    color: #DD0000;
+}
+
+/*
+    Body column styles: car.price column
+*/
+.carPriceStyle {
+    color: #21af17;
+    font-weight: bold;
+    font-style: italic;
+}
+
+/*
+    Body column styles: car.features column
+*/
+.carFeatures1Style {
+    background-color: #FA787E;
+}
+
+.carFeatures2Style {
+    background-color: #FFF731;
+}
+
+.carFeatures3Style {
+    background-color: #90FA7E;
 }

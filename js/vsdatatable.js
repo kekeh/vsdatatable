@@ -33,7 +33,8 @@ angular.module('vsdatatable', [])
         ROW_SELECT: 'SELECT',
         ROW_DESELECT: 'DESELECT',
         COL_RESIZER_MIN_COL_WIDTH: 35,
-        DEFAULT_ACTION_COL_WIDTH: 90
+        DEFAULT_ACTION_COL_WIDTH: 90,
+        COLUMN_PROP_VALUE: 'COLUMN_PROP_VALUE'
     })
 
 /**
@@ -259,6 +260,22 @@ angular.module('vsdatatable', [])
                         tempVal = tempVal[p];
                     });
                     return tempVal;
+                };
+
+                scope.getColumnStyle = function (obj, colOpt) {
+                    if (!vsdatatableService.isUndefined(colOpt.rules)) {
+                        // Get column value, evaluate the rule and return style class
+                        var style = '';
+                        for (var i in colOpt.rules) {
+                            var val = scope.getPropertyValue(obj, colOpt.rules[i].prop);
+                            var temp = val.toString() + colOpt.rules[i].expression.toString();
+                            if (scope.$eval(temp)) {
+                                style = colOpt.rules[i].style;
+                                break;
+                            }
+                        }
+                        return style;
+                    }
                 };
 
                 scope.paginationOperation = function (oper) {
@@ -533,7 +550,7 @@ angular.module('vsdatatable', [])
  * @name colFilterTemplate
  * @description colFilterTemplate adds column filter (for example input box) to the each column defined in the configuration.
  */
-    .directive('colFilterTemplate', ['$compile', 'vsdatatableService', function ($compile, vsdatatableService) {
+    .directive('colFilterTemplate', ['$compile', 'vsdatatableService', 'vsdatatableConfig', function ($compile, vsdatatableService, vsdatatableConfig) {
         return {
             restrict: 'A',
             scope: false,
@@ -542,8 +559,9 @@ angular.module('vsdatatable', [])
                     var colOpt = scope.$eval(attrs.colFilterTemplate);
                     if (!vsdatatableService.isUndefined(colOpt.filter) && !vsdatatableService.isUndefined(colOpt.filter.template)
                         && !vsdatatableService.isUndefined(colOpt.filter.match)) {
+                        // Add column filter
                         var colTpl = angular.copy(colOpt.filter.template);
-                        colTpl = colTpl.replace('COLUMN_PROP_VALUE', 'columnFilter.' + colOpt.filter.match + '.' + colOpt.prop + '"');
+                        colTpl = colTpl.replace(vsdatatableConfig.COLUMN_PROP_VALUE, 'columnFilter.' + colOpt.filter.match + '.' + colOpt.prop + '"');
                         var elem = angular.element(colTpl);
                         $compile(elem)(scope);
                         element.append(elem);
@@ -894,7 +912,7 @@ angular.module('vsdatatable', [])
                             overlay = angular.element('<div class="overlay" style="margin-left:' + (element.prop('offsetLeft')) + 'px;">' + obj.text + '</div>');
                         }
                         else if (element[0].scrollWidth > element[0].offsetWidth) {
-                            overlay = angular.element('<div class="overlay" ng-click="closeOverlay()" style="margin-top:' + (-element.prop('offsetHeight')) + 'px">' + obj.text + '</div>');
+                            overlay = angular.element('<div class="overlay" ng-click="closeOverlay()" >' + obj.text + '</div>');
                         }
                         if (!angular.equals(overlay, null)) {
                             element.append(overlay);

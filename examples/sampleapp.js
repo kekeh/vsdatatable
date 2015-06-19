@@ -107,7 +107,11 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 sorting: true,
                 filter: {template: colSelectActiveFilterTemplate, match: 'exact'},
                 width: {number: 8, unit: '%'},
-                visible: true
+                visible: true,
+                rules: [
+                    {style: 'activeStyle', prop: 'active', expression: '===true'},
+                    {style: 'inactiveStyle', prop: 'active', expression: '===false'}
+                ]
             },
             {
                 prop: 'car.price',  // Value from second level (property price from the car object)
@@ -116,7 +120,10 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
                 width: {number: 10, unit: '%'},
-                visible: true
+                visible: true,
+                rules: [
+                    {style: 'carPriceStyle', prop: 'car.price', expression: '>200000'}
+                ]
             },
             {
                 prop: 'car.features',  // Value from second level (property class from the car object)
@@ -125,7 +132,12 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
                 sorting: true,
                 filter: {template: colSelectCarFeaturesFilterTemplate, match: 'exact'},
                 width: {number: 10, unit: '%'},
-                visible: true
+                visible: true,
+                rules: [
+                    {style: 'carFeatures1Style', prop: 'car.features', expression: '===1'},
+                    {style: 'carFeatures2Style', prop: 'car.features', expression: '===2'},
+                    {style: 'carFeatures3Style', prop: 'car.features', expression: '===3'}
+                ]
             },
             {
                 prop: 'car.age',

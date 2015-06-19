@@ -54,21 +54,22 @@
                     ng-click="h.sorting?sortByCol($event,h.prop):null"
                     ng-keydown="h.sorting?sortByCol($event,h.prop):null">
                     {{h.label}}
-                        <span class="icon sortColIcon" ng-if="h.sorting"
-                              ng-class="{'selectedHeaderCol':sort.col===h.prop&&h.sorting,
-                              'icon-sort':h.sorting&&sort.col!==h.prop,
-                              'icon-down':sort.col===h.prop&&sort.reverse,
-                              'icon-up':sort.col===h.prop&&!sort.reverse}" tabindex="0"></span>
-                        <span class="icon icon-cross sortColIcon" ng-if="h.sorting&&sort.col===h.prop"
-                              ng-click="sortByCol($event,'')" ng-keydown="sortByCol($event,'')" tabindex="0"></span>
+                            <span class="icon sortColIcon" ng-if="h.sorting"
+                                  ng-class="{'selectedHeaderCol':sort.col===h.prop&&h.sorting,
+                                  'icon-sort':h.sorting&&sort.col!==h.prop,
+                                  'icon-down':sort.col===h.prop&&sort.reverse,
+                                  'icon-up':sort.col===h.prop&&!sort.reverse}" tabindex="0"></span>
+                            <span class="icon icon-cross sortColIcon" ng-if="h.sorting&&sort.col===h.prop"
+                                  ng-click="sortByCol($event,'')" ng-keydown="sortByCol($event,'')" tabindex="0"></span>
                 </th>
                 <th id="headerColAction" class="headerCol headerColAction" ng-if="options.useTemplates"
                     ng-style="{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}">
                     <span>{{options.actionColumnText}}</span>
-                        <span class="icon icon-plus actionIcon addItemIcon" ng-if="options.templates.add.actionBtnShow"
-                              ng-click="addRow();" ng-keydown="checkEvent($event)?addRow():null"
-                              overlay-window="{text:'{{options.templates.add.btnTooltip}}',overflow:false}"
-                              tabindex="0"></span>
+                            <span class="icon icon-plus actionIcon addItemIcon"
+                                  ng-if="options.templates.add.actionBtnShow"
+                                  ng-click="addRow();" ng-keydown="checkEvent($event)?addRow():null"
+                                  overlay-window="{text:'{{options.templates.add.btnTooltip}}',overflow:false}"
+                                  tabindex="0"></span>
                 </th>
             </tr>
 
@@ -82,19 +83,19 @@
             </thead>
             <tbody class="tableBody">
             <tr class="bodyRow" ng-repeat="obj in !extDataPagination?
-                        filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):
-                        filteredItems track by $index"
+                            filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):
+                            filteredItems track by $index"
                 ng-class-odd="'oddRow'" ng-class-even="'evenRow'"
                 ng-click="rowClicked($event, obj)"
                 ng-keydown="rowClicked($event, obj)"
                 ng-class="{'selectedRow':isRowSelected(obj)}"
                 table-body-row tabindex="0">
-                <td class="bodyCol" ng-repeat="k in options.columns track by $index"
-                    ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible">
-                    <div class="textOverflow" ng-style="{'text-align':k.textAlign}"
-                         overlay-window="{text:'{{getPropertyValue(obj,k.prop)}}',overflow:true}">
-                        {{getPropertyValue(obj,k.prop)}}
-                    </div>
+                <td class="bodyCol textOverflow" ng-repeat="col in options.columns track by $index"
+                    ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible"
+                    ng-style="{'text-align':col.textAlign}"
+                    overlay-window="{text:'{{getPropertyValue(obj,col.prop)}}',overflow:true}"
+                    ng-class="getColumnStyle(obj,col)">
+                    {{getPropertyValue(obj,col.prop)}}
                 </td>
                 <td class="bodyCol bodyColAction" ng-if="options.useTemplates">
                             <span class="icon icon-edit actionIcon" ng-if="options.templates.edit.actionBtnShow"
