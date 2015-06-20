@@ -89,6 +89,8 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             visible: false,
             text: 'Loading data...'
         },
+        showTooltips: true,
+        showOverlay: true,
         headerVisible: true,
         columnResize: true,
         columns: [
@@ -231,10 +233,19 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
         },
         paginator: {
             visible: true,
-            buttonCount: 3,
-            pageNavBtnVisible: true,
-            setNavBtnVisible: true,
-            allNavBtnVisible: true,
+            numberBtnCount: 3,
+            prevNextBtn: {
+                visible: true,
+                labels: ['back', 'next']
+            },
+            prevNextSetBtn: {
+                visible: true,
+                labels: ['...', '...']
+            },
+            firstLastBtn: {
+                visible: true,
+                labels: ['first', 'last']
+            },
             pageSizeOptions: [
                 {label: '4', rows: 4},
                 {label: '7', rows: 7, default: true},

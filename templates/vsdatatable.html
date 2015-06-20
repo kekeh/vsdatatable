@@ -27,12 +27,12 @@
                                    data-ng-trim="false"
                                    filter-focus/>
                             <span class="icon icon-check actionIcon"
-                                  ng-show="filterFocus&&options.filter.global&&options.filter.filterBtn.visible"
-                                  overlay-window="{text:'{{options.filter.filterBtn.filterBtnTooltip}}',overflow:false}"
+                                  ng-show="{{filterFocus&&options.filter.global&&options.filter.filterBtn.visible}}"
+                                  vstooltip="{{options.filter.filterBtn.filterBtnTooltip}}"
                                   ng-click="executeFilter();" ng-keydown="checkEvent($event)?executeFilter():null"
                                   tabindex="0"></span>
                             <span class="icon icon-search actionIcon"
-                                  overlay-window="{text:'{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}',overflow:false}"
+                                  vstooltip="{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}"
                                   ng-click="filterBtnClick($event)"
                                   ng-keydown="filterBtnClick($event)"
                                   tabindex="0"></span>
@@ -68,7 +68,7 @@
                             <span class="icon icon-plus actionIcon addItemIcon"
                                   ng-if="options.templates.add.actionBtnShow"
                                   ng-click="addRow();" ng-keydown="checkEvent($event)?addRow():null"
-                                  overlay-window="{text:'{{options.templates.add.btnTooltip}}',overflow:false}"
+                                  vstooltip="{{options.templates.add.btnTooltip}}"
                                   tabindex="0"></span>
                 </th>
             </tr>
@@ -93,7 +93,7 @@
                 <td class="bodyCol textOverflow" ng-repeat="col in options.columns track by $index"
                     ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible"
                     ng-style="{'text-align':col.textAlign}"
-                    overlay-window="{text:'{{getPropertyValue(obj,col.prop)}}',overflow:true}"
+                    overlay-window="{{getPropertyValue(obj,col.prop)}}"
                     ng-class="getColumnStyle(obj,col)">
                     {{getPropertyValue(obj,col.prop)}}
                 </td>
@@ -101,17 +101,17 @@
                             <span class="icon icon-edit actionIcon" ng-if="options.templates.edit.actionBtnShow"
                                   ng-click="editRow($event, obj);$event.stopPropagation()"
                                   ng-keydown="editRow($event, obj);$event.stopPropagation()"
-                                  overlay-window="{text:'{{options.templates.edit.btnTooltip}}',overflow:false}"
+                                  vstooltip="{{options.templates.edit.btnTooltip}}"
                                   tabindex="0"></span>
                             <span class="icon icon-clear actionIcon" ng-if="options.templates.delete.actionBtnShow"
                                   ng-click="deleteRow($event, obj);$event.stopPropagation()"
                                   ng-keydown="deleteRow($event, obj);$event.stopPropagation()"
-                                  overlay-window="{text:'{{options.templates.delete.btnTooltip}}',overflow:false}"
+                                  vstooltip="{{options.templates.delete.btnTooltip}}"
                                   tabindex="0"></span>
                             <span class="icon icon-view actionIcon" ng-if="options.templates.view.actionBtnShow"
                                   ng-click="viewRow($event, obj);$event.stopPropagation()"
                                   ng-keydown="viewRow($event, obj);$event.stopPropagation()"
-                                  overlay-window="{text:'{{options.templates.view.btnTooltip}}',overflow:false}"
+                                  vstooltip="{{options.templates.view.btnTooltip}}"
                                   tabindex="0"></span>
                 </td>
             </tr>

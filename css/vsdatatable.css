@@ -327,17 +327,40 @@
     width: 100%;
 }
 
-.vsdatatable .overlay {
+.vsdatatable .overlay,
+.vsdatatable .tooltip {
     background-color: #FFFFCC;
     color: #000;
     padding: 6px;
     z-index: 2;
     max-width: 300px;
     white-space: normal;
+    font-weight: normal;
+}
+
+.vsdatatable .overlay:before {
+    border-right: 10px solid #888;
+    left: -10px;
+}
+
+.vsdatatable .overlay:after {
+    border-right: 8px solid #FFFFCC;
+    left: -8px;
+}
+
+.vsdatatable .overlay:before,
+.vsdatatable .overlay:after {
+    content: ' ';
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    position: absolute;
+    z-index: 2;
+    top: 5px;
 }
 
 .vsdatatable .colTogglerMenu,
 .vsdatatable .overlay,
+.vsdatatable .tooltip,
 .vsdatatable .busyIconContainer {
     border: 1px solid #AAA;
     border-radius: 4px;

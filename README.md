@@ -120,6 +120,8 @@ angular.module('vssampleapp', ['vsdatatable']);
 | **busyIcon** | Object which contain sub properties. | See below. | yes |
 | busyIcon.**visible** | Is busy icon visible or not. Busy icon works only if external pagination is used. The **data.extDataPagination** is **true**. The busy icon blocks the vsdatatable UI during data load. | true or false | yes |
 | busyIcon.**text** | Busy icon text. | User defined text. | yes |
+| **showTooltips** | Is tooltips shown or not. | true or false | yes |
+| **showOverlay** | Is overlay shown or not. Overlay pops up if the width of the column is not enough to the value of the column. | true or false | yes |
 | **headerVisible** | Is vsdatatable header visible or not. | true or false | yes |
 | **columnResize** | Is column resize enable ot not. | true or false | yes |
 | **columns** | Array of objects defining the columns of the vsdatatable. | See the **column configuration object** chapter below. | yes |
@@ -145,10 +147,16 @@ angular.module('vssampleapp', ['vsdatatable']);
 | filter.filterBtn.**filterBtnTooltip** | Filter button tooltip. | text | yes |
 | **paginator** | Object which contain sub properties. | See below. | yes |
 | paginator.**visible** | Is paginator visible or not. | true or false | yes |
-| paginator.**buttonCount** | Number button count in the paginator. Maximum is 6. | number | yes |
-| paginator.**pageNavBtnVisible** | Next and previous page buttons visible or not. | true or false | yes |
-| paginator.**setNavBtnVisible** | Next and previous set buttons visible or not. | true or false | yes |
-| paginator.**allNavBtnVisible** | First and last page buttons visible or not. | true or false | yes |
+| paginator.**numberBtnCount** | Number button count in the paginator. Maximum is 6. | number | yes |
+| paginator.**prevNextBtn** | Object which contain sub properties. | See below. | yes |
+| paginator.prevNextBtn.**visible** | Is previous page and next page buttons visible in the paginator or not. | true or false | yes |
+| paginator.prevNextBtn.**labels** | Array of two strings. Labels (visible in UI) of the buttons. | strings | yes 
+| paginator.**prevNextSetBtn** | Object which contain sub properties. | See below. | yes |
+| paginator.prevNextSetBtn.**visible** | Is previous set of pages and next set of pages buttons visible in the paginator or not. | true or false | yes |
+| paginator.prevNextSetBtn.**labels** | Array of two strings. Labels (visible in UI) of the buttons. | strings | yes |
+| paginator.**firstLastBtn** | Object which contain sub properties. | See below. | yes |
+| paginator.firstLastBtn.**visible** | Is first page and last page buttons visible in paginator or not. | true or false | yes |
+| paginator.firstLastBtn.**labels** | Array of two strings. Labels (visible in UI) of the buttons. | strings | yes |
 | paginator.**pageSizeOptions** | Array of objects defining the page size options of the vsdatatable. | See the **page size options** chapter below. | yes |
 | paginator.**pageSizeTxt** | Visible text near the page size selection buttons. | text | yes |
 | paginator.**totalItemsTxt** | Visible text near the total item count number. | text | yes |
@@ -361,4 +369,3 @@ Depends on AngularJS. Implemented using the AngularJS version 1.3.15. No other d
 
 ## Author
 * Author: kekeh
-

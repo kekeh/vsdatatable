@@ -1,19 +1,20 @@
 /* 
 *  Name: vsdatatable 
-*  Description: Simple single page datatable - AngularJS UI component 
-*  Version: 0.0.1 
+ *  Description: Simple single page datatable - AngularJS reusable UI component
+ *  Version: 0.0.3
 *  Author: kekeh 
+ *  Homepage: http://kekeh.github.io/vsdatatable
 *  License: MIT 
- *  Date: 2015-06-19
-*/ 
-angular.module('template-vsdatatable-0.0.1.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
+ *  Date: 2015-06-20
+*/
+angular.module('template-vsdatatable-0.0.3.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
 angular.module("templates/vscoltogglemenu.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vscoltogglemenu.html",
     "<div>\n" +
     "    <span class=\"icon icon-selections actionIcon\" ng-click=\"colTogglerShowClicked($event)\"\n" +
     "          ng-keydown=\"colTogglerShowClicked($event)\"\n" +
-    "          tabindex=\"0\" overlay-window=\"{text:'{{options.columnToggler.btnTooltip}}',overflow:false}\"></span>\n" +
+    "          tabindex=\"0\" vstooltip=\"{{options.columnToggler.btnTooltip}}\"></span>\n" +
     "    <div class=\"colTogglerMenu\" ng-show=\"colTogglerShow\">\n" +
     "        <div class=\"colTogglerTitle\" ng-show=\"options.columnToggler.menuTitle !== undefined\">\n" +
     "            <span class=\"colTogglerTitleTxt\">{{options.columnToggler.menuTitle}}</span> \n" +
@@ -66,12 +67,12 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                                   data-ng-trim=\"false\"\n" +
       "                                   filter-focus/>\n" +
       "                            <span class=\"icon icon-check actionIcon\"\n" +
-      "                                  ng-show=\"filterFocus&&options.filter.global&&options.filter.filterBtn.visible\"\n" +
-      "                                  overlay-window=\"{text:'{{options.filter.filterBtn.filterBtnTooltip}}',overflow:false}\"\n" +
+      "                                  ng-show=\"{{filterFocus&&options.filter.global&&options.filter.filterBtn.visible}}\"\n" +
+      "                                  vstooltip=\"{{options.filter.filterBtn.filterBtnTooltip}}\"\n" +
       "                                  ng-click=\"executeFilter();\" ng-keydown=\"checkEvent($event)?executeFilter():null\"\n" +
       "                                  tabindex=\"0\"></span>\n" +
       "                            <span class=\"icon icon-search actionIcon\"\n" +
-      "                                  overlay-window=\"{text:'{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}',overflow:false}\"\n" +
+      "                                  vstooltip=\"{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}\"\n" +
       "                                  ng-click=\"filterBtnClick($event)\"\n" +
       "                                  ng-keydown=\"filterBtnClick($event)\"\n" +
       "                                  tabindex=\"0\"></span>\n" +
@@ -107,7 +108,7 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                            <span class=\"icon icon-plus actionIcon addItemIcon\"\n" +
       "                                  ng-if=\"options.templates.add.actionBtnShow\"\n" +
       "                                  ng-click=\"addRow();\" ng-keydown=\"checkEvent($event)?addRow():null\"\n" +
-      "                                  overlay-window=\"{text:'{{options.templates.add.btnTooltip}}',overflow:false}\"\n" +
+      "                                  vstooltip=\"{{options.templates.add.btnTooltip}}\"\n" +
       "                                  tabindex=\"0\"></span>\n" +
       "                </th>\n" +
       "            </tr>\n" +
@@ -132,7 +133,7 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                <td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\"\n" +
       "                    ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\"\n" +
       "                    ng-style=\"{'text-align':col.textAlign}\"\n" +
-      "                    overlay-window=\"{text:'{{getPropertyValue(obj,col.prop)}}',overflow:true}\"\n" +
+      "                    overlay-window=\"{{getPropertyValue(obj,col.prop)}}\"\n" +
       "                    ng-class=\"getColumnStyle(obj,col)\">\n" +
       "                    {{getPropertyValue(obj,col.prop)}}\n" +
       "                </td>\n" +
@@ -140,17 +141,17 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                            <span class=\"icon icon-edit actionIcon\" ng-if=\"options.templates.edit.actionBtnShow\"\n" +
       "                                  ng-click=\"editRow($event, obj);$event.stopPropagation()\"\n" +
       "                                  ng-keydown=\"editRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  overlay-window=\"{text:'{{options.templates.edit.btnTooltip}}',overflow:false}\"\n" +
+      "                                  vstooltip=\"{{options.templates.edit.btnTooltip}}\"\n" +
       "                                  tabindex=\"0\"></span>\n" +
       "                            <span class=\"icon icon-clear actionIcon\" ng-if=\"options.templates.delete.actionBtnShow\"\n" +
       "                                  ng-click=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
       "                                  ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  overlay-window=\"{text:'{{options.templates.delete.btnTooltip}}',overflow:false}\"\n" +
+      "                                  vstooltip=\"{{options.templates.delete.btnTooltip}}\"\n" +
       "                                  tabindex=\"0\"></span>\n" +
       "                            <span class=\"icon icon-view actionIcon\" ng-if=\"options.templates.view.actionBtnShow\"\n" +
       "                                  ng-click=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
       "                                  ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  overlay-window=\"{text:'{{options.templates.view.btnTooltip}}',overflow:false}\"\n" +
+      "                                  vstooltip=\"{{options.templates.view.btnTooltip}}\"\n" +
       "                                  tabindex=\"0\"></span>\n" +
       "                </td>\n" +
       "            </tr>\n" +
@@ -160,8 +161,7 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "        <div class=\"tableFooter\" table-paginator></div>\n" +
       "    </div>\n" +
       "\n" +
-    "</div>\n" +
-    "");
+      "</div>");
 }]);
 
 angular.module("templates/vspaginator.html", []).run(["$templateCache", function($templateCache) {
@@ -182,8 +182,8 @@ angular.module("templates/vspaginator.html", []).run(["$templateCache", function
     "                    ng-class=\"{'selectedPaginatorBtn':b.id===paginator.visiblePageIdx+1,\n" +
     "                                   'disabledPaginatorBtn':isDisabledBtn(b),\n" +
     "                                   'paginatorBtnNbr': !isNavigateBtn(b),\n" +
-    "                                   'paginatorBtnSet': b===config.PAGINATOR_BTN_PREV_SET||b===config.PAGINATOR_BTN_NEXT_SET,\n" +
-    "                                   'paginatorBtnAll': b===config.PAGINATOR_BTN_FIRST||b===config.PAGINATOR_BTN_LAST}\"\n" +
+    "                                   'paginatorBtnSet': b===btnPrevSet||b===btnNextSet,\n" +
+    "                                   'paginatorBtnAll': b===btnFirst||b===btnLast}\"\n" +
     "                    ng-click=\"paginatorBtnClick(b,$index)\"\n" +
     "                    ng-repeat=\"b in paginatorButtons track by $index\">\n" +
     "                {{b.label}}\n" +
@@ -207,7 +207,7 @@ angular.module("templates/vspaginator.html", []).run(["$templateCache", function
     "");
 }]);
 
-angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
+angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
 
 /**
  * @ngdoc object
@@ -216,14 +216,10 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
  */
     .constant('vsdatatableConfig', {
         OVERLAY_SHOW_DELAY: 500,
+        TOOLTIP_SHOW_DELAY: 500,
+        TOOLTIP_CLOSE_DELAY: 1200,
         FILTER_EXECUTION_DELAY: 500,
         PAGINATOR_MAX_BTN_COUNT: 6,
-        PAGINATOR_BTN_BACK: {id: 'b', label: 'back'},
-        PAGINATOR_BTN_NEXT: {id: 'n', label: 'next'},
-        PAGINATOR_BTN_FIRST: {id: 'f', label: 'first'},
-        PAGINATOR_BTN_LAST: {id: 'l', label: 'last'},
-        PAGINATOR_BTN_PREV_SET: {id: 'ps', label: '...'},
-        PAGINATOR_BTN_NEXT_SET: {id: 'ns', label: '...'},
         PAGINATOR_EVENT: 'vsdatatable.paginatorEvent',
         FILTER_FOCUS_EVENT: 'vsdatatable.filterFocusEvent',
         SET_EXT_PAGINATION_DATA_EVENT: 'vsdatatable.setExtPaginationData',
@@ -763,7 +759,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
  * @name colFilterTemplate
  * @description colFilterTemplate adds column filter (for example input box) to the each column defined in the configuration.
  */
-    .directive('colFilterTemplate', ['$compile', 'vsdatatableService', 'vsdatatableConfig', function ($compile, vsdatatableService, vsdatatableConfig) {
+    .directive('colFilterTemplate', ['$compile', 'vsdatatableService', function ($compile, vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
@@ -774,7 +770,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                         && !vsdatatableService.isUndefined(colOpt.filter.match)) {
                         // Add column filter
                         var colTpl = angular.copy(colOpt.filter.template);
-                        colTpl = colTpl.replace(vsdatatableConfig.COLUMN_PROP_VALUE, 'columnFilter' + scope.config.DOT_SEPARATOR + colOpt.filter.match + scope.config.DOT_SEPARATOR + colOpt.prop + '"');
+                        colTpl = colTpl.replace(scope.config.COLUMN_PROP_VALUE, 'columnFilter' + scope.config.DOT_SEPARATOR + colOpt.filter.match + scope.config.DOT_SEPARATOR + colOpt.prop + '"');
                         var elem = angular.element(colTpl);
                         $compile(elem)(scope);
                         element.append(elem);
@@ -896,12 +892,12 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                 };
 
                 scope.isNavigateBtn = function (val) {
-                    return vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_FIRST)
-                        || vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_BACK)
-                        || vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_PREV_SET)
-                        || vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_NEXT)
-                        || vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_NEXT_SET)
-                        || vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_LAST);
+                    return vsdatatableService.isEqual(val, scope.btnFirst)
+                        || vsdatatableService.isEqual(val, scope.btnPrev)
+                        || vsdatatableService.isEqual(val, scope.btnPrevSet)
+                        || vsdatatableService.isEqual(val, scope.btnNext)
+                        || vsdatatableService.isEqual(val, scope.btnNextSet)
+                        || vsdatatableService.isEqual(val, scope.btnLast);
                 };
 
                 scope.isDisabledBtn = function (val) {
@@ -913,10 +909,10 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                 });
 
                 function pageNavigated(val) {
-                    if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_FIRST)) {
+                    if (vsdatatableService.isEqual(val, scope.btnFirst)) {
                         toPage(0, val);
                     }
-                    else if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_BACK)) {
+                    else if (vsdatatableService.isEqual(val, scope.btnPrev)) {
                         if (vsdatatableService.isEqual(scope.paginator.visiblePageIdx - scope.paginator.pageFirstIdx, 0)) {
                             toPage(scope.paginator.visiblePageIdx - filteredBtnCount, val);
                         }
@@ -924,13 +920,13 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                             setPaginatorValues(scope.paginator.visiblePageIdx - 1, scope.paginator.pageFirstIdx);
                         }
                     }
-                    else if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_PREV_SET)) {
+                    else if (vsdatatableService.isEqual(val, scope.btnPrevSet)) {
                         toPage(scope.paginator.pageFirstIdx - filteredBtnCount, val);
                     }
-                    else if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_LAST)) {
+                    else if (vsdatatableService.isEqual(val, scope.btnLast)) {
                         toPage(scope.totalPages - 1, val);
                     }
-                    else if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_NEXT)) {
+                    else if (vsdatatableService.isEqual(val, scope.btnNext)) {
                         if (vsdatatableService.isEqual(scope.paginator.visiblePageIdx - scope.paginator.pageFirstIdx, filteredBtnCount - 1)) {
                             toPage(scope.paginator.pageFirstIdx + filteredBtnCount, val);
                         }
@@ -938,7 +934,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                             setPaginatorValues(scope.paginator.visiblePageIdx + 1, scope.paginator.pageFirstIdx);
                         }
                     }
-                    else if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_NEXT_SET)) {
+                    else if (vsdatatableService.isEqual(val, scope.btnNextSet)) {
                         toPage(scope.paginator.pageFirstIdx + filteredBtnCount, val);
                     }
                 }
@@ -952,7 +948,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     if (pageIdx > scope.paginator.visiblePageIdx) {
                         // Forward navigate
                         visiblePageIdx = pageIdx;
-                        if (vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_LAST)) {
+                        if (vsdatatableService.isEqual(val, scope.btnLast)) {
                             pageFirstIdx = visiblePageIdx - filteredBtnCount + 1;
                         }
                         else {
@@ -960,7 +956,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                             pageFirstIdx = !vsdatatableService.isEqual(checkedVal, pageIdx) ? checkedVal : pageIdx;
                         }
                     }
-                    else if (pageIdx < scope.paginator.visiblePageIdx && !vsdatatableService.isEqual(val, scope.config.PAGINATOR_BTN_FIRST)) {
+                    else if (pageIdx < scope.paginator.visiblePageIdx && !vsdatatableService.isEqual(val, scope.btnFirst)) {
                         // Backward navigate
                         var checkedVal = checkMinPageIdx(pageIdx);
                         visiblePageIdx = pageIdx + filteredBtnCount - 1;
@@ -988,14 +984,14 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     scope.paginatorButtons.length = 0;
 
                     // Navigate back buttons
-                    if (scope.options.paginator.allNavBtnVisible) {
-                        scope.paginatorButtons.push(scope.config.PAGINATOR_BTN_FIRST);
+                    if (scope.options.paginator.firstLastBtn.visible) {
+                        scope.paginatorButtons.push(scope.btnFirst);
                     }
-                    if (scope.options.paginator.pageNavBtnVisible) {
-                        scope.paginatorButtons.push(scope.config.PAGINATOR_BTN_BACK);
+                    if (scope.options.paginator.prevNextBtn.visible) {
+                        scope.paginatorButtons.push(scope.btnPrev);
                     }
-                    if (scope.options.paginator.setNavBtnVisible) {
-                        scope.paginatorButtons.push(scope.config.PAGINATOR_BTN_PREV_SET);
+                    if (scope.options.paginator.prevNextSetBtn.visible) {
+                        scope.paginatorButtons.push(scope.btnPrevSet);
                     }
 
                     // Number buttons
@@ -1004,14 +1000,14 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     }
 
                     // Navigate forward buttons
-                    if (scope.options.paginator.setNavBtnVisible) {
-                        scope.paginatorButtons.push(scope.config.PAGINATOR_BTN_NEXT_SET);
+                    if (scope.options.paginator.prevNextSetBtn.visible) {
+                        scope.paginatorButtons.push(scope.btnNextSet);
                     }
-                    if (scope.options.paginator.pageNavBtnVisible) {
-                        scope.paginatorButtons.push(scope.config.PAGINATOR_BTN_NEXT);
+                    if (scope.options.paginator.prevNextBtn.visible) {
+                        scope.paginatorButtons.push(scope.btnNext);
                     }
-                    if (scope.options.paginator.allNavBtnVisible) {
-                        scope.paginatorButtons.push(scope.config.PAGINATOR_BTN_LAST);
+                    if (scope.options.paginator.firstLastBtn.visible) {
+                        scope.paginatorButtons.push(scope.btnLast);
                     }
 
                     // Set disabled buttons if needed
@@ -1021,18 +1017,18 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                 function setDisabledButtons() {
                     scope.disabledButtons.length = 0;
                     if (vsdatatableService.isEqual(scope.paginator.visiblePageIdx, 0)) {
-                        scope.disabledButtons.push(scope.config.PAGINATOR_BTN_FIRST);
-                        scope.disabledButtons.push(scope.config.PAGINATOR_BTN_BACK);
+                        scope.disabledButtons.push(scope.btnFirst);
+                        scope.disabledButtons.push(scope.btnPrev);
                     }
                     if (vsdatatableService.isEqual(scope.paginator.pageFirstIdx, 0)) {
-                        scope.disabledButtons.push(scope.config.PAGINATOR_BTN_PREV_SET);
+                        scope.disabledButtons.push(scope.btnPrevSet);
                     }
                     if (scope.paginator.pageFirstIdx + filteredBtnCount >= scope.totalPages) {
-                        scope.disabledButtons.push(scope.config.PAGINATOR_BTN_NEXT_SET);
+                        scope.disabledButtons.push(scope.btnNextSet);
                     }
                     if (scope.paginator.visiblePageIdx >= scope.totalPages - 1) {
-                        scope.disabledButtons.push(scope.config.PAGINATOR_BTN_LAST);
-                        scope.disabledButtons.push(scope.config.PAGINATOR_BTN_NEXT);
+                        scope.disabledButtons.push(scope.btnLast);
+                        scope.disabledButtons.push(scope.btnNext);
                     }
                 }
 
@@ -1042,9 +1038,16 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                 }
 
                 function init() {
+                    // Set labels of the paginator buttons
+                    scope.btnPrev = {id: 'b', label: scope.options.paginator.prevNextBtn.labels[0]};
+                    scope.btnNext = {id: 'n', label: scope.options.paginator.prevNextBtn.labels[1]};
+                    scope.btnFirst = {id: 'f', label: scope.options.paginator.firstLastBtn.labels[0]};
+                    scope.btnLast = {id: 'l', label: scope.options.paginator.firstLastBtn.labels[1]};
+                    scope.btnPrevSet = {id: 'ps', label: scope.options.paginator.prevNextSetBtn.labels[0]};
+                    scope.btnNextSet = {id: 'ns', label: scope.options.paginator.prevNextSetBtn.labels[1]};
+
                     scope.pageSizeOptions = scope.options.paginator.pageSizeOptions;
-                    initBtnCount = scope.options.paginator.buttonCount > scope.config.PAGINATOR_MAX_BTN_COUNT ?
-                        scope.config.PAGINATOR_MAX_BTN_COUNT : scope.options.paginator.buttonCount;
+                    initBtnCount = scope.options.paginator.numberBtnCount > scope.config.PAGINATOR_MAX_BTN_COUNT ? scope.config.PAGINATOR_MAX_BTN_COUNT : scope.options.paginator.numberBtnCount;
                     var idx = 0;
                     for (var i in scope.pageSizeOptions) {
                         if (scope.pageSizeOptions[i].hasOwnProperty('default') && angular.equals(scope.pageSizeOptions[i].default, true)) {
@@ -1096,7 +1099,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
 /**
  * @ngdoc object
  * @name overlayWindow
- * @description overlayWindow directive implements overlay window (tooltip).
+ * @description overlayWindow directive implements overlay window to long values in the columns.
  */
     .directive('overlayWindow', ['$compile', '$timeout', function ($compile, $timeout) {
         return {
@@ -1106,32 +1109,21 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                 var overlay = null;
                 var timer = null;
 
-                element.on('mouseenter', onMouseEnter);
-                element.on('mouseleave', onMouseLeave);
-
-                scope.$on('$destroy', function () {
-                    element.off('mouseenter', onMouseEnter);
-                    element.off('mouseleave', onMouseLeave);
-                });
-
-                scope.closeOverlay = function () {
+                scope.closeOverlay = function (event) {
+                    event.stopPropagation();
                     onMouseLeave();
                 };
 
                 function onMouseEnter() {
-                    var obj = scope.$eval(attrs.overlayWindow);
-                    timer = $timeout(function () {
-                        if (!obj.overflow) {
-                            overlay = angular.element('<div class="overlay" style="margin-left:' + (element.prop('offsetLeft')) + 'px;">' + obj.text + '</div>');
-                        }
-                        else if (element[0].scrollWidth > element[0].offsetWidth) {
-                            overlay = angular.element('<div class="overlay" ng-click="closeOverlay()" >' + obj.text + '</div>');
-                        }
-                        if (!angular.equals(overlay, null)) {
+                    if (element[0].scrollWidth > element[0].offsetWidth) {
+                        timer = $timeout(function () {
+                            overlay = angular.element('<div class="overlay" ng-click="closeOverlay($event)">' + attrs.overlayWindow + '</div>');
+                            overlay.css('margin-top', '-20px');
+                            overlay.css('margin-left', '14px');
                             element.append(overlay);
                             $compile(overlay)(scope);
-                        }
-                    }, scope.config.OVERLAY_SHOW_DELAY);
+                        }, scope.config.OVERLAY_SHOW_DELAY);
+                    }
                 }
 
                 function onMouseLeave() {
@@ -1146,6 +1138,82 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.1.html"])
                     $timeout.cancel(timer);
                     timer = null;
                 }
+
+                scope.$on('$destroy', function () {
+                    element.off('mouseenter', onMouseEnter);
+                    element.off('mouseleave', onMouseLeave);
+                });
+
+                function init() {
+                    if (scope.options.showOverlay) {
+                        element.on('mouseenter', onMouseEnter);
+                        element.on('mouseleave', onMouseLeave);
+                    }
+                }
+
+                init();
+            }
+        };
+    }])
+
+/**
+ * @ngdoc object
+ * @name vstooltip
+ * @description vstooltip directive implements tooltips.
+ */
+    .directive('vstooltip', ['$compile', '$timeout', function ($compile, $timeout) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function (scope, element, attrs) {
+                var tooltip = null;
+                var openTimer = null, closeTimer = null;
+
+                function onMouseEnter() {
+                    openTimer = $timeout(function () {
+                        showTooltip();
+                        closeTimer = $timeout(function () {
+                            hideTooltip();
+                        }, scope.config.TOOLTIP_CLOSE_DELAY, true);
+                    }, scope.config.TOOLTIP_SHOW_DELAY, true);
+                };
+
+                function onMouseLeave() {
+                    cancelTimer();
+                    hideTooltip();
+                }
+
+                function showTooltip() {
+                    tooltip = angular.element('<div class="tooltip" style="margin-left:' + (element.prop('offsetLeft')) + 'px;">' + attrs.vstooltip + '</div>');
+                    element.append(tooltip);
+                    $compile(tooltip)(scope);
+                }
+
+                function hideTooltip() {
+                    if (!angular.equals(tooltip, null)) {
+                        tooltip.remove();
+                        tooltip = null;
+                    }
+                }
+
+                function cancelTimer() {
+                    $timeout.cancel(openTimer);
+                    $timeout.cancel(closeTimer);
+                }
+
+                scope.$on('$destroy', function () {
+                    element.off('mouseenter', onMouseEnter);
+                    element.off('mouseleave', onMouseLeave);
+                });
+
+                function init() {
+                    if (scope.options.showTooltips) {
+                        element.on('mouseenter', onMouseEnter);
+                        element.on('mouseleave', onMouseLeave);
+                    }
+                }
+
+                init();
             }
         };
     }])

@@ -14,8 +14,8 @@
                     ng-class="{'selectedPaginatorBtn':b.id===paginator.visiblePageIdx+1,
                                    'disabledPaginatorBtn':isDisabledBtn(b),
                                    'paginatorBtnNbr': !isNavigateBtn(b),
-                                   'paginatorBtnSet': b===config.PAGINATOR_BTN_PREV_SET||b===config.PAGINATOR_BTN_NEXT_SET,
-                                   'paginatorBtnAll': b===config.PAGINATOR_BTN_FIRST||b===config.PAGINATOR_BTN_LAST}"
+                                   'paginatorBtnSet': b===btnPrevSet||b===btnNextSet,
+                                   'paginatorBtnAll': b===btnFirst||b===btnLast}"
                     ng-click="paginatorBtnClick(b,$index)"
                     ng-repeat="b in paginatorButtons track by $index">
                 {{b.label}}

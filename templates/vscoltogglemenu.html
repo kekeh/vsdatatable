@@ -1,7 +1,7 @@
 <div>
     <span class="icon icon-selections actionIcon" ng-click="colTogglerShowClicked($event)"
           ng-keydown="colTogglerShowClicked($event)"
-          tabindex="0" overlay-window="{text:'{{options.columnToggler.btnTooltip}}',overflow:false}"></span>
+          tabindex="0" vstooltip="{{options.columnToggler.btnTooltip}}"></span>
     <div class="colTogglerMenu" ng-show="colTogglerShow">
         <div class="colTogglerTitle" ng-show="options.columnToggler.menuTitle !== undefined">
             <span class="colTogglerTitleTxt">{{options.columnToggler.menuTitle}}</span> 
