@@ -5,8 +5,8 @@
 *  Author: kekeh 
  *  Homepage: http://kekeh.github.io/vsdatatable
 *  License: MIT 
- *  Date: 2015-06-20
-*/
+ *  Date: 2015-06-21
+ */
 angular.module('template-vsdatatable-0.0.3.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
 angular.module("templates/vscoltogglemenu.html", []).run(["$templateCache", function($templateCache) {

@@ -76,8 +76,8 @@ AngularJS directive which implements the datatable with many useful and configur
 
 * add the **vsdatatable-<version>.min.js** and the **vsdatatable-<version>.min.css** files into your project. The files can be found from the **dist/min/** folder of this project.
 ```html
-<script src="vsdatatable-0.0.2.min.js"></script>
-<link href="vsdatatable-0.0.2.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.0.3.min.js"></script>
+<link href="vsdatatable-0.0.3.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
