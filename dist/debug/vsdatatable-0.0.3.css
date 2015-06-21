@@ -19,7 +19,9 @@
 .vsdatatable .paginatorTxt,
 .vsdatatable .paginatorTotalNbr,
 .vsdatatable .paginatorPagesNbr,
-.vsdatatable .busyIconTxt {
+.vsdatatable .busyIconTxt,
+.vsdatatable .overlay,
+.vsdatatable .tooltip {
     font-size: 14px;
 }
 

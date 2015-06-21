@@ -17,7 +17,7 @@
     margin: 0
 }
 
-.vsdatatable .bodyRow, .vsdatatable .busyIconTxt, .vsdatatable .caption, .vsdatatable .headerRow, .vsdatatable .paginatorPagesNbr, .vsdatatable .paginatorTotalNbr, .vsdatatable .paginatorTxt {
+.vsdatatable .bodyRow, .vsdatatable .busyIconTxt, .vsdatatable .caption, .vsdatatable .headerRow, .vsdatatable .overlay, .vsdatatable .paginatorPagesNbr, .vsdatatable .paginatorTotalNbr, .vsdatatable .paginatorTxt, .vsdatatable .tooltip {
     font-size: 14px
 }
 
