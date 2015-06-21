@@ -26,12 +26,6 @@ sampleapp.controller('extenderctrl', function ($scope) {
  */
 sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig, vsdatatableEvent) {
 
-    // Se paginator button labels
-    vsdatatableConfig.PAGINATOR_BTN_BACK.label = '<';
-    vsdatatableConfig.PAGINATOR_BTN_NEXT.label = '>';
-    vsdatatableConfig.PAGINATOR_BTN_FIRST.label = '<<';
-    vsdatatableConfig.PAGINATOR_BTN_LAST.label = '>>';
-
     // Header column filter templates
     var colInputFilterTemplate =
         '<div class="columnTemplate">' +
@@ -91,6 +85,8 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             visible: true,
             text: 'vsdatatable example'
         },
+        showTooltips: true,
+        showOverlay: true,
         headerVisible: true,
         columnResize: true,
         columns: [
@@ -233,10 +229,19 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
         },
         paginator: {
             visible: true,
-            buttonCount: 3,
-            pageNavBtnVisible: true,
-            setNavBtnVisible: false,
-            allNavBtnVisible: true,
+            numberBtnCount: 3,
+            prevNextBtn: {
+                visible: true,
+                labels: ['<', '>']
+            },
+            prevNextSetBtn: {
+                visible: false,
+                labels: ['...', '...']
+            },
+            firstLastBtn: {
+                visible: true,
+                labels: ['<<', '>>']
+            },
             pageSizeOptions: [
                 {label: '4', rows: 4, default: true},
                 {label: '8', rows: 8},
