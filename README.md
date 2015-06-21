@@ -1,4 +1,4 @@
-# vsdatatable
+# vsdatatable v. 0.0.3
 
 **Simple single page datatable - AngularJS UI reusable component**
 
