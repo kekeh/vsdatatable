@@ -74,7 +74,7 @@ AngularJS directive which implements the datatable with many useful and configur
 
 ## Usage
 
-* add the **vsdatatable-0.0.3.min.js** and the **vsdatatable-0.0.3.min.css** files into your project. The files can be found from the **dist/min/** folder of this project.
+* include the **vsdatatable-0.0.3.min.js** and the **vsdatatable-0.0.3.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
 ```html
 <script src="vsdatatable-0.0.3.min.js"></script>
 <link href="vsdatatable-0.0.3.min.css" rel="stylesheet" type="text/css">
@@ -348,23 +348,20 @@ vsdatatableEvent.setExtPaginationData($scope, pagedItems, totalItems);
 * pagedItems - array of objects viewed in the table. Size of the array is one page in the vsdatatable.
 * totalItems - number of total items match to the search criteria.
 
-## Build
-Execute the **grunt** command without parameters and it will create the **dist/debug** and the **dist/min** directories. Needed CSS and javascript files are located in these directories.
-
 ## Demo
 In the **examples** folder of this project has the sample application and the online demo is [here](http://kekeh.github.io/vsdatatable)
 
 ## Dependencies
 Depends on AngularJS. Implemented using the AngularJS version 1.3.15. No other dependencies.
 
-## Building
+## Build project
 * Build can be done by executing the **grunt** command. It creates the **dist/debug** and the **dist/min** folders and put files to these folders.
 ```js
 grunt
 ```
 
 ## Installation
-* Installation can be done using the **bower**. It installs files from the **dist/debug** and the **dist/min** folders.
+* Installation can be done using the **bower**. It installs files from the **dist/debug** and the **dist/min** folders. Needed CSS and javascript files are located in these folders.
 ```js
 bower install vsdatatable
 ```
