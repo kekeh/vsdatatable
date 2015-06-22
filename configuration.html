@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+
+    <!-- vsdatatable demo needs these begin -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.js"></script>
+
+    <link href="demo/css/vsdatatable-0.0.3.css" rel="stylesheet" type="text/css">
+    <link href="demo/partials/css/rowextender.css" rel="stylesheet" type="text/css">
+    <link href="demo/partials/css/columntemplates.css" rel="stylesheet" type="text/css">
+
+    <script src="demo/js/vsdatatable-0.0.3.js"></script>
+    <script src="demo/sampleapp/sampleapp.js"></script>
+
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+    <!-- vsdatatable demo needs these end -->
+
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <a href="https://github.com/kekeh/vsdatatable"><img style="position: absolute; top: 0; right: 0; border: 0;"
+                                                        src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+                                                        alt="Fork me on GitHub"
+                                                        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+    <title>vsdatatable by kekeh</title>
+</head>
+
+<body>
+<header>
+    <div class="inner">
+        <h1>vsdatatable</h1>
+
+        <h2>Simple AngularJS single page datatable</h2>
+        <a href="https://github.com/kekeh/vsdatatable" class="button">
+            <small>View project on</small>
+            GitHub</a>
+    </div>
+</header>
+
+<div id="content-wrapper">
+    <div class="inner clearfix">
+        <section id="main-content">
+
+            <h2><a id="t1" class="anchor" href="#description" aria-hidden="true">
+                <span class="octicon octicon-link"></span></a>Example of the vsdatatable configuration</h2>
+
+<pre class="prettyprint linenums">
+$scope.opt = {
+    data: {
+        items: '',
+        dataOperationCb: onDataOperation, // See below the "Callback function" chapter
+        extDataPagination: false
+    },
+    caption: {
+        visible: true,
+        text: 'vsdatatable example'
+    },
+    showTooltips: true,
+    showOverlay: true,
+    headerVisible: true,
+    columnResize: true,
+    columns: [
+        {
+            prop: 'active',
+            label: 'Active',
+            textAlign: 'center',
+            sorting: true,
+            width: {number: 15, unit: '%'},
+            visible: true,
+            rules: [
+                {
+                    style: 'activeStyle',
+                    prop: 'active',
+                    expression: 'active === true'
+                },
+                {
+                    style: 'inactiveStyle',
+                    prop: 'active',
+                    expression: 'active === false'
+                }
+            ]
+        },
+        {
+            // Value from second level (property price from the car object)
+            prop: 'car.price',
+            label: 'Car.price',
+            textAlign: 'right',
+            sorting: true,
+            filter: {
+                template: colInputFilterTemplate,
+                match: 'contain'
+            },
+            width: {number: 20, unit: '%'},
+            visible: true,
+            rules: [
+                {
+                    style: 'carPriceStyleGreen',
+                    prop: 'car.price',
+                    expression: 'car.price >= 150000 && car.price <= 250000'
+                },
+                {
+                    style: 'carPriceStyleRed',
+                    prop: 'car.price',
+                    expression: 'car.price < 30000'
+                }
+            ]
+        },
+            // More columns ...
+    ],
+    row: {
+        selection: 1,               // 0=No, 1=Single, 2=Multiple
+        rowSelectCb: onRowSelect,   // See below the "Callback function" chapter
+        hover: true
+    },
+    columnToggler: {
+        visible: true,
+        btnTooltip: 'Select columns',
+        menuTitle: 'Columns'
+    },
+    filter: {
+        global: true,
+        column: true,
+        autoFilter: {
+            useAutoFilter: true,
+            filterDelay: 600
+        },
+        globalPlaceholder: 'Type filter...',
+        showFilterBtnTooltip: 'Show filter',
+        hideFilterBtnTooltip: 'Hide filter',
+        filterBtn: {
+            visible: true,
+            filterBtnTooltip: 'Filter'
+        }
+    },
+    paginator: {
+        visible: true,
+        numberBtnCount: 3,
+        prevNextBtn: {
+            visible: true,
+            labels: ['<', '>']
+        },
+        prevNextSetBtn: {
+            visible: false,
+            labels: ['...', '...']
+        },
+        firstLastBtn: {
+            visible: true,
+            labels: ['<<', '>>']
+        },
+        pageSizeOptions: [
+            {label: '4', rows: 4, default: true},
+            {label: '8', rows: 8},
+            {label: '16', rows: 16}],
+        pageSizeTxt: 'Page size: ',
+        totalItemsTxt: 'Total: '
+    },
+    useTemplates: true,
+    actionColumnText: 'Action',
+    templates: {
+        add: {
+            path: 'demo/partials/template/add_edit.html',
+            actionBtnShow: true,
+            btnTooltip: 'Add',
+            // Set car features default to 1 and active to false
+            defaultValues: {
+                car: {
+                    features: 1
+                },
+                active: false
+            }
+        },
+        edit: {
+            path: 'demo/partials/template/add_edit.html',
+            actionBtnShow: true,
+            btnTooltip: 'Edit'
+        },
+        delete: {
+            path: 'demo/partials/template/view_delete.html',
+            actionBtnShow: true,
+            btnTooltip: 'Delete'
+        },
+        view: {
+            path: 'demo/partials/template/view_delete.html',
+            actionBtnShow: true,
+            btnTooltip: 'View'
+        }
+    }
+};
+</pre>
+
+            <h2><a id="t2" class="anchor" href="#description" aria-hidden="true">
+                <span class="octicon octicon-link"></span></a>Callback function (onDataOperation)</h2>
+
+
+ <pre class="prettyprint linenums">
+// data operation (add, edit or delete) callback
+var onDataOperation = function (phase, operation, dataOld, dataNew) {
+    if (phase === vsdatatableConfig.OPER_PHASE_END
+        && operation === vsdatatableConfig.OPER_ADD) {
+        // add new item to the end of the array
+    }
+    else if (phase === vsdatatableConfig.OPER_PHASE_END
+        && operation === vsdatatableConfig.OPER_EDIT) {
+        // replace the old item with the new one
+    }
+    else if (phase === vsdatatableConfig.OPER_PHASE_END
+        && operation === vsdatatableConfig.OPER_DELETE) {
+        // delete the item from the array
+    }
+};
+</pre>
+
+
+            <h2><a id="t3" class="anchor" href="#t3" aria-hidden="true">
+                <span class="octicon octicon-link"></span></a>Callback function (onRowSelect)</h2>
+
+<pre class="prettyprint linenums">
+// row selected/deselected callback
+var onRowSelect = function (operation, rowData) {
+    // Handle row select
+};
+</pre>
+
+
+        </section>
+
+        <aside id="sidebar">
+            <a href="https://github.com/kekeh/vsdatatable/zipball/master" class="button">
+                <small>Download</small>
+                .zip file
+            </a>
+            <a href="https://github.com/kekeh/vsdatatable/tarball/master" class="button">
+                <small>Download</small>
+                .tar.gz file
+            </a>
+
+            <p class="repo-owner"><a href="https://github.com/kekeh/vsdatatable"></a> is maintained by <a
+                    href="https://github.com/kekeh">kekeh</a>.</p>
+
+            <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme
+                by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+    </div>
+</div>
+
+
+</body>
+</html>
