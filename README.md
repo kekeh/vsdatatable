@@ -357,6 +357,18 @@ In the **examples** folder of this project has the sample application and the on
 ## Dependencies
 Depends on AngularJS. Implemented using the AngularJS version 1.3.15. No other dependencies.
 
+## Building
+* Build can be done by executing the **grunt** command. It creates the **dist/debug** and the **dist/min** folders and put files to these folders.
+```js
+grunt
+```
+
+## Installation
+* Installation can be done using the **bower**. It installs files from the **dist/debug** and the **dist/min** folders.
+```js
+bower install vsdatatable
+```
+
 ## Compatibility (tested with)
 * IE 9+
 * Firefox 36.0.4
