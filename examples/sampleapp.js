@@ -258,14 +258,14 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
         actionColumnText: 'Action',
         templates: {
             add: {
-                path: 'partials/template/add_edit.html',
+                path: 'partials/add_edit.html',
                 actionBtnShow: true,
                 btnTooltip: 'Add',
                 defaultValues: {car: {features: 1}, active: false} // Set car features default to 1 and active to false
             },
-            edit: {path: 'partials/template/add_edit.html', actionBtnShow: true, btnTooltip: 'Edit'},
-            delete: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'Delete'},
-            view: {path: 'partials/template/view_delete.html', actionBtnShow: true, btnTooltip: 'View'}
+            edit: {path: 'partials/add_edit.html', actionBtnShow: true, btnTooltip: 'Edit'},
+            delete: {path: 'partials/view_delete.html', actionBtnShow: true, btnTooltip: 'Delete'},
+            view: {path: 'partials/view_delete.html', actionBtnShow: true, btnTooltip: 'View'}
         }
     };
 

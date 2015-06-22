@@ -28,10 +28,10 @@
     "karma.conf.js",
     "node_modules",
     "bower_components",
-    "./css",
-    "./js",
-    "./templates",
-    "./test"
+    "css",
+    "js",
+    "templates",
+    "test"
   ],
   "dependencies": {
     "angular": "1.3.x"
