@@ -12,8 +12,8 @@
     "url": "https://github.com/kekeh/vsdatatable.git"
   },
   "main": [
-    "vsdatatable.css",
-    "vsdatatable.js"
+    "dist/min/vsdatatable-0.0.3.min.css",
+    "dist/min/vsdatatable-0.0.3.min.js"
   ],
   "keywords": [
     "AngularJS",
@@ -24,8 +24,13 @@
   ],
   "ignore": [
     "**/.*",
+    "Gruntfile.js",
+    "karma.conf.js",
     "node_modules",
     "bower_components",
+    "css",
+    "js",
+    "templates",
     "test",
     "tests"
   ],
