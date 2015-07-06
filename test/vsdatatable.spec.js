@@ -1,9 +1,9 @@
-describe('vsdatatable', function() {
+describe('vsdatatable', function () {
     var elm, scope;
 
     beforeEach(module('vsdatatable'));
 
-    beforeEach(inject(function($rootScope, $compile, vsdatatableEvent) {
+    beforeEach(inject(function ($rootScope, $compile, vsdatatableEvent) {
         scope = $rootScope;
 
         eventapi = vsdatatableEvent;
@@ -126,10 +126,10 @@ describe('vsdatatable', function() {
                     labels: ['first', 'last']
                 },
                 pageSizeOptions: [
-                    {label: '4', rows: 4},
+                    {label: '4', rows: 4, default: false},
                     {label: '7', rows: 7, default: true},
-                    {label: '15', rows: 15},
-                    {label: '20', rows: 20}],
+                    {label: '15', rows: 15, default: false},
+                    {label: '20', rows: 20, default: false}],
                 pageSizeTxt: 'Page size: ',
                 totalItemsTxt: 'Total: '
             },
@@ -179,64 +179,162 @@ describe('vsdatatable', function() {
     }
 
 
-    it('is caption', function () {
+    it('caption', function () {
         expect(elm[0].querySelectorAll('.caption').length).toBe(1);
     });
 
-    it('is captionColToggler', function () {
+    it('captionColToggler', function () {
         expect(elm[0].querySelectorAll('.captionColToggler').length).toBe(1);
     });
 
-    it('is captionTitle', function () {
+    it('captionTitle', function () {
         expect(elm[0].querySelectorAll('.captionTitle').length).toBe(1);
     });
 
-    it('is captionTitle span', function () {
+    it('captionTitle span', function () {
         var tElem = elm[0].querySelectorAll('.captionTitle span');
         expect(angular.element(tElem).text()).toEqual('vsdatatable example');
     });
 
-    it('is captionFilter', function () {
+    it('captionFilter', function () {
         expect(elm[0].querySelectorAll('.captionFilter').length).toBe(1);
     });
 
-    it('is captionFilter input', function () {
+    it('captionFilter input', function () {
         expect(elm[0].querySelectorAll('.captionFilter input').length).toBe(1);
     });
 
-    it('is captionFilter input placeholder', function () {
+    it('captionFilter input placeholder', function () {
         var tElem = elm[0].querySelectorAll('.captionFilter input');
         expect(angular.element(tElem).attr('placeholder')).toEqual('Type filter...');
     });
 
-    it('is captionFilter span', function () {
+    it('captionFilter span', function () {
         expect(elm[0].querySelectorAll('.captionFilter span').length).toBe(2);
     });
 
-    it('is tableRows tableHeader headerRow', function () {
+    it('tableRows tableHeader headerRow', function () {
         expect(elm[0].querySelectorAll('.tableRows .tableHeader .headerRow').length).toBe(1);
     });
 
-    it('is tableRows tableHeader headerRow th', function () {
+    it('tableRows tableHeader headerRow th', function () {
         expect(elm[0].querySelectorAll('.tableRows .tableHeader .headerRow th').length).toBe(4);
     });
 
-    it('is tableRows tableHeader headerRow headerCol sortColIcon', function () {
+    it('tableRows tableHeader headerRow headerCol sortColIcon', function () {
         expect(elm[0].querySelectorAll('.tableRows .tableHeader .headerCol .sortColIcon').length).toBe(3);
     });
 
-    it('is tableRows headerColAction span', function () {
+    it('tableRows headerColAction span', function () {
         var tElem = elm[0].querySelectorAll('.tableRows .headerColAction span');
         expect(angular.element(tElem).text()).toEqual('Action');
     });
 
-    it('is tableRows headerColAction addItemIcon', function () {
+    it('tableRows headerColAction addItemIcon', function () {
         expect(elm[0].querySelectorAll('.tableRows .headerColAction .addItemIcon').length).toBe(1);
     });
 
 
+    it('tableRows tableBody bodyRow', function () {
+        expect(elm[0].querySelectorAll('.tableRows .tableBody .bodyRow').length).toBe(7);
+    });
+
+    it('tableRows tableBody bodyCol', function () {
+        expect(elm[0].querySelectorAll('.tableRows .tableBody .bodyCol').length).toBe(28);
+    });
+
+    it('tableRows tableBody bodyColAction', function () {
+        expect(elm[0].querySelectorAll('.tableRows .tableBody .bodyColAction').length).toBe(7);
+    });
+
+    it('tableRows tableBody bodyColAction icon-edit', function () {
+        expect(elm[0].querySelectorAll('.tableRows .tableBody .bodyColAction .icon-edit').length).toBe(7);
+    });
+
+    it('tableRows tableBody bodyColAction icon-clear', function () {
+        expect(elm[0].querySelectorAll('.tableRows .tableBody .bodyColAction .icon-clear').length).toBe(7);
+    });
+
+    it('tableRows tableBody bodyColAction icon-view', function () {
+        expect(elm[0].querySelectorAll('.tableRows .tableBody .bodyColAction .icon-view').length).toBe(7);
+    });
 
 
+    it('tableFooter', function () {
+        expect(elm[0].querySelectorAll('.tableFooter').length).toBe(1);
+    });
 
+    it('paginator', function () {
+        expect(elm[0].querySelectorAll('.paginator').length).toBe(1);
+    });
+
+    it('paginator paginatorTxt', function () {
+        expect(elm[0].querySelectorAll('.paginator .paginatorTxt').length).toBe(2);
+        var tElem = elm[0].querySelectorAll('.paginator .paginatorTxt');
+        expect(angular.element(tElem).text()).toEqual('Total: Page size: ');
+    });
+
+    it('paginator paginatorTotalNbr', function () {
+        expect(elm[0].querySelectorAll('.paginator .paginatorTotalNbr').length).toBe(1);
+        var tElem = elm[0].querySelectorAll('.paginator .paginatorTotalNbr');
+        expect(angular.element(tElem).text()).toEqual('50');
+    });
+
+    it('paginator paginatorPagesNbr', function () {
+        expect(elm[0].querySelectorAll('.paginator .paginatorPagesNbr').length).toBe(1);
+        var tElem = elm[0].querySelectorAll('.paginator .paginatorPagesNbr');
+        expect(angular.element(tElem).text()).toEqual('(1/8)');
+    });
+
+    it('paginator paginatorBtn', function () {
+        expect(elm[0].querySelectorAll('.paginator .paginatorBtn').length).toBe(13);
+    });
+
+    it('paginator selectedPaginatorBtn', function () {
+        expect(elm[0].querySelectorAll('.paginator .selectedPaginatorBtn').length).toBe(2);
+        var tElem = elm[0].querySelectorAll('.paginator .selectedPaginatorBtn');
+        expect(angular.element(tElem[0]).text().trim()).toEqual('1');
+        expect(angular.element(tElem[1]).text().trim()).toEqual('7');
+    });
+
+    it('paginator paginatorBtnPageSize', function () {
+        expect(elm[0].querySelectorAll('.paginator .paginatorBtnPageSize').length).toBe(4);
+        var tElem = elm[0].querySelectorAll('.paginator .paginatorBtnPageSize');
+        expect(angular.element(tElem[0]).text().trim()).toEqual('4');
+        expect(angular.element(tElem[1]).text().trim()).toEqual('7');
+        expect(angular.element(tElem[2]).text().trim()).toEqual('15');
+        expect(angular.element(tElem[3]).text().trim()).toEqual('20');
+    });
+
+    it('colTogglerMenu', function () {
+        expect(elm[0].querySelectorAll('.colTogglerMenu').length).toBe(1);
+    });
+
+    it('colTogglerMenu colTogglerTitleTxt', function () {
+        expect(elm[0].querySelectorAll('.colTogglerMenu .colTogglerTitleTxt').length).toBe(1);
+        var tElem = elm[0].querySelectorAll('.colTogglerMenu .colTogglerTitleTxt');
+        expect(angular.element(tElem).text().trim()).toEqual('Columns');
+    });
+
+    it('colTogglerMenu colTogglerCloseIcon', function () {
+        expect(elm[0].querySelectorAll('.colTogglerMenu .colTogglerCloseIcon').length).toBe(1);
+    });
+
+    it('colTogglerMenu colTogglerMenuItem', function () {
+        expect(elm[0].querySelectorAll('.colTogglerMenu .colTogglerMenuItem').length).toBe(4);
+    });
+
+    it('colTogglerMenu colTogglerMenuItemTxt', function () {
+        expect(elm[0].querySelectorAll('.colTogglerMenu .colTogglerMenuItemTxt').length).toBe(4);
+        var tElem = elm[0].querySelectorAll('.colTogglerMenu .colTogglerMenuItemTxt');
+        expect(angular.element(tElem[0]).text().trim()).toEqual('Id number');
+        expect(angular.element(tElem[1]).text().trim()).toEqual('Car.price');
+        expect(angular.element(tElem[2]).text().trim()).toEqual('Car.features');
+        expect(angular.element(tElem[3]).text().trim()).toEqual('Car.age');
+    });
+
+    it('colTogglerMenu colTogglerMenuItemIcon', function () {
+        expect(elm[0].querySelectorAll('.colTogglerMenu .colTogglerMenuItemIcon').length).toBe(4);
+    });
 });
 
