@@ -1,13 +1,13 @@
 /* 
 *  Name: vsdatatable 
  *  Description: Simple single page datatable - AngularJS reusable UI component
- *  Version: 0.0.3
+ *  Version: 0.0.4
 *  Author: kekeh 
  *  Homepage: http://kekeh.github.io/vsdatatable
 *  License: MIT 
- *  Date: 2015-07-06
+ *  Date: 2015-07-12
  */
-angular.module('template-vsdatatable-0.0.3.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
+angular.module('template-vsdatatable-0.0.4.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
 angular.module("templates/vscoltogglemenu.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vscoltogglemenu.html",
@@ -133,8 +133,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "                <td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\"\n" +
       "                    ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\"\n" +
       "                    ng-style=\"{'text-align':col.textAlign}\"\n" +
-      "                    overlay-window=\"{{getPropertyValue(obj,col.prop)}}\"\n" +
-      "                    ng-class=\"getColumnStyle(obj,col)\">\n" +
+      "                    ng-class=\"getColumnStyle(obj,col)\"\n" +
+      "                    overlay-window=\"{{getPropertyValue(obj,col.prop)}}\">\n" +
       "                    {{getPropertyValue(obj,col.prop)}}\n" +
       "                </td>\n" +
       "                <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
@@ -160,6 +160,18 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
     "\n" +
       "        <div class=\"tableFooter\" table-paginator></div>\n" +
       "    </div>\n" +
+      "\n" +
+      "    <script type=\"text/ng-template\" id=\"vsoverlaywindow.html\">\n" +
+      "        <div class=\"overlay\" ng-click=\"closeOverlay($event)\"></div>\n" +
+      "    </script>\n" +
+      "\n" +
+      "    <script type=\"text/ng-template\" id=\"vstooltip.html\">\n" +
+      "        <div class=\"tooltip\"></div>\n" +
+      "    </script>\n" +
+      "\n" +
+      "    <script type=\"text/ng-template\" id=\"vscolresizer.html\">\n" +
+      "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\" style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;\"></div>\n" +
+      "    </script>\n" +
       "\n" +
       "</div>");
 }]);
@@ -207,7 +219,7 @@ angular.module("templates/vspaginator.html", []).run(["$templateCache", function
     "");
 }]);
 
-angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
+angular.module('vsdatatable', ["template-vsdatatable-0.0.4.html"])
 
 /**
  * @ngdoc object
@@ -280,7 +292,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
  * @name vsdatatableService
  * @description vsdatatableService provides internal functions to the vsdatable directives.
  */
-    .service('vsdatatableService', ['vsdatatableConfig', function (vsdatatableConfig) {
+    .service('vsdatatableService', ['$http', '$templateCache', 'vsdatatableConfig', function ($http, $templateCache, vsdatatableConfig) {
         var service = {};
         service.isUndefined = function (val) {
             return angular.isUndefined(val);
@@ -301,6 +313,14 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
         service.paginatorEvent = function (scope) {
             scope.$broadcast(vsdatatableConfig.PAGINATOR_EVENT);
         };
+
+        service.getTemplate = function (name) {
+            var promise = $http.get(name, {cache: $templateCache}).success(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+
         return service;
     }])
 
@@ -1101,7 +1121,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
  * @name overlayWindow
  * @description overlayWindow directive implements overlay window to long values in the columns.
  */
-    .directive('overlayWindow', ['$compile', '$timeout', function ($compile, $timeout) {
+    .directive('overlayWindow', ['$compile', '$timeout', 'vsdatatableService', function ($compile, $timeout, vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
@@ -1117,11 +1137,13 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
                 function onMouseEnter() {
                     if (element[0].scrollWidth > element[0].offsetWidth) {
                         timer = $timeout(function () {
-                            overlay = angular.element('<div class="overlay" ng-click="closeOverlay($event)">' + attrs.overlayWindow + '</div>');
-                            overlay.css('margin-top', '-20px');
-                            overlay.css('margin-left', '14px');
-                            element.append(overlay);
-                            $compile(overlay)(scope);
+                            vsdatatableService.getTemplate('vsoverlaywindow.html').then(function (tpl) {
+                                overlay = angular.element(tpl.data);
+                                overlay.css('margin-top', '-20px');
+                                overlay.css('margin-left', '14px');
+                                overlay.text(attrs.overlayWindow);
+                                element.append($compile(overlay)(scope));
+                            });
                         }, scope.config.OVERLAY_SHOW_DELAY);
                     }
                 }
@@ -1161,7 +1183,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
  * @name vstooltip
  * @description vstooltip directive implements tooltips.
  */
-    .directive('vstooltip', ['$compile', '$timeout', function ($compile, $timeout) {
+    .directive('vstooltip', ['$compile', '$timeout', 'vsdatatableService', function ($compile, $timeout, vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
@@ -1184,9 +1206,12 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
                 }
 
                 function showTooltip() {
-                    tooltip = angular.element('<div class="tooltip" style="margin-left:' + (element.prop('offsetLeft')) + 'px;">' + attrs.vstooltip + '</div>');
-                    element.append(tooltip);
-                    $compile(tooltip)(scope);
+                    vsdatatableService.getTemplate('vstooltip.html').then(function (tpl) {
+                        tooltip = angular.element(tpl.data);
+                        tooltip.css('margin-left', element.prop('offsetLeft') + 'px');
+                        tooltip.text(attrs.vstooltip);
+                        element.append($compile(tooltip)(scope));
+                    });
                 }
 
                 function hideTooltip() {
@@ -1229,6 +1254,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
             scope: false,
             link: function (scope, element, attrs) {
                 var startPos = 0, nextElem = 0, currWidth = 0, nextWidth = 0, headerWidth = 0;
+                var colResizer = null;
 
                 function onResizeStart(event) {
                     event.preventDefault();
@@ -1289,14 +1315,14 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
 
                 function init() {
                     if (scope.options.columnResize) {
-                        // Column resizer styles
-                        var style = 'position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;';
-                        var colResizer = angular.element('<div class="colresizer" ng-click="$event.stopPropagation()" style="' + style + '"></div>');
-                        colResizer.on('mousedown', onResizeStart);
-                        element.css('background-clip', 'padding-box');
-                        element.css('position', 'relative');
-                        element.append(colResizer);
-                        $compile(colResizer)(scope);
+                        // Create column resizer
+                        vsdatatableService.getTemplate('vscolresizer.html').then(function (tpl) {
+                            colResizer = angular.element(tpl.data);
+                            colResizer.on('mousedown', onResizeStart);
+                            element.css('background-clip', 'padding-box');
+                            element.css('position', 'relative');
+                            element.append($compile(colResizer)(scope));
+                        });
                     }
                     if (scope.colInitDone) {
                         resetColumnsWidth();
@@ -1304,8 +1330,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.3.html"])
                 }
 
                 scope.$on('$destroy', function () {
-                    var colResizer = element[0].querySelector('.colresizer');
-                    angular.element(colResizer).off('mousedown', onResizeStart);
+                    colResizer.off('mousedown', onResizeStart);
                     resetColumnsWidth();
                 });
 

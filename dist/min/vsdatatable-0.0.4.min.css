@@ -284,8 +284,15 @@
     padding: 6px;
     z-index: 2;
     max-width: 300px;
-    white-space: normal;
     font-weight: 400
+}
+
+.vsdatatable .overlay {
+    white-space: normal
+}
+
+.vsdatatable .tooltip {
+    white-space: nowrap
 }
 
 .vsdatatable .overlay:before {

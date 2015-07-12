@@ -93,8 +93,8 @@
                 <td class="bodyCol textOverflow" ng-repeat="col in options.columns track by $index"
                     ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible"
                     ng-style="{'text-align':col.textAlign}"
-                    overlay-window="{{getPropertyValue(obj,col.prop)}}"
-                    ng-class="getColumnStyle(obj,col)">
+                    ng-class="getColumnStyle(obj,col)"
+                    overlay-window="{{getPropertyValue(obj,col.prop)}}">
                     {{getPropertyValue(obj,col.prop)}}
                 </td>
                 <td class="bodyCol bodyColAction" ng-if="options.useTemplates">
@@ -120,5 +120,18 @@
 
         <div class="tableFooter" table-paginator></div>
     </div>
+
+    <script type="text/ng-template" id="vsoverlaywindow.html">
+        <div class="overlay" ng-click="closeOverlay($event)"></div>
+    </script>
+
+    <script type="text/ng-template" id="vstooltip.html">
+        <div class="tooltip"></div>
+    </script>
+
+    <script type="text/ng-template" id="vscolresizer.html">
+        <div class="colresizer" ng-click="$event.stopPropagation()"
+             style="position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;"></div>
+    </script>
 
 </div>

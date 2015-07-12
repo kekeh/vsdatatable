@@ -71,7 +71,7 @@ angular.module('vsdatatable', [])
  * @name vsdatatableService
  * @description vsdatatableService provides internal functions to the vsdatable directives.
  */
-    .service('vsdatatableService', ['vsdatatableConfig', function (vsdatatableConfig) {
+    .service('vsdatatableService', ['$http', '$templateCache', 'vsdatatableConfig', function ($http, $templateCache, vsdatatableConfig) {
         var service = {};
         service.isUndefined = function (val) {
             return angular.isUndefined(val);
@@ -92,6 +92,14 @@ angular.module('vsdatatable', [])
         service.paginatorEvent = function (scope) {
             scope.$broadcast(vsdatatableConfig.PAGINATOR_EVENT);
         };
+
+        service.getTemplate = function (name) {
+            var promise = $http.get(name, {cache: $templateCache}).success(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+
         return service;
     }])
 
@@ -892,7 +900,7 @@ angular.module('vsdatatable', [])
  * @name overlayWindow
  * @description overlayWindow directive implements overlay window to long values in the columns.
  */
-    .directive('overlayWindow', ['$compile', '$timeout', function ($compile, $timeout) {
+    .directive('overlayWindow', ['$compile', '$timeout', 'vsdatatableService', function ($compile, $timeout, vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
@@ -908,11 +916,13 @@ angular.module('vsdatatable', [])
                 function onMouseEnter() {
                     if (element[0].scrollWidth > element[0].offsetWidth) {
                         timer = $timeout(function () {
-                            overlay = angular.element('<div class="overlay" ng-click="closeOverlay($event)">' + attrs.overlayWindow + '</div>');
-                            overlay.css('margin-top', '-20px');
-                            overlay.css('margin-left', '14px');
-                            element.append(overlay);
-                            $compile(overlay)(scope);
+                            vsdatatableService.getTemplate('vsoverlaywindow.html').then(function (tpl) {
+                                overlay = angular.element(tpl.data);
+                                overlay.css('margin-top', '-20px');
+                                overlay.css('margin-left', '14px');
+                                overlay.text(attrs.overlayWindow);
+                                element.append($compile(overlay)(scope));
+                            });
                         }, scope.config.OVERLAY_SHOW_DELAY);
                     }
                 }
@@ -952,7 +962,7 @@ angular.module('vsdatatable', [])
  * @name vstooltip
  * @description vstooltip directive implements tooltips.
  */
-    .directive('vstooltip', ['$compile', '$timeout', function ($compile, $timeout) {
+    .directive('vstooltip', ['$compile', '$timeout', 'vsdatatableService', function ($compile, $timeout, vsdatatableService) {
         return {
             restrict: 'A',
             scope: false,
@@ -975,9 +985,12 @@ angular.module('vsdatatable', [])
                 }
 
                 function showTooltip() {
-                    tooltip = angular.element('<div class="tooltip" style="margin-left:' + (element.prop('offsetLeft')) + 'px;">' + attrs.vstooltip + '</div>');
-                    element.append(tooltip);
-                    $compile(tooltip)(scope);
+                    vsdatatableService.getTemplate('vstooltip.html').then(function (tpl) {
+                        tooltip = angular.element(tpl.data);
+                        tooltip.css('margin-left', element.prop('offsetLeft') + 'px');
+                        tooltip.text(attrs.vstooltip);
+                        element.append($compile(tooltip)(scope));
+                    });
                 }
 
                 function hideTooltip() {
@@ -1020,6 +1033,7 @@ angular.module('vsdatatable', [])
             scope: false,
             link: function (scope, element, attrs) {
                 var startPos = 0, nextElem = 0, currWidth = 0, nextWidth = 0, headerWidth = 0;
+                var colResizer = null;
 
                 function onResizeStart(event) {
                     event.preventDefault();
@@ -1080,14 +1094,14 @@ angular.module('vsdatatable', [])
 
                 function init() {
                     if (scope.options.columnResize) {
-                        // Column resizer styles
-                        var style = 'position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;';
-                        var colResizer = angular.element('<div class="colresizer" ng-click="$event.stopPropagation()" style="' + style + '"></div>');
-                        colResizer.on('mousedown', onResizeStart);
-                        element.css('background-clip', 'padding-box');
-                        element.css('position', 'relative');
-                        element.append(colResizer);
-                        $compile(colResizer)(scope);
+                        // Create column resizer
+                        vsdatatableService.getTemplate('vscolresizer.html').then(function (tpl) {
+                            colResizer = angular.element(tpl.data);
+                            colResizer.on('mousedown', onResizeStart);
+                            element.css('background-clip', 'padding-box');
+                            element.css('position', 'relative');
+                            element.append($compile(colResizer)(scope));
+                        });
                     }
                     if (scope.colInitDone) {
                         resetColumnsWidth();
@@ -1095,8 +1109,7 @@ angular.module('vsdatatable', [])
                 }
 
                 scope.$on('$destroy', function () {
-                    var colResizer = element[0].querySelector('.colresizer');
-                    angular.element(colResizer).off('mousedown', onResizeStart);
+                    colResizer.off('mousedown', onResizeStart);
                     resetColumnsWidth();
                 });
 
