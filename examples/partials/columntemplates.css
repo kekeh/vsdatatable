@@ -11,6 +11,8 @@
     -moz-box-shadow: inset 0 0 1px #1589FF;
     -webkit-box-shadow: inset 0 0 1px #1589FF;
     box-shadow: inset 0 0 1px #1589FF;
+    font-weight: normal;
+    font-size: 12px;
 }
 
 .columnTemplate .selectMenu {
