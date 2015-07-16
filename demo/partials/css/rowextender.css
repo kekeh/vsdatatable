@@ -91,6 +91,7 @@
     padding: 2px;
     min-width: 85px;
     height: 30px;
+    font-size: 14px;
 }
 
 .vsdatatable .rowExtenderBtn:enabled {
