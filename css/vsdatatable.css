@@ -25,6 +25,11 @@
     font-size: 14px;
 }
 
+.vsdatatable table {
+    display: table;
+    color: #000;
+}
+
 .vsdatatable table,
 .vsdatatable table tr,
 .vsdatatable table td,
@@ -33,6 +38,7 @@
     border: none;
     text-align: left;
     line-height: 1.1;
+    padding: 0;
 }
 
 /*

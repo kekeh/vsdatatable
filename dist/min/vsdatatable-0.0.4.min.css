@@ -21,11 +21,17 @@
     font-size: 14px
 }
 
+.vsdatatable table {
+    display: table;
+    color: #000
+}
+
 .vsdatatable table, .vsdatatable table td, .vsdatatable table th, .vsdatatable table tr {
     border-collapse: collapse;
     border: none;
     text-align: left;
-    line-height: 1.1
+    line-height: 1.1;
+    padding: 0
 }
 
 .vsdatatable .caption, .vsdatatable .colTogglerTitle, .vsdatatable .extenderTitle, .vsdatatable .headerCol, .vsdatatable .tableFooter {

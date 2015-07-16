@@ -5,7 +5,7 @@
 *  Author: kekeh 
  *  Homepage: http://kekeh.github.io/vsdatatable
 *  License: MIT 
- *  Date: 2015-07-12
+ *  Date: 2015-07-16
  */
 angular.module('template-vsdatatable-0.0.4.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
@@ -170,7 +170,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "    </script>\n" +
       "\n" +
       "    <script type=\"text/ng-template\" id=\"vscolresizer.html\">\n" +
-      "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\" style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;\"></div>\n" +
+      "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\"\n" +
+      "             style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;\"></div>\n" +
       "    </script>\n" +
       "\n" +
       "</div>");
