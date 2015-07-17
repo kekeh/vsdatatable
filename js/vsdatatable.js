@@ -916,7 +916,7 @@ angular.module('vsdatatable', [])
                 function onMouseEnter() {
                     if (element[0].scrollWidth > element[0].offsetWidth) {
                         timer = $timeout(function () {
-                            vsdatatableService.getTemplate('vsoverlaywindow.html').then(function (tpl) {
+                            vsdatatableService.getTemplate('datatableoverlaywindow.html').then(function (tpl) {
                                 overlay = angular.element(tpl.data);
                                 overlay.css('margin-top', '-20px');
                                 overlay.css('margin-left', '14px');
@@ -985,7 +985,7 @@ angular.module('vsdatatable', [])
                 }
 
                 function showTooltip() {
-                    vsdatatableService.getTemplate('vstooltip.html').then(function (tpl) {
+                    vsdatatableService.getTemplate('datatabletooltip.html').then(function (tpl) {
                         tooltip = angular.element(tpl.data);
                         tooltip.css('margin-left', element.prop('offsetLeft') + 'px');
                         tooltip.text(attrs.vstooltip);
@@ -1095,7 +1095,7 @@ angular.module('vsdatatable', [])
                 function init() {
                     if (scope.options.columnResize) {
                         // Create column resizer
-                        vsdatatableService.getTemplate('vscolresizer.html').then(function (tpl) {
+                        vsdatatableService.getTemplate('datatablecolresizer.html').then(function (tpl) {
                             colResizer = angular.element(tpl.data);
                             colResizer.on('mousedown', onResizeStart);
                             element.css('background-clip', 'padding-box');

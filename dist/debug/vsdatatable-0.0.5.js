@@ -1,13 +1,13 @@
 /* 
 *  Name: vsdatatable 
  *  Description: Simple single page datatable - AngularJS reusable UI component
- *  Version: 0.0.4
+ *  Version: 0.0.5
 *  Author: kekeh 
  *  Homepage: http://kekeh.github.io/vsdatatable
 *  License: MIT 
- *  Date: 2015-07-16
+ *  Date: 2015-07-17
  */
-angular.module('template-vsdatatable-0.0.4.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
+angular.module('template-vsdatatable-0.0.5.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
 
 angular.module("templates/vscoltogglemenu.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vscoltogglemenu.html",
@@ -161,15 +161,15 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "        <div class=\"tableFooter\" table-paginator></div>\n" +
       "    </div>\n" +
       "\n" +
-      "    <script type=\"text/ng-template\" id=\"vsoverlaywindow.html\">\n" +
+      "    <script type=\"text/ng-template\" id=\"datatableoverlaywindow.html\">\n" +
       "        <div class=\"overlay\" ng-click=\"closeOverlay($event)\"></div>\n" +
       "    </script>\n" +
       "\n" +
-      "    <script type=\"text/ng-template\" id=\"vstooltip.html\">\n" +
+      "    <script type=\"text/ng-template\" id=\"datatabletooltip.html\">\n" +
       "        <div class=\"tooltip\"></div>\n" +
       "    </script>\n" +
       "\n" +
-      "    <script type=\"text/ng-template\" id=\"vscolresizer.html\">\n" +
+      "    <script type=\"text/ng-template\" id=\"datatablecolresizer.html\">\n" +
       "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\"\n" +
       "             style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;\"></div>\n" +
       "    </script>\n" +
@@ -220,7 +220,7 @@ angular.module("templates/vspaginator.html", []).run(["$templateCache", function
     "");
 }]);
 
-angular.module('vsdatatable', ["template-vsdatatable-0.0.4.html"])
+angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
 
 /**
  * @ngdoc object
@@ -1138,7 +1138,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.4.html"])
                 function onMouseEnter() {
                     if (element[0].scrollWidth > element[0].offsetWidth) {
                         timer = $timeout(function () {
-                            vsdatatableService.getTemplate('vsoverlaywindow.html').then(function (tpl) {
+                            vsdatatableService.getTemplate('datatableoverlaywindow.html').then(function (tpl) {
                                 overlay = angular.element(tpl.data);
                                 overlay.css('margin-top', '-20px');
                                 overlay.css('margin-left', '14px');
@@ -1207,7 +1207,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.4.html"])
                 }
 
                 function showTooltip() {
-                    vsdatatableService.getTemplate('vstooltip.html').then(function (tpl) {
+                    vsdatatableService.getTemplate('datatabletooltip.html').then(function (tpl) {
                         tooltip = angular.element(tpl.data);
                         tooltip.css('margin-left', element.prop('offsetLeft') + 'px');
                         tooltip.text(attrs.vstooltip);
@@ -1317,7 +1317,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.4.html"])
                 function init() {
                     if (scope.options.columnResize) {
                         // Create column resizer
-                        vsdatatableService.getTemplate('vscolresizer.html').then(function (tpl) {
+                        vsdatatableService.getTemplate('datatablecolresizer.html').then(function (tpl) {
                             colResizer = angular.element(tpl.data);
                             colResizer.on('mousedown', onResizeStart);
                             element.css('background-clip', 'padding-box');
