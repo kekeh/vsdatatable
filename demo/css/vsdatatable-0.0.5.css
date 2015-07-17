@@ -494,7 +494,7 @@
     font-style: normal;
 }
 
-.icon {
+.vsdatatable .icon {
     font-family: 'vsdatatable';
     color: #000;
     background: transparent !important;
@@ -503,54 +503,54 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-check:before {
+.vsdatatable .icon-check:before {
     content: "\e600";
 }
 
-.icon-clear:before {
+.vsdatatable .icon-clear:before {
     content: "\e601";
 }
 
-.icon-cross:before {
+.vsdatatable .icon-cross:before {
     content: "\e602";
 }
 
-.icon-down:before {
+.vsdatatable .icon-down:before {
     content: "\e603";
 }
 
-.icon-edit:before {
+.vsdatatable .icon-edit:before {
     content: "\e604";
 }
 
-.icon-left:before {
+.vsdatatable .icon-left:before {
     content: "\e605";
 }
 
-.icon-plus:before {
+.vsdatatable .icon-plus:before {
     content: "\e606";
 }
 
-.icon-right:before {
+.vsdatatable .icon-right:before {
     content: "\e607";
 }
 
-.icon-search:before {
+.vsdatatable .icon-search:before {
     content: "\e608";
 }
 
-.icon-selections:before {
+.vsdatatable .icon-selections:before {
     content: "\e609";
 }
 
-.icon-sort:before {
+.vsdatatable .icon-sort:before {
     content: "\e60a";
 }
 
-.icon-up:before {
+.vsdatatable .icon-up:before {
     content: "\e60b";
 }
 
-.icon-view:before {
+.vsdatatable .icon-view:before {
     content: "\e60c";
 }
