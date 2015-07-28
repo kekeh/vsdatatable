@@ -24,7 +24,7 @@ sampleapp.controller('extenderctrl', function ($scope) {
  * @name sampleappctrl
  * @description Sample application controller. This controller uses the vsdatatable.
  */
-sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig, vsdatatableEvent) {
+sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf, vsdtEvent) {
 
     // Header column filter templates
     var colInputFilterTemplate =
@@ -47,18 +47,18 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
     // data operation (add, edit or delete) callback
     var onDataOperation = function (phase, operation, dataOld, dataNew) {
         console.log('*** PARENT - onDataOperation: phase: ', phase, ' - operation: ', operation, ' - dataOld: ', dataOld, ' - dataNew: ', dataNew);
-        if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_ADD) {
+        if (phase === vsdtConf.OPER_PHASE_END && operation === vsdtConf.OPER_ADD) {
             // add new item to the end of the array
             $scope.jsonData.push(dataNew);
         }
-        else if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_EDIT) {
+        else if (phase === vsdtConf.OPER_PHASE_END && operation === vsdtConf.OPER_EDIT) {
             // replace the old item with the new one
             var idx = $scope.jsonData.indexOf(dataOld);
             if (idx !== -1) {
                 $scope.jsonData[idx] = dataNew;
             }
         }
-        else if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_DELETE) {
+        else if (phase === vsdtConf.OPER_PHASE_END && operation === vsdtConf.OPER_DELETE) {
             // delete the item from the array
             var idx = $scope.jsonData.indexOf(dataOld);
             if (idx !== -1) {
@@ -82,7 +82,6 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdatatableConfig
             extDataPagination: false
         },
         caption: {
-            visible: true,
             text: 'vsdatatable example'
         },
         showTooltips: true,
