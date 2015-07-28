@@ -1,6 +1,6 @@
-# vsdatatable v. 0.0.5
+# vsdatatable v. 0.1.0
 
-**Simple single page datatable - AngularJS UI reusable component**
+**Simple single page datatable - AngularJS reusable UI component**
 
 ## Description
 AngularJS directive which implements the datatable with many useful and configurable features.
@@ -11,13 +11,13 @@ AngularJS directive which implements the datatable with many useful and configur
 ### 2. paginator
 * pagination from the external data source is also supported (for example database).
 * configurable buttons
- - to first page
- - to previous page
- - to previous set of pages
- - to page numbered
- - to next set of pages
- - to next page
- - to last page
+  - to first page
+  - to previous page
+  - to previous set of pages
+  - to page numbered
+  - to next set of pages
+  - to next page
+  - to last page
 * configurable page size selector
 * scrollbar is not supported
 
@@ -74,10 +74,10 @@ AngularJS directive which implements the datatable with many useful and configur
 
 ## Usage
 
-* include the **vsdatatable-0.0.5.min.js** and the **vsdatatable-0.0.5.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
+* include the **vsdatatable-0.1.0.min.js** and the **vsdatatable-0.1.0.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
 ```html
-<script src="vsdatatable-0.0.5.min.js"></script>
-<link href="vsdatatable-0.0.5.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.1.0.min.js"></script>
+<link href="vsdatatable-0.1.0.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
@@ -112,10 +112,9 @@ angular.module('vssampleapp', ['vsdatatable']);
 | **data** | Object which contain sub properties. | See below. | yes |
 | data.**items** | Array of data shown in the vsdatable. Contains all items. This is used when **not** using external pagination. | array of objects | Depends on is external pagination used. yes/no |
 | data.**dataOperationCb** | Data operation (add, edit, delete or view) callback. The function is called twice (OPER_PHASE_BEGIN and OPER_PHASE_END) during one operation. | function. See the **dataOperationCb** chapter below. | no |
-| data.**extDataPagination** | Boolean indicating is external or internal data pagination used. If **true** the data is paged from external source and the function **vsdatatableEvent.setExtPaginationData** is used. If **false** the all data is given with the data.**items** property.| true/false | yes |
+| data.**extDataPagination** | Boolean indicating is external or internal data pagination used. If **true** the data is paged from external source and the function **vsdtEvent.setExtPaginationData** is used. If **false** the all data is given with the data.**items** property.| true/false | yes |
 | data.**extPaginationOperationCb** | Data pagination callback used only if the previous property is **true**. | function. See the **extPaginationOperationCb** chapter below. | no |
 | **caption** | Object which contain sub properties. | See below. | yes |
-| caption.**visible** | Is vsdatatable caption visible or not. | true or false | yes |
 | caption.**text** | Caption text. | User defined text. | no |
 | **busyIcon** | Object which contain sub properties. | See below. | yes |
 | busyIcon.**visible** | Is busy icon visible or not. Busy icon works only if external pagination is used. The **data.extDataPagination** is **true**. The busy icon blocks the vsdatatable UI during data load. | true or false | yes |
@@ -137,7 +136,7 @@ angular.module('vssampleapp', ['vsdatatable']);
 | filter.**global** | Is global filter enabled or not. | true or false | yes |
 | filter.**column** | Is column filter enabled or not. See the **column configuration object** chapter about the **filter** property. | true or false | yes |
 | **filter.autoFilter** | Object which contain sub properties. | See below. | yes |
-| filter.autoFilter.**useAutoFilter** | Is auto filter used or not. Auto filter call automatically filter when user types text to filter box after the defined delay. See next property. | true or false | yes |
+| filter.autoFilter.**useAutoFilter** | Is auto filter used or not. Auto filter call automatically filter when user types text to filter box after the defined delay. See next property. If this is **false** set also **filter.filterBtn.visible** to **true** to enable filter button. | true or false | yes |
 | filter.autoFilter.**filterDelay** | Delay in millisecond. When the user stop typing filter is execute automatically after this time. | number | yes if the previous property is true |
 | filter.**globalPlaceholder** | Global filter input box placeholder text. | text | yes |
 | filter.**showFilterBtnTooltip** | Show filter button tooltip. | text | yes |
@@ -173,13 +172,13 @@ Example of the function. See description of the parameters below the example.
 
 ```js
 var onDataOperation = function (phase, operation, dataOld, dataNew) {
-    if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_ADD) {
+    if (phase === vsdtConf.OPER_PHASE_END && operation === vsdtConf.OPER_ADD) {
     }
-    else if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_EDIT) {
+    else if (phase === vsdtConf.OPER_PHASE_END && operation === vsdtConf.OPER_EDIT) {
     }
-    else if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_DELETE) {
+    else if (phase === vsdtConf.OPER_PHASE_END && operation === vsdtConf.OPER_DELETE) {
     }
-    else if (phase === vsdatatableConfig.OPER_PHASE_END && operation === vsdatatableConfig.OPER_VIEW) {
+    else if (phase === vsdtConf.OPER_PHASE_END && operation === vsdtConf.OPER_VIEW) {
     }
 };
 ```
@@ -189,8 +188,8 @@ var onDataOperation = function (phase, operation, dataOld, dataNew) {
 | dataOperationCb | phase (begin or end), operation (add, edit, delete or view), dataOld, dataNew  | Called when the user start and end the operation. |
 
 ##### Parameters
-* phase - vsdatatableConfig.OPER_PHASE_BEGIN or vsdatatableConfig.OPER_PHASE_END.
-* operation - vsdatatableConfig.OPER_ADD, vsdatatableConfig.OPER_EDIT, vsdatatableConfig.OPER_DELETE or vsdatatableConfig.OPER_VIEW.
+* phase - vsdtConf.OPER_PHASE_BEGIN or vsdtConf.OPER_PHASE_END.
+* operation - vsdtConf.OPER_ADD, vsdtConf.OPER_EDIT, vsdtConf.OPER_DELETE or vsdtConf.OPER_VIEW.
 * dataOld - the old data of the row if the data has changed during the operation.
 * dataNew - the new data of the row if the data has changed during the operation.
 
@@ -275,7 +274,7 @@ var onRowSelect = function (operation, rowData) {
 | rowSelectCb | operation and rowData | Called when the user selects row(s) from the UI. |
 
 ##### Parameters
-* operation - vsdatatableConfig.SELECT or vsdatatableConfig.DESELECT.
+* operation - vsdtConf.SELECT or vsdtConf.DESELECT.
 * rowData - JSON object containing the selected/deselected row data.
 
 
@@ -326,17 +325,17 @@ templates: {
 ### Javascript example
 ```js
 var sampleapp = angular.module('vssampleapp', ['vsdatatable']);
-sampleapp.controller('vsDatatableCtrl', function ($scope, vsdatatableConfig, vsdatatableEvent) {
+sampleapp.controller('vsDatatableCtrl', function ($scope, vsdtConf, vsdtEvent) {
 ```
 
-By injecting the **vsdatatableConfig** the parent can change some of the default configuration values of the vsdatatable.
-By injecting the **vsdatatableEvent** the parent can send pagination data to the vsdatatable. This method is used only 
+By injecting the **vsdtConf** the parent can change some of the default configuration values of the vsdatatable.
+By injecting the **vsdtEvent** the parent can send pagination data to the vsdatatable. This method is used only 
 if the data is paginated from external data source and the parent handles paging, filtering and sorting.
 
 Example of the function. See description of the parameters below the example.
 
 ```js
-vsdatatableEvent.setExtPaginationData($scope, pagedItems, totalItems);
+vsdtEvent.setExtPaginationData($scope, pagedItems, totalItems);
 ```
 
 | Function | Parameters | Description | 
@@ -355,7 +354,7 @@ In the **examples** folder of this project has the sample application and the on
 Depends on AngularJS. Implemented using the AngularJS version 1.3.15. No other dependencies.
 
 ## Build project
-* Build can be done by executing the **grunt** command. It creates the **dist/debug** and the **dist/min** folders and put files to these folders.
+* Build can be done by executing the **grunt** command. It creates the **dist/debug** and the **dist/min** folders and put needed files to these folders.
 ```js
 grunt
 ```

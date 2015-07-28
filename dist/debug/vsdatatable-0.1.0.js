@@ -1,186 +1,118 @@
 /* 
 *  Name: vsdatatable 
  *  Description: Simple single page datatable - AngularJS reusable UI component
- *  Version: 0.0.5
+ *  Version: 0.1.0
 *  Author: kekeh 
  *  Homepage: http://kekeh.github.io/vsdatatable
 *  License: MIT 
- *  Date: 2015-07-17
+ *  Date: 2015-07-28
  */
-angular.module('template-vsdatatable-0.0.5.html', ['templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
+angular.module('template-vsdatatable-0.1.0.html', ['templates/vscaption.html', 'templates/vscoltogglemenu.html', 'templates/vsdatatable.html', 'templates/vspaginator.html']);
+
+angular.module("templates/vscaption.html", []).run(["$templateCache", function ($templateCache) {
+    $templateCache.put("templates/vscaption.html",
+        "<div class=\"caption\">\n" +
+        "    <table style=\"width:100%\">\n" +
+        "        <tr>\n" +
+        "            <td class=\"captionColToggler\" ng-show=\"options.columnToggler.visible\" ng-click=\"$event.stopPropagation()\"><div col-toggle-menu></div></td>\n" +
+        "            <td class=\"captionTitle\"><span ng-if=\"options.caption.text!==undefined\">{{options.caption.text}}</span></td>\n" +
+        "            <td class=\"captionFilter\">\n" +
+        "                <div ng-show=\"options.filter.global!==undefined&&options.filter.global||options.filter.column!==undefined&&options.filter.column\">\n" +
+        "                    <span ng-show=\"filterFocus&&options.filter.global\">\n" +
+        "                        <input class=\"filterTxtBox\" placeholder=\"{{options.filter.globalPlaceholder}}\" type=\"text\" ng-model=\"globalFilter\" ng-model-options=\"{debounce:options.filter.autoFilter.useAutoFilter?options.filter.autoFilter.filterDelay:config.FILTER_EXECUTION_DELAY}\" data-ng-trim=\"false\" filter-focus/>\n" +
+        "                        <span class=\"icon icon-check actionIcon filterIcon\" ng-show=\"{{options.filter.global&&options.filter.filterBtn.visible}}\" vstooltip=\"{{options.filter.filterBtn.filterBtnTooltip}}\" ng-click=\"execFilterAndSort()\" ng-keydown=\"checkEvent($event)?execFilterAndSort():null\" tabindex=\"0\"></span>\n" +
+        "                    </span>\n" +
+        "                    <span class=\"icon icon-search actionIcon searchIcon\" vstooltip=\"{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}\" ng-click=\"filterBtnClick($event)\" ng-keydown=\"filterBtnClick($event)\" tabindex=\"0\"></span>\n" +
+        "                </div>\n" +
+        "            </td>\n" +
+        "        </tr>\n" +
+        "    </table>\n" +
+        "</div>");
+}]);
 
 angular.module("templates/vscoltogglemenu.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vscoltogglemenu.html",
     "<div>\n" +
-    "    <span class=\"icon icon-selections actionIcon\" ng-click=\"colTogglerShowClicked($event)\"\n" +
-    "          ng-keydown=\"colTogglerShowClicked($event)\"\n" +
-    "          tabindex=\"0\" vstooltip=\"{{options.columnToggler.btnTooltip}}\"></span>\n" +
+    "    <span class=\"icon icon-selections actionIcon\" ng-click=\"colTogglerShowClicked($event)\" ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\" vstooltip=\"{{options.columnToggler.btnTooltip}}\"></span>\n" +
     "    <div class=\"colTogglerMenu\" ng-show=\"colTogglerShow\">\n" +
     "        <div class=\"colTogglerTitle\" ng-show=\"options.columnToggler.menuTitle !== undefined\">\n" +
     "            <span class=\"colTogglerTitleTxt\">{{options.columnToggler.menuTitle}}</span> \n" +
-    "            <span class=\"icon icon-cross actionIcon colTogglerCloseIcon\" ng-click=\"colTogglerShowClicked($event)\"\n" +
-    "                  ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\"></span>\n" +
+    "            <span class=\"icon icon-cross actionIcon colTogglerCloseIcon\" ng-click=\"colTogglerShowClicked($event)\" ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\"></span>\n" +
     "        </div>\n" +
-    "        <div class=\"colTogglerMenuItem\" ng-repeat=\"h in options.columns\" ng-class=\"{'selectedColTogglerMenuItem':h.visible}\"\n" +
-    "             ng-click=\"colToggleMenuClicked($event,h)\"\n" +
-    "             ng-keydown=\"colToggleMenuClicked($event,h)\"\n" +
-    "             ng-model=\"h.visible\" tabindex=\"0\">\n" +
+    "        <div class=\"colTogglerMenuItem\" ng-repeat=\"h in options.columns\" ng-class=\"{'selectedColTogglerMenuItem':h.visible}\" ng-click=\"colToggleMenuClicked($event,h)\" ng-keydown=\"colToggleMenuClicked($event,h)\" ng-model=\"h.visible\" tabindex=\"0\">\n" +
     "            <div class=\"colTogglerMenuItemTxt\">{{h.label}}</div>\n" +
     "            <div class=\"colTogglerMenuItemIcon\">\n" +
     "                <span class=\"icon icon-check actionIcon\" ng-show=\"h.visible\"></span>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "</div>\n" +
-    "\n" +
-    "");
+    "</div>");
 }]);
 
 angular.module("templates/vsdatatable.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vsdatatable.html",
       "<div class=\"vsdatatable\" ng-style=\"{'pointer-events':busyIcon?'none':'auto'}\">\n" +
-    "\n" +
-      "    <div class=\"busyIconContainer\" ng-if=\"options.busyIcon.visible && busyIcon\">\n" +
-      "        <div class=\"busyIcon\"></div>\n" +
-      "        <div class=\"busyIconTxt\">{{options.busyIcon.text}}</div>\n" +
-    "    </div>\n" +
-    "\n" +
+      "    <div ng-if=\"options.busyIcon.visible\" ng-include=\"'datatablebusyicon.html'\"></div>\n" +
       "    <div ng-style=\"{'opacity':busyIcon?'0.4':'1'}\">\n" +
-      "        <div class=\"caption\" ng-show=\"options.caption.visible\">\n" +
-      "            <table style=\"width:100%;\">\n" +
-      "                <tr>\n" +
-      "                    <td class=\"captionColToggler\" ng-show=\"options.columnToggler.visible\"\n" +
-      "                        ng-click=\"$event.stopPropagation()\">\n" +
-      "                        <div col-toggle-menu></div>\n" +
-      "                    </td>\n" +
-      "                    <td class=\"captionTitle\">\n" +
-      "                        <span ng-if=\"options.caption.text!==undefined\">{{options.caption.text}}</span>\n" +
-      "                    </td>\n" +
-      "                    <td class=\"captionFilter\">\n" +
-      "                        <div ng-show=\"options.filter.global!==undefined&&options.filter.global||\n" +
-      "                                      options.filter.column!==undefined&&options.filter.column\">\n" +
-      "                            <input ng-show=\"filterFocus&&options.filter.global\"\n" +
-      "                                   placeholder=\"{{options.filter.globalPlaceholder}}\"\n" +
-      "                                   type=\"text\"\n" +
-      "                                   ng-model=\"globalFilter\"\n" +
-      "                                   ng-model-options=\"{debounce:options.filter.autoFilter.useAutoFilter?options.filter.autoFilter.filterDelay:config.FILTER_EXECUTION_DELAY}\"\n" +
-      "                                   data-ng-trim=\"false\"\n" +
-      "                                   filter-focus/>\n" +
-      "                            <span class=\"icon icon-check actionIcon\"\n" +
-      "                                  ng-show=\"{{filterFocus&&options.filter.global&&options.filter.filterBtn.visible}}\"\n" +
-      "                                  vstooltip=\"{{options.filter.filterBtn.filterBtnTooltip}}\"\n" +
-      "                                  ng-click=\"executeFilter();\" ng-keydown=\"checkEvent($event)?executeFilter():null\"\n" +
-      "                                  tabindex=\"0\"></span>\n" +
-      "                            <span class=\"icon icon-search actionIcon\"\n" +
-      "                                  vstooltip=\"{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}\"\n" +
-      "                                  ng-click=\"filterBtnClick($event)\"\n" +
-      "                                  ng-keydown=\"filterBtnClick($event)\"\n" +
-      "                                  tabindex=\"0\"></span>\n" +
-      "                        </div>\n" +
-      "                    </td>\n" +
-      "                </tr>\n" +
-      "            </table>\n" +
-      "        </div>\n" +
-    "\n" +
+      "        <div caption-bar></div>\n" +
       "        <table class=\"tableRows\">\n" +
       "            <thead class=\"tableHeader\" ng-if=\"options.headerVisible\">\n" +
-      "            <tr class=\"headerRow\">\n" +
-      "                <th class=\"headerCol textOverflow\"\n" +
-      "                    col-resizer\n" +
-      "                    ng-if=\"h.visible===undefined||h.visible\"\n" +
-      "                    ng-style=\"{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}\"\n" +
-      "                    ng-class=\"sort.col===h.prop&&h.sorting?'selectedHeaderCol':''\"\n" +
-      "                    ng-repeat=\"h in options.columns\"\n" +
-      "                    ng-click=\"h.sorting?sortByCol($event,h.prop):null\"\n" +
-      "                    ng-keydown=\"h.sorting?sortByCol($event,h.prop):null\">\n" +
-      "                    {{h.label}}\n" +
-      "                            <span class=\"icon sortColIcon\" ng-if=\"h.sorting\"\n" +
-      "                                  ng-class=\"{'selectedHeaderCol':sort.col===h.prop&&h.sorting,\n" +
-      "                                  'icon-sort':h.sorting&&sort.col!==h.prop,\n" +
-      "                                  'icon-down':sort.col===h.prop&&sort.reverse,\n" +
-      "                                  'icon-up':sort.col===h.prop&&!sort.reverse}\" tabindex=\"0\"></span>\n" +
-      "                            <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\"\n" +
-      "                                  ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=\"0\"></span>\n" +
-      "                </th>\n" +
-      "                <th id=\"headerColAction\" class=\"headerCol headerColAction\" ng-if=\"options.useTemplates\"\n" +
-      "                    ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\">\n" +
-      "                    <span>{{options.actionColumnText}}</span>\n" +
-      "                            <span class=\"icon icon-plus actionIcon addItemIcon\"\n" +
-      "                                  ng-if=\"options.templates.add.actionBtnShow\"\n" +
-      "                                  ng-click=\"addRow();\" ng-keydown=\"checkEvent($event)?addRow():null\"\n" +
-      "                                  vstooltip=\"{{options.templates.add.btnTooltip}}\"\n" +
-      "                                  tabindex=\"0\"></span>\n" +
-      "                </th>\n" +
-      "            </tr>\n" +
-    "\n" +
-      "            <tr ng-if=\"options.filter.column!==undefined&&options.filter.column&&filterFocus\">\n" +
-      "                <th class=\"headerCol\" ng-repeat=\"h in options.columns\" ng-show=\"h.visible===undefined||h.visible\"\n" +
-      "                    col-filter-template=\"h\">\n" +
-      "                </th>\n" +
-      "                <th class=\"headerCol headerColAction\"></th>\n" +
-      "            </tr>\n" +
-    "\n" +
+      "                <tr class=\"headerRow\">\n" +
+      "                    <th class=\"headerCol textOverflow\" col-resizer ng-if=\"h.visible===undefined||h.visible\" ng-style=\"{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}\" ng-class=\"sort.col===h.prop&&h.sorting?'selectedHeaderCol':''\" ng-repeat=\"h in options.columns\" ng-click=\"h.sorting?sortByCol($event,h.prop):null\" ng-keydown=\"h.sorting?sortByCol($event,h.prop):null\">\n" +
+      "                        {{h.label}}\n" +
+      "                        <span class=\"icon sortColIcon\" ng-if=\"h.sorting\" ng-class=\"{'selectedHeaderCol':sort.col===h.prop&&h.sorting, 'icon-sort':h.sorting&&sort.col!==h.prop, 'icon-down':sort.col===h.prop&&sort.reverse, 'icon-up':sort.col===h.prop&&!sort.reverse}\" tabindex=\"0\"></span>\n" +
+      "                        <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\" ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=\"0\"></span>\n" +
+      "                    </th>\n" +
+      "                    <th id=\"headerColAction\" class=\"headerCol headerColAction\" ng-if=\"options.useTemplates\" ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\">\n" +
+      "                        <span>{{options.actionColumnText}}</span>\n" +
+      "                        <span class=\"icon icon-plus actionIcon addItemIcon\" ng-if=\"options.templates.add.actionBtnShow\" ng-click=\"addRow();\" ng-keydown=\"checkEvent($event)?addRow():null\" vstooltip=\"{{options.templates.add.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                    </th>\n" +
+      "                </tr>\n" +
+      "                <tr ng-if=\"options.filter.column!==undefined&&options.filter.column&&filterFocus\">\n" +
+      "                    <th class=\"headerCol\" ng-repeat=\"h in options.columns\" ng-show=\"h.visible===undefined||h.visible\" col-filter-template=\"h\"></th>\n" +
+      "                    <th class=\"headerCol headerColAction\"></th>\n" +
+      "                </tr>\n" +
       "            </thead>\n" +
       "            <tbody class=\"tableBody\">\n" +
-      "            <tr class=\"bodyRow\" ng-repeat=\"obj in !extDataPagination?\n" +
-      "                            filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):\n" +
-      "                            filteredItems track by $index\"\n" +
-      "                ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\"\n" +
-      "                ng-click=\"rowClicked($event, obj)\"\n" +
-      "                ng-keydown=\"rowClicked($event, obj)\"\n" +
-      "                ng-class=\"{'selectedRow':isRowSelected(obj)}\"\n" +
-      "                table-body-row tabindex=\"0\">\n" +
-      "                <td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\"\n" +
-      "                    ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\"\n" +
-      "                    ng-style=\"{'text-align':col.textAlign}\"\n" +
-      "                    ng-class=\"getColumnStyle(obj,col)\"\n" +
-      "                    overlay-window=\"{{getPropertyValue(obj,col.prop)}}\">\n" +
-      "                    {{getPropertyValue(obj,col.prop)}}\n" +
-      "                </td>\n" +
-      "                <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
-      "                            <span class=\"icon icon-edit actionIcon\" ng-if=\"options.templates.edit.actionBtnShow\"\n" +
-      "                                  ng-click=\"editRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  ng-keydown=\"editRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  vstooltip=\"{{options.templates.edit.btnTooltip}}\"\n" +
-      "                                  tabindex=\"0\"></span>\n" +
-      "                            <span class=\"icon icon-clear actionIcon\" ng-if=\"options.templates.delete.actionBtnShow\"\n" +
-      "                                  ng-click=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  vstooltip=\"{{options.templates.delete.btnTooltip}}\"\n" +
-      "                                  tabindex=\"0\"></span>\n" +
-      "                            <span class=\"icon icon-view actionIcon\" ng-if=\"options.templates.view.actionBtnShow\"\n" +
-      "                                  ng-click=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
-      "                                  vstooltip=\"{{options.templates.view.btnTooltip}}\"\n" +
-      "                                  tabindex=\"0\"></span>\n" +
-      "                </td>\n" +
-      "            </tr>\n" +
+      "                <tr class=\"bodyRow\" ng-repeat=\"obj in !extDataPagination?filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):filteredItems track by $index\" ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\" ng-click=\"rowClicked($event, obj)\" ng-keydown=\"rowClicked($event, obj)\" ng-class=\"{'selectedRow':isRowSelected(obj)}\" table-body-row tabindex=\"0\">\n" +
+      "                    <td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\" ng-style=\"{'text-align':col.textAlign}\" ng-class=\"getColumnStyle(obj,col)\" overlay-window=\"{{getPropertyValue(obj,col.prop)}}\">\n" +
+      "                        {{getPropertyValue(obj,col.prop)}}\n" +
+      "                    </td>\n" +
+      "                    <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
+      "                        <span class=\"icon icon-edit actionIcon\" ng-if=\"options.templates.edit.actionBtnShow\" ng-click=\"editRow($event, obj);$event.stopPropagation()\" ng-keydown=\"editRow($event, obj);$event.stopPropagation()\" vstooltip=\"{{options.templates.edit.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                        <span class=\"icon icon-clear actionIcon\" ng-if=\"options.templates.delete.actionBtnShow\" ng-click=\"deleteRow($event, obj);$event.stopPropagation()\" ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\" vstooltip=\"{{options.templates.delete.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                        <span class=\"icon icon-view actionIcon\" ng-if=\"options.templates.view.actionBtnShow\" ng-click=\"viewRow($event, obj);$event.stopPropagation()\" ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\" vstooltip=\"{{options.templates.view.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                    </td>\n" +
+      "                </tr>\n" +
       "            </tbody>\n" +
       "        </table>\n" +
-    "\n" +
       "        <div class=\"tableFooter\" table-paginator></div>\n" +
-      "    </div>\n" +
-      "\n" +
+    "    </div>\n" +
+    "\n" +
       "    <script type=\"text/ng-template\" id=\"datatableoverlaywindow.html\">\n" +
       "        <div class=\"overlay\" ng-click=\"closeOverlay($event)\"></div>\n" +
       "    </script>\n" +
-      "\n" +
+    "\n" +
       "    <script type=\"text/ng-template\" id=\"datatabletooltip.html\">\n" +
       "        <div class=\"tooltip\"></div>\n" +
       "    </script>\n" +
-      "\n" +
+    "\n" +
       "    <script type=\"text/ng-template\" id=\"datatablecolresizer.html\">\n" +
-      "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\"\n" +
-      "             style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize;\"></div>\n" +
+      "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\" style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize\"></div>\n" +
       "    </script>\n" +
-      "\n" +
+    "\n" +
+      "    <script type=\"text/ng-template\" id=\"datatablebusyicon.html\">\n" +
+      "        <div class=\"busyIconContainer\" ng-show=\"busyIcon\">\n" +
+      "            <div class=\"busyIcon\"></div>\n" +
+      "            <div class=\"busyIconTxt\">{{options.busyIcon.text}}</div>\n" +
+      "        </div>\n" +
+      "    </script>\n" +
       "</div>");
 }]);
 
 angular.module("templates/vspaginator.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vspaginator.html",
-    "<table style=\"width: 100%;\">\n" +
-    "    <tbody>\n" +
+      "<table style=\"width: 100%\">\n" +
     "    <tr class=\"paginator\" ng-if=\"options.paginator.visible\">\n" +
     "        <td>\n" +
     "            <div style=\"float:left;\">\n" +
@@ -190,44 +122,28 @@ angular.module("templates/vspaginator.html", []).run(["$templateCache", function
     "            </div>\n" +
     "        </td>\n" +
     "        <td>\n" +
-    "            <button class=\"paginatorBtn\"\n" +
-    "                    ng-style=\"{'margin-left':$index>0?'-1px':'0'}\"\n" +
-    "                    ng-class=\"{'selectedPaginatorBtn':b.id===paginator.visiblePageIdx+1,\n" +
-    "                                   'disabledPaginatorBtn':isDisabledBtn(b),\n" +
-    "                                   'paginatorBtnNbr': !isNavigateBtn(b),\n" +
-    "                                   'paginatorBtnSet': b===btnPrevSet||b===btnNextSet,\n" +
-    "                                   'paginatorBtnAll': b===btnFirst||b===btnLast}\"\n" +
-    "                    ng-click=\"paginatorBtnClick(b,$index)\"\n" +
-    "                    ng-repeat=\"b in paginatorButtons track by $index\">\n" +
-    "                {{b.label}}\n" +
-    "            </button>\n" +
+      "            <button class=\"paginatorBtn\" ng-style=\"{'margin-left':$index>0?'-1px':'0'}\"\n" +
+      "                    ng-class=\"{'selectedPaginatorBtn':b.id===paginator.visiblePageIdx+1, 'disabledPaginatorBtn':isDisabledBtn(b), 'paginatorBtnNbr': !isNavigateBtn(b), 'paginatorBtnSet': b===btnPrevSet||b===btnNextSet, 'paginatorBtnAll': b===btnFirst||b===btnLast}\"\n" +
+      "                    ng-click=\"paginatorBtnClick(b,$index)\" ng-repeat=\"b in paginatorButtons track by $index\">{{b.label}}</button>\n" +
     "        </td>\n" +
     "        <td>\n" +
     "            <div style=\"float:right;\">\n" +
     "                <span class=\"paginatorTxt\">{{options.paginator.pageSizeTxt}}</span>\n" +
-    "                <button class=\"paginatorBtn paginatorBtnPageSize\"\n" +
-    "                        ng-style=\"{'margin-left':$index>0?'-1px':'0'}\"\n" +
-    "                        ng-class=\"{'selectedPaginatorBtn':o.rows===pageSize.rows}\"\n" +
-    "                        ng-click=\"pageSizeButtonClick(o)\"\n" +
-    "                        ng-repeat=\"o in pageSizeOptions track by $index\">{{o.label}}\n" +
-    "                </button>\n" +
+      "                <button class=\"paginatorBtn paginatorBtnPageSize\" ng-style=\"{'margin-left':$index>0?'-1px':'0'}\" ng-class=\"{'selectedPaginatorBtn':o.rows===pageSize.rows}\" ng-click=\"pageSizeButtonClick(o)\" ng-repeat=\"o in pageSizeOptions track by $index\">{{o.label}}</button>\n" +
     "            </div>\n" +
     "        </td>\n" +
     "    </tr>\n" +
-    "    </tbody>\n" +
-    "</table>\n" +
-    "\n" +
-    "");
+      "</table>");
 }]);
 
-angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
+angular.module('vsdatatable', ["template-vsdatatable-0.1.0.html"])
 
 /**
  * @ngdoc object
- * @name vsdatatableConfig
- * @description Constants of the module.
+ * @name vsdtConf
+ * @description Constants of the vsdatatable module.
  */
-    .constant('vsdatatableConfig', {
+    .constant('vsdtConf', {
         OVERLAY_SHOW_DELAY: 500,
         TOOLTIP_SHOW_DELAY: 500,
         TOOLTIP_CLOSE_DELAY: 1200,
@@ -261,68 +177,67 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
  * @name run
  * @description run adds the row extender template to the template cache.
  */
-    .run(function ($templateCache) {
+    .run(['$templateCache', function ($templateCache) {
         $templateCache.put('rowExtender.html', '<td class="bodyCol" colspan="{{visibleColCount+1}}"><div ng-include src="template.path"></div></td>');
-    })
+    }])
 
 /**
  * @ngdoc object
- * @name vsdatatableEvent
- * @description vsdatatableEvent provides one function which can be used to set pagination data to the
+ * @name vsdtEvent
+ * @description vsdtEvent provides one function which can be used to set pagination data to the
  * vsdatatable directive. This is used only when using pagination from external source (for example
  * from database).
  */
-    .factory('vsdatatableEvent', ['vsdatatableConfig', function (vsdatatableConfig) {
-        var factory = {};
+    .factory('vsdtEvent', ['vsdtConf', function (vsdtConf) {
+        var vsdtf = {};
         /**
          * @ngdoc function
-         * @description External pagination function to the parent.
+         * @description External pagination function to the parent. Called by the parent.
          * @name setExtPaginationData
          * @param $scope of the parent (caller)
          * @param data array of objects used in the vsdatatable. Array length is same as page size.
          * @param totalCount count of the items match the search criteria.
          */
-        factory.setExtPaginationData = function ($scope, data, totalCount) {
-            $scope.$broadcast(vsdatatableConfig.SET_EXT_PAGINATION_DATA_EVENT, {data: data, totalCount: totalCount});
+        vsdtf.setExtPaginationData = function ($scope, data, totalCount) {
+            $scope.$broadcast(vsdtConf.SET_EXT_PAGINATION_DATA_EVENT, {data: data, totalCount: totalCount});
         };
-        return factory;
+        return vsdtf;
     }])
 
 /**
  * @ngdoc object
- * @name vsdatatableService
- * @description vsdatatableService provides internal functions to the vsdatable directives.
+ * @name vsdtServ
+ * @description vsdtServ provides internal functions to the vsdatable directives.
  */
-    .service('vsdatatableService', ['$http', '$templateCache', 'vsdatatableConfig', function ($http, $templateCache, vsdatatableConfig) {
-        var service = {};
-        service.isUndefined = function (val) {
+    .service('vsdtServ', ['$http', '$templateCache', 'vsdtConf', function ($http, $templateCache, vsdtConf) {
+        var vsdts = {};
+        vsdts.isUndefined = function (val) {
             return angular.isUndefined(val);
         };
 
-        service.isEqual = function (a, b) {
+        vsdts.isEqual = function (a, b) {
             return angular.equals(a, b);
         };
 
-        service.isObject = function (val) {
+        vsdts.isObject = function (val) {
             return angular.isObject(val);
         };
 
-        service.setFilterFocus = function (scope) {
-            scope.$broadcast(vsdatatableConfig.FILTER_FOCUS_EVENT);
+        vsdts.setFilterFocus = function (scope) {
+            scope.$broadcast(vsdtConf.FILTER_FOCUS_EVENT);
         };
 
-        service.paginatorEvent = function (scope) {
-            scope.$broadcast(vsdatatableConfig.PAGINATOR_EVENT);
+        vsdts.paginatorEvent = function (scope) {
+            scope.$broadcast(vsdtConf.PAGINATOR_EVENT);
         };
 
-        service.getTemplate = function (name) {
-            var promise = $http.get(name, {cache: $templateCache}).success(function (response) {
-                return response.data;
+        vsdts.getTemplate = function (name) {
+            var p = $http.get(name, {cache: $templateCache}).success(function (resp) {
+                return resp.data;
             });
-            return promise;
+            return p;
         };
-
-        return service;
+        return vsdts;
     }])
 
 /**
@@ -331,7 +246,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
  * @description vsdatatable is main directive of the vsdatatable. Options is passed as an attribute to this
  * directive.
  */
-    .directive('vsdatatable', ['$compile', '$templateCache', '$filter', 'vsdatatableConfig', 'vsdatatableService', function ($compile, $templateCache, $filter, vsdatatableConfig, vsdatatableService) {
+    .directive('vsdatatable', ['$compile', '$templateCache', 'vsdtConf', 'vsdtServ', function ($compile, $templateCache, vsdtConf, vsdtServ) {
         return {
             restrict: 'EA',
             templateUrl: 'templates/vsdatatable.html',
@@ -339,34 +254,25 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 options: '='
             },
             controller: ['$scope', function ($scope) {
-                $scope.config = vsdatatableConfig;
-                $scope.colInitDone = false;
-                $scope.filteredItems = [];
+                $scope.config = vsdtConf;
+                $scope.colInitDone = false, $scope.colTogglerShow = false, $scope.busyIcon = false;
+                $scope.filteredItems = [], $scope.selectedRows = [];
                 $scope.totalCount = 0;
-                $scope.selectedRows = [];
-                $scope.colTogglerShow = false;
+                $scope.sort = {col: '', reverse: false};
+                $scope.globalFilter = '';
+                $scope.columnFilter = {contain: {}, exact: {}};
             }],
             link: function (scope, element, attrs) {
-                scope.filterFocus = false, scope.busyIcon = false;
-                scope.sort = {col: '', reverse: false};
-                scope.globalFilter = '';
-                scope.columnFilter = {contain: {}, exact: {}};
-
                 var extPendingOper = null;
                 var rowExtender = null;
                 var operObject = {};
-                var filterFocusWatch = null;
-                var filterChangeWatch = null;
                 var itemsLengthWatch = null;
-
-                var orderItems = $filter('orderBy');
-                var filterItems = $filter('filter');
 
                 scope.addRow = function () {
                     operObject = {
                         oper: scope.config.OPER_ADD,
                         dataOld: {},
-                        dataNew: vsdatatableService.isUndefined(scope.options.templates.add.defaultValues) ? {} : angular.copy(scope.options.templates.add.defaultValues)
+                        dataNew: vsdtServ.isUndefined(scope.options.templates.add.defaultValues) ? {} : angular.copy(scope.options.templates.add.defaultValues)
                     };
                     dataOperation(scope.config.OPER_PHASE_BEGIN);
                     scope.template = scope.options.templates.add;
@@ -403,47 +309,22 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
 
                 scope.acceptClicked = function () {
                     removeRowExtender();
-                    if (!scope.extDataPagination) {
-                        if (vsdatatableService.isEqual(operObject.oper, scope.config.OPER_ADD) || vsdatatableService.isEqual(operObject.oper, scope.config.OPER_DELETE)) {
-                            scope.resetFilter();
-                        }
-                        dataOperation(scope.config.OPER_PHASE_END);
-                        if (!vsdatatableService.isEqual(operObject.oper, scope.config.OPER_VIEW)) {
-                            execFilter();
-                        }
+                    dataOperation(scope.config.OPER_PHASE_END);
+                    if (!scope.extDataPagination && vsdtServ.isEqual(operObject.oper, scope.config.OPER_EDIT)) {
+                        scope.execFilter();
                     }
-                    else {
-                        dataOperation(scope.config.OPER_PHASE_END);
-                        if (!vsdatatableService.isEqual(operObject.oper, scope.config.OPER_VIEW)) {
-                            scope.paginationOperation(operObject.oper);
-                        }
+                    else if (scope.extDataPagination && !vsdtServ.isEqual(operObject.oper, scope.config.OPER_VIEW)) {
+                        scope.paginationOperation(operObject.oper);
                     }
-                    removeFromSelectedRows(operObject.dataOld);
+                    deselectRow(operObject.dataOld);
                 };
 
                 scope.cancelClicked = function () {
                     removeRowExtender();
                 };
 
-                scope.sortByCol = function (event, col) {
-                    event.stopPropagation();
-                    if (scope.checkEvent(event)) {
-                        scope.sort = vsdatatableService.isEqual(scope.sort.col, col) ? {
-                            col: col,
-                            reverse: !scope.sort.reverse
-                        } : {col: col, reverse: false};
-                        if (!scope.extDataPagination) {
-                            if (vsdatatableService.isEqual(col, '')) {
-                                execFilter();
-                            }
-                            execSort();
-                        }
-                        scope.paginationOperation(scope.config.EXT_SORT);
-                    }
-                };
-
                 scope.notifyRowSelect = function (oper, data) {
-                    if (!vsdatatableService.isUndefined(scope.options.row.rowSelectCb)) {
+                    if (!vsdtServ.isUndefined(scope.options.row.rowSelectCb)) {
                         scope.options.row.rowSelectCb(oper, data);
                     }
                 };
@@ -453,10 +334,10 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                     scope.filteredItems = value.data;
                     scope.totalCount = value.totalCount;
 
-                    if (!vsdatatableService.isEqual(extPendingOper, scope.config.EXT_BTN)
-                        && !vsdatatableService.isEqual(extPendingOper, scope.config.OPER_EDIT)
-                        && !vsdatatableService.isEqual(extPendingOper, scope.config.EXT_SORT)) {
-                        vsdatatableService.paginatorEvent(scope);
+                    if (!vsdtServ.isEqual(extPendingOper, scope.config.EXT_BTN)
+                        && !vsdtServ.isEqual(extPendingOper, scope.config.OPER_EDIT)
+                        && !vsdtServ.isEqual(extPendingOper, scope.config.EXT_SORT)) {
+                        vsdtServ.paginatorEvent(scope);
                     }
 
                     if (scope.options.busyIcon.visible) {
@@ -469,7 +350,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 };
 
                 scope.getOperationDataObject = function () {
-                    if (vsdatatableService.isEqual(operObject.oper, scope.config.OPER_ADD) || vsdatatableService.isEqual(operObject.oper, scope.config.OPER_EDIT)) {
+                    if (vsdtServ.isEqual(operObject.oper, scope.config.OPER_ADD) || vsdtServ.isEqual(operObject.oper, scope.config.OPER_EDIT)) {
                         return {oper: operObject.oper, data: operObject.dataNew};
                     }
                     else {
@@ -478,7 +359,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 };
 
                 scope.getPropertyValue = function (obj, prop) {
-                    if (vsdatatableService.isEqual(prop.indexOf(scope.config.DOT_SEPARATOR), -1)) {
+                    if (vsdtServ.isEqual(prop.indexOf(scope.config.DOT_SEPARATOR), -1)) {
                         return obj[prop];
                     }
                     // Nested object
@@ -491,7 +372,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 };
 
                 scope.getColumnStyle = function (obj, colOpt) {
-                    if (!vsdatatableService.isUndefined(colOpt.rules)) {
+                    if (!vsdtServ.isUndefined(colOpt.rules)) {
                         // Get the column value, evaluate the rule and return the style class
                         var style = '';
                         for (var i in colOpt.rules) {
@@ -515,57 +396,28 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                         }
 
                         extPendingOper = oper;
-
-                        if (vsdatatableService.isEqual(oper, scope.config.OPER_ADD)
-                            || vsdatatableService.isEqual(oper, scope.config.OPER_DELETE)
-                            || vsdatatableService.isEqual(oper, scope.config.EXT_FLT)) {
+                        if (vsdtServ.isEqual(oper, scope.config.OPER_ADD) || vsdtServ.isEqual(oper, scope.config.OPER_DELETE) || vsdtServ.isEqual(oper, scope.config.EXT_FLT)) {
                             // Reset paginator
                             scope.paginator.visiblePageIdx = 0;
                         }
+                        if (vsdtServ.isEqual(oper, scope.config.OPER_ADD) || vsdtServ.isEqual(oper, scope.config.OPER_DELETE)) {
+                            // Reset filter and sort - no refresh
+                            resetFilterAndSort(false);
+                        }
 
                         // Notify parent
-                        scope.options.data.extPaginationOperationCb(
-                            {
-                                columnFilter: scope.columnFilter,
-                                globalFilter: scope.globalFilter,
-                                page: scope.paginator.visiblePageIdx + 1,
-                                pageSize: scope.pageSize.rows,
-                                sort: scope.sort
-                            });
-                    }
-                };
-
-                scope.filterBtnClick = function (event) {
-                    if (scope.checkEvent(event)) {
-                        scope.filterFocus = !scope.filterFocus;
-                        if (!scope.filterFocus) {
-                            scope.resetFilter();
-                        }
-                    }
-                };
-
-                scope.executeFilter = function () {
-                    if (!scope.extDataPagination) {
-                        execFilter();
-                        execSort();
-                        vsdatatableService.paginatorEvent(scope);
-                    }
-                    else {
-                        scope.paginationOperation(scope.config.EXT_FLT);
-                    }
-                };
-
-                scope.resetFilter = function () {
-                    scope.globalFilter = '';
-                    resetColumnFilter(scope.columnFilter.contain);
-                    resetColumnFilter(scope.columnFilter.exact);
-                    if (!scope.options.filter.autoFilter.useAutoFilter) {
-                        scope.executeFilter();
+                        scope.options.data.extPaginationOperationCb({
+                            columnFilter: scope.columnFilter,
+                            globalFilter: scope.globalFilter,
+                            page: scope.paginator.visiblePageIdx + 1,
+                            pageSize: scope.pageSize.rows,
+                            sort: scope.sort
+                        });
                     }
                 };
 
                 scope.checkEvent = function (event) {
-                    return (vsdatatableService.isEqual(event.which, 1) || vsdatatableService.isEqual(event.which, 13)) && !scope.busyIcon;
+                    return (vsdtServ.isEqual(event.which, 1) || vsdtServ.isEqual(event.which, 13)) && !scope.busyIcon;
                 };
 
                 var tableAreaClick = element.on("click", function (event) {
@@ -575,105 +427,27 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                     }
                 });
 
-                function removeFromSelectedRows(data) {
-                    if (vsdatatableService.isEqual(scope.options.row.selection, 1) || vsdatatableService.isEqual(scope.options.row.selection, 2)) {
+                function deselectRow(data) {
+                    if (vsdtServ.isEqual(scope.options.row.selection, 1) || vsdtServ.isEqual(scope.options.row.selection, 2)) {
                         var idx = scope.selectedRows.indexOf(data);
-                        if (!vsdatatableService.isEqual(idx, -1)) {
+                        if (!vsdtServ.isEqual(idx, -1)) {
                             scope.selectedRows.splice(idx, 1);
                             scope.notifyRowSelect(scope.config.ROW_DESELECT, data);
                         }
                     }
                 }
 
-                function resetColumnFilter(filterData) {
-                    angular.forEach(filterData, function (v, k) {
-                        filterData[k] = '';
-                    });
-                }
-
-                function getFilterExpression(filterData) {
-                    var exp = {};
-                    angular.forEach(filterData, function (v, k) {
-                        if (!vsdatatableService.isEqual(v, '')) {
-                            exp[k] = v;
-                        }
-                    });
-                    return exp;
-                }
-
-                function execFilter() {
-                    scope.filteredItems = scope.options.data.items;
-                    if (!vsdatatableService.isEqual(scope.globalFilter, '')) {
-                        scope.filteredItems = filterItems(scope.filteredItems, scope.globalFilter);
-                    }
-
-                    var containFilter = getFilterExpression(scope.columnFilter.contain);
-                    if (!vsdatatableService.isEqual(containFilter, {})) {
-                        scope.filteredItems = filterItems(scope.filteredItems, containFilter);
-                    }
-
-                    var exactFilter = getFilterExpression(scope.columnFilter.exact);
-                    if (!vsdatatableService.isEqual(exactFilter, {})) {
-                        scope.filteredItems = filterItems(scope.filteredItems, exactFilter, function (a, b) {
-                            return vsdatatableService.isEqual(a.toString(), b) || vsdatatableService.isEqual(b, '');
-                        });
-                    }
-                    scope.totalCount = scope.filteredItems.length;
-                }
-
-                function execSort() {
-                    if (!vsdatatableService.isEqual(scope.sort.col, '')) {
-                        scope.filteredItems = orderItems(scope.filteredItems, scope.sort.col, scope.sort.reverse);
-                    }
-                }
-
-                function initWatchers() {
-                    if (scope.options.filter.global) {
-                        filterFocusWatch = scope.$watch('filterFocus', filterFocusWatchFn);
-                    }
-                    if (scope.options.filter.global || scope.options.filter.column) {
-                        var filterExp = createFilterExpression();
-                        if (scope.options.filter.autoFilter.useAutoFilter) {
-                            filterExp += 'globalFilter';
-                            filterChangeWatch = scope.$watch(filterExp, filterChangeWatchFn);
-                        }
-                    }
-                    if (!scope.extDataPagination) {
-                        itemsLengthWatch = scope.$watch('options.data.items.length', itemsLengthWatchFn);
-                    }
-                }
-
-                function createFilterExpression() {
-                    var filterExp = '';
-                    angular.forEach(scope.options.columns, function (col) {
-                        if (!vsdatatableService.isUndefined(col.filter) && !vsdatatableService.isUndefined(col.filter.template)) {
-                            filterExp += 'columnFilter.' + col.filter.match + scope.config.DOT_SEPARATOR + col.prop + ' + ';
-                        }
-                    });
-                    return filterExp;
-                }
-
-                function filterFocusWatchFn(newVal, oldVal) {
-                    if (!vsdatatableService.isEqual(newVal, oldVal) && newVal) {
-                        vsdatatableService.setFilterFocus(scope);
-                    }
-                }
-
-                function filterChangeWatchFn(newVal, oldVal) {
-                    if (vsdatatableService.isObject(newVal) && vsdatatableService.isEqual(oldVal.contain, {}) && vsdatatableService.isEqual(oldVal.exact, {})) {
-                        return;
-                    }
-                    if (!vsdatatableService.isEqual(newVal, oldVal)) {
-                        scope.executeFilter();
-                    }
+                function resetFilterAndSort(refresh) {
+                    scope.sort = {col: '', reverse: false};
+                    scope.resetFilter(refresh);
                 }
 
                 function itemsLengthWatchFn() {
                     // Not external pagination
                     scope.filteredItems = scope.options.data.items;
                     scope.totalCount = scope.filteredItems.length;
-                    reset(true, true);
-                    vsdatatableService.paginatorEvent(scope);
+                    resetFilterAndSort(false);
+                    vsdtServ.paginatorEvent(scope);
                 }
 
                 function getTableRow(event) {
@@ -683,7 +457,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 function createRowExtender(rowElem) {
                     removeRowExtender();
                     rowExtender = angular.element($templateCache.get('rowExtender.html'));
-                    if (vsdatatableService.isEqual(operObject.oper, scope.config.OPER_ADD)) {
+                    if (vsdtServ.isEqual(operObject.oper, scope.config.OPER_ADD)) {
                         rowElem.prepend(rowExtender);
                     }
                     else {
@@ -693,54 +467,38 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 }
 
                 function removeRowExtender() {
-                    if (!vsdatatableService.isEqual(rowExtender, null)) {
+                    if (!vsdtServ.isEqual(rowExtender, null)) {
                         rowExtender.remove();
                         rowExtender = null;
                     }
                 }
 
                 function dataOperation(phase) {
-                    if (!vsdatatableService.isUndefined(scope.options.data.dataOperationCb)) {
+                    if (!vsdtServ.isUndefined(scope.options.data.dataOperationCb)) {
                         scope.options.data.dataOperationCb(
                             phase, operObject.oper, operObject.dataOld,
-                            vsdatatableService.isEqual(phase, scope.config.OPER_PHASE_BEGIN) ? {} : operObject.dataNew);
+                            vsdtServ.isEqual(phase, scope.config.OPER_PHASE_BEGIN) ? {} : operObject.dataNew);
                     }
                 }
 
-                function reset(sort, filter) {
-                    if (sort) {
-                        scope.sort = {col: '', reverse: false};
+                function init() {
+                    scope.extDataPagination = scope.options.data.extDataPagination;
+                    if (!scope.extDataPagination) {
+                        itemsLengthWatch = scope.$watch('options.data.items.length', itemsLengthWatchFn);
                     }
-                    if (filter) {
-                        scope.resetFilter();
-                    }
-                }
 
-                function initColumns() {
                     var width = 90 / scope.options.columns.length;
                     scope.visibleColCount = 0;
                     angular.forEach(scope.options.columns, function (col) {
-                        scope.visibleColCount = vsdatatableService.isUndefined(col.visible) || col.visible ? scope.visibleColCount + 1 : scope.visibleColCount;
-                        if (vsdatatableService.isUndefined(col.width)) {
+                        scope.visibleColCount = vsdtServ.isUndefined(col.visible) || col.visible ? scope.visibleColCount + 1 : scope.visibleColCount;
+                        if (vsdtServ.isUndefined(col.width)) {
                             col.width = {number: width, unit: '%'};
                         }
                     });
                 }
 
-                function init() {
-                    scope.extDataPagination = scope.options.data.extDataPagination;
-                    initWatchers();
-                    initColumns();
-                }
-
                 scope.$on('$destroy', function () {
-                    if (!vsdatatableService.isEqual(filterFocusWatch, null)) {
-                        filterFocusWatch();
-                    }
-                    if (!vsdatatableService.isEqual(filterChangeWatch, null)) {
-                        filterChangeWatch();
-                    }
-                    if (!vsdatatableService.isEqual(itemsLengthWatch, null)) {
+                    if (!vsdtServ.isEqual(itemsLengthWatch, null)) {
                         itemsLengthWatch();
                     }
                     scope.$off(scope.config.SET_EXT_PAGINATION_DATA_EVENT);
@@ -780,15 +538,15 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
  * @name colFilterTemplate
  * @description colFilterTemplate adds column filter (for example input box) to the each column defined in the configuration.
  */
-    .directive('colFilterTemplate', ['$compile', 'vsdatatableService', function ($compile, vsdatatableService) {
+    .directive('colFilterTemplate', ['$compile', 'vsdtServ', function ($compile, vsdtServ) {
         return {
             restrict: 'A',
             scope: false,
             link: function (scope, element, attrs) {
                 function init() {
                     var colOpt = scope.$eval(attrs.colFilterTemplate);
-                    if (!vsdatatableService.isUndefined(colOpt.filter) && !vsdatatableService.isUndefined(colOpt.filter.template)
-                        && !vsdatatableService.isUndefined(colOpt.filter.match)) {
+                    if (!vsdtServ.isUndefined(colOpt.filter) && !vsdtServ.isUndefined(colOpt.filter.template)
+                        && !vsdtServ.isUndefined(colOpt.filter.match)) {
                         // Add column filter
                         var colTpl = angular.copy(colOpt.filter.template);
                         colTpl = colTpl.replace(scope.config.COLUMN_PROP_VALUE, 'columnFilter' + scope.config.DOT_SEPARATOR + colOpt.filter.match + scope.config.DOT_SEPARATOR + colOpt.prop + '"');
@@ -809,7 +567,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
  * @description tableBodyRow directive handles row clicks done by user. It also hove the row in case defined in
  * the configuration.
  */
-    .directive('tableBodyRow', ['vsdatatableService', function (vsdatatableService) {
+    .directive('tableBodyRow', ['vsdtServ', function (vsdtServ) {
         return {
             restrict: 'A',
             scope: false,
@@ -823,20 +581,20 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                     if (checkEvent(event)) {
                         var oper = scope.config.ROW_SELECT;
                         var idx = scope.selectedRows.indexOf(data);
-                        if (scope.options.row.selection === 1 && vsdatatableService.isEqual(idx, -1)) {
+                        if (scope.options.row.selection === 1 && vsdtServ.isEqual(idx, -1)) {
                             if (scope.selectedRows.length > 0) {
                                 scope.notifyRowSelect(scope.config.ROW_DESELECT, scope.selectedRows[0]);
                             }
                             scope.selectedRows[0] = data;
                         }
-                        else if (scope.options.row.selection === 1 && !vsdatatableService.isEqual(idx, -1)) {
+                        else if (scope.options.row.selection === 1 && !vsdtServ.isEqual(idx, -1)) {
                             scope.selectedRows.splice(0, 1);
                             oper = scope.config.ROW_DESELECT;
                         }
-                        else if (scope.options.row.selection === 2 && vsdatatableService.isEqual(idx, -1)) {
+                        else if (scope.options.row.selection === 2 && vsdtServ.isEqual(idx, -1)) {
                             scope.selectedRows.push(data);
                         }
-                        else if (scope.options.row.selection === 2 && !vsdatatableService.isEqual(idx, -1)) {
+                        else if (scope.options.row.selection === 2 && !vsdtServ.isEqual(idx, -1)) {
                             scope.selectedRows.splice(idx, 1);
                             oper = scope.config.ROW_DESELECT;
                         }
@@ -845,11 +603,11 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 };
 
                 scope.isRowSelected = function (data) {
-                    return !vsdatatableService.isEqual(scope.selectedRows.indexOf(data), -1);
+                    return !vsdtServ.isEqual(scope.selectedRows.indexOf(data), -1);
                 };
 
                 function checkEvent(event) {
-                    return (vsdatatableService.isEqual(event.which, 1) || vsdatatableService.isEqual(event.which, 13))
+                    return (vsdtServ.isEqual(event.which, 1) || vsdtServ.isEqual(event.which, 13))
                         && (scope.options.row.selection === 1 || scope.options.row.selection === 2);
                 }
 
@@ -876,7 +634,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
  * @name tablePaginator
  * @description tablePaginator directive implements paginator.
  */
-    .directive('tablePaginator', ['vsdatatableService', function (vsdatatableService) {
+    .directive('tablePaginator', ['vsdtServ', function (vsdtServ) {
         return {
             restrict: 'A',
             scope: false,
@@ -913,16 +671,16 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 };
 
                 scope.isNavigateBtn = function (val) {
-                    return vsdatatableService.isEqual(val, scope.btnFirst)
-                        || vsdatatableService.isEqual(val, scope.btnPrev)
-                        || vsdatatableService.isEqual(val, scope.btnPrevSet)
-                        || vsdatatableService.isEqual(val, scope.btnNext)
-                        || vsdatatableService.isEqual(val, scope.btnNextSet)
-                        || vsdatatableService.isEqual(val, scope.btnLast);
+                    return vsdtServ.isEqual(val, scope.btnFirst)
+                        || vsdtServ.isEqual(val, scope.btnPrev)
+                        || vsdtServ.isEqual(val, scope.btnPrevSet)
+                        || vsdtServ.isEqual(val, scope.btnNext)
+                        || vsdtServ.isEqual(val, scope.btnNextSet)
+                        || vsdtServ.isEqual(val, scope.btnLast);
                 };
 
                 scope.isDisabledBtn = function (val) {
-                    return scope.isNavigateBtn(val) && !vsdatatableService.isEqual(scope.disabledButtons.indexOf(val), -1);
+                    return scope.isNavigateBtn(val) && !vsdtServ.isEqual(scope.disabledButtons.indexOf(val), -1);
                 };
 
                 scope.$on(scope.config.PAGINATOR_EVENT, function () {
@@ -930,32 +688,32 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 });
 
                 function pageNavigated(val) {
-                    if (vsdatatableService.isEqual(val, scope.btnFirst)) {
+                    if (vsdtServ.isEqual(val, scope.btnFirst)) {
                         toPage(0, val);
                     }
-                    else if (vsdatatableService.isEqual(val, scope.btnPrev)) {
-                        if (vsdatatableService.isEqual(scope.paginator.visiblePageIdx - scope.paginator.pageFirstIdx, 0)) {
+                    else if (vsdtServ.isEqual(val, scope.btnPrev)) {
+                        if (vsdtServ.isEqual(scope.paginator.visiblePageIdx - scope.paginator.pageFirstIdx, 0)) {
                             toPage(scope.paginator.visiblePageIdx - filteredBtnCount, val);
                         }
                         else {
                             setPaginatorValues(scope.paginator.visiblePageIdx - 1, scope.paginator.pageFirstIdx);
                         }
                     }
-                    else if (vsdatatableService.isEqual(val, scope.btnPrevSet)) {
+                    else if (vsdtServ.isEqual(val, scope.btnPrevSet)) {
                         toPage(scope.paginator.pageFirstIdx - filteredBtnCount, val);
                     }
-                    else if (vsdatatableService.isEqual(val, scope.btnLast)) {
+                    else if (vsdtServ.isEqual(val, scope.btnLast)) {
                         toPage(scope.totalPages - 1, val);
                     }
-                    else if (vsdatatableService.isEqual(val, scope.btnNext)) {
-                        if (vsdatatableService.isEqual(scope.paginator.visiblePageIdx - scope.paginator.pageFirstIdx, filteredBtnCount - 1)) {
+                    else if (vsdtServ.isEqual(val, scope.btnNext)) {
+                        if (vsdtServ.isEqual(scope.paginator.visiblePageIdx - scope.paginator.pageFirstIdx, filteredBtnCount - 1)) {
                             toPage(scope.paginator.pageFirstIdx + filteredBtnCount, val);
                         }
                         else {
                             setPaginatorValues(scope.paginator.visiblePageIdx + 1, scope.paginator.pageFirstIdx);
                         }
                     }
-                    else if (vsdatatableService.isEqual(val, scope.btnNextSet)) {
+                    else if (vsdtServ.isEqual(val, scope.btnNextSet)) {
                         toPage(scope.paginator.pageFirstIdx + filteredBtnCount, val);
                     }
                 }
@@ -969,19 +727,19 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                     if (pageIdx > scope.paginator.visiblePageIdx) {
                         // Forward navigate
                         visiblePageIdx = pageIdx;
-                        if (vsdatatableService.isEqual(val, scope.btnLast)) {
+                        if (vsdtServ.isEqual(val, scope.btnLast)) {
                             pageFirstIdx = visiblePageIdx - filteredBtnCount + 1;
                         }
                         else {
                             var checkedVal = checkMaxPageIdx(pageIdx);
-                            pageFirstIdx = !vsdatatableService.isEqual(checkedVal, pageIdx) ? checkedVal : pageIdx;
+                            pageFirstIdx = !vsdtServ.isEqual(checkedVal, pageIdx) ? checkedVal : pageIdx;
                         }
                     }
-                    else if (pageIdx < scope.paginator.visiblePageIdx && !vsdatatableService.isEqual(val, scope.btnFirst)) {
+                    else if (pageIdx < scope.paginator.visiblePageIdx && !vsdtServ.isEqual(val, scope.btnFirst)) {
                         // Backward navigate
                         var checkedVal = checkMinPageIdx(pageIdx);
                         visiblePageIdx = pageIdx + filteredBtnCount - 1;
-                        pageFirstIdx = !vsdatatableService.isEqual(checkedVal, pageIdx) ? checkedVal : pageIdx;
+                        pageFirstIdx = !vsdtServ.isEqual(checkedVal, pageIdx) ? checkedVal : pageIdx;
                     }
                     setPaginatorValues(visiblePageIdx, pageFirstIdx);
                 }
@@ -1037,11 +795,11 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
 
                 function setDisabledButtons() {
                     scope.disabledButtons.length = 0;
-                    if (vsdatatableService.isEqual(scope.paginator.visiblePageIdx, 0)) {
+                    if (vsdtServ.isEqual(scope.paginator.visiblePageIdx, 0)) {
                         scope.disabledButtons.push(scope.btnFirst);
                         scope.disabledButtons.push(scope.btnPrev);
                     }
-                    if (vsdatatableService.isEqual(scope.paginator.pageFirstIdx, 0)) {
+                    if (vsdtServ.isEqual(scope.paginator.pageFirstIdx, 0)) {
                         scope.disabledButtons.push(scope.btnPrevSet);
                     }
                     if (scope.paginator.pageFirstIdx + filteredBtnCount >= scope.totalPages) {
@@ -1119,10 +877,175 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
 
 /**
  * @ngdoc object
+ * @name captionBar
+ * @description captionBar directive implements captionBar of the datatable.
+ */
+    .directive('captionBar', ['$filter', 'vsdtServ', function ($filter, vsdtServ) {
+        return {
+            restrict: 'A',
+            scope: false,
+            templateUrl: 'templates/vscaption.html',
+            link: function (scope, element, attrs) {
+                scope.filterFocus = false;
+                var filterChangeWatch = null;
+                var filterFocusWatch = null;
+                var orderItems = $filter('orderBy');
+                var filterItems = $filter('filter');
+                var refreshFlag = true;
+
+                scope.filterBtnClick = function (event) {
+                    if (scope.checkEvent(event)) {
+                        scope.filterFocus = !scope.filterFocus;
+                        if (!scope.filterFocus) {
+                            scope.resetFilter(true);
+                        }
+                    }
+                };
+
+                scope.execFilterAndSort = function () {
+                    if (!scope.extDataPagination) {
+                        scope.execFilter();
+                        execSort();
+                        vsdtServ.paginatorEvent(scope);
+                    }
+                    else {
+                        scope.paginationOperation(scope.config.EXT_FLT);
+                    }
+                };
+
+                scope.resetFilter = function (refresh) {
+                    refreshFlag = refresh;
+                    scope.globalFilter = '';
+                    resetColumnFilter(scope.columnFilter.contain);
+                    resetColumnFilter(scope.columnFilter.exact);
+                    if (!scope.options.filter.autoFilter.useAutoFilter && refresh) {
+                        scope.execFilterAndSort();
+                    }
+                };
+
+                scope.sortByCol = function (event, col) {
+                    event.stopPropagation();
+                    if (scope.checkEvent(event)) {
+                        if (vsdtServ.isEqual(scope.sort.col, col)) {
+                            scope.sort.reverse = !scope.sort.reverse;
+                        }
+                        else {
+                            scope.sort.reverse = false;
+                        }
+                        scope.sort.col = col;
+                        if (!scope.extDataPagination) {
+                            if (vsdtServ.isEqual(col, '')) {
+                                scope.execFilter();
+                            }
+                            execSort();
+                        }
+                        scope.paginationOperation(scope.config.EXT_SORT);
+                    }
+                };
+
+                scope.execFilter = function () {
+                    scope.filteredItems = scope.options.data.items;
+                    if (!vsdtServ.isEqual(scope.globalFilter, '')) {
+                        scope.filteredItems = filterItems(scope.filteredItems, scope.globalFilter);
+                    }
+
+                    var containFilter = getFilterExpression(scope.columnFilter.contain);
+                    if (!vsdtServ.isEqual(containFilter, {})) {
+                        scope.filteredItems = filterItems(scope.filteredItems, containFilter);
+                    }
+
+                    var exactFilter = getFilterExpression(scope.columnFilter.exact);
+                    if (!vsdtServ.isEqual(exactFilter, {})) {
+                        scope.filteredItems = filterItems(scope.filteredItems, exactFilter, function (a, b) {
+                            return vsdtServ.isEqual(a.toString(), b) || vsdtServ.isEqual(b, '');
+                        });
+                    }
+                    scope.totalCount = scope.filteredItems.length;
+                };
+
+                function getFilterExpression(filterData) {
+                    var exp = {};
+                    angular.forEach(filterData, function (v, k) {
+                        if (!vsdtServ.isEqual(v, '')) {
+                            exp[k] = v;
+                        }
+                    });
+                    return exp;
+                }
+
+                function execSort() {
+                    if (!vsdtServ.isEqual(scope.sort.col, '')) {
+                        scope.filteredItems = orderItems(scope.filteredItems, scope.sort.col, scope.sort.reverse);
+                    }
+                }
+
+                function filterChangeWatchFn(newVal, oldVal) {
+                    if (vsdtServ.isObject(newVal) && vsdtServ.isEqual(oldVal.contain, {}) && vsdtServ.isEqual(oldVal.exact, {})) {
+                        return;
+                    }
+                    if (!vsdtServ.isEqual(newVal, oldVal) && refreshFlag) {
+                        scope.execFilterAndSort();
+                    }
+                    refreshFlag = true;
+                }
+
+                function filterFocusWatchFn(newVal, oldVal) {
+                    if (!vsdtServ.isEqual(newVal, oldVal) && newVal) {
+                        vsdtServ.setFilterFocus(scope);
+                    }
+                }
+
+                function createFilterExpression() {
+                    var filterExp = '';
+                    angular.forEach(scope.options.columns, function (col) {
+                        if (!vsdtServ.isUndefined(col.filter) && !vsdtServ.isUndefined(col.filter.template)) {
+                            filterExp += 'columnFilter.' + col.filter.match + scope.config.DOT_SEPARATOR + col.prop + ' + ';
+                        }
+                    });
+                    return filterExp;
+                }
+
+                function resetColumnFilter(filterData) {
+                    angular.forEach(filterData, function (v, k) {
+                        filterData[k] = '';
+                    });
+                }
+
+                function init() {
+                    if (scope.options.filter.global || scope.options.filter.column) {
+                        var filterExp = createFilterExpression();
+                        if (scope.options.filter.autoFilter.useAutoFilter) {
+                            filterExp += 'globalFilter';
+                            filterChangeWatch = scope.$watch(filterExp, filterChangeWatchFn);
+                        }
+                    }
+                    if (scope.options.filter.global) {
+                        filterFocusWatch = scope.$watch('filterFocus', filterFocusWatchFn);
+                    }
+                }
+
+                scope.$on('$destroy', function () {
+                    if (!vsdtServ.isEqual(filterChangeWatch, null)) {
+                        filterChangeWatch();
+                    }
+                    if (!vsdtServ.isEqual(filterFocusWatch, null)) {
+                        filterFocusWatch();
+                    }
+                });
+
+                init();
+
+            }
+        };
+    }])
+
+
+/**
+ * @ngdoc object
  * @name overlayWindow
  * @description overlayWindow directive implements overlay window to long values in the columns.
  */
-    .directive('overlayWindow', ['$compile', '$timeout', 'vsdatatableService', function ($compile, $timeout, vsdatatableService) {
+    .directive('overlayWindow', ['$compile', '$timeout', 'vsdtServ', function ($compile, $timeout, vsdtServ) {
         return {
             restrict: 'A',
             scope: false,
@@ -1138,7 +1061,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 function onMouseEnter() {
                     if (element[0].scrollWidth > element[0].offsetWidth) {
                         timer = $timeout(function () {
-                            vsdatatableService.getTemplate('datatableoverlaywindow.html').then(function (tpl) {
+                            vsdtServ.getTemplate('datatableoverlaywindow.html').then(function (tpl) {
                                 overlay = angular.element(tpl.data);
                                 overlay.css('margin-top', '-20px');
                                 overlay.css('margin-left', '14px');
@@ -1184,7 +1107,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
  * @name vstooltip
  * @description vstooltip directive implements tooltips.
  */
-    .directive('vstooltip', ['$compile', '$timeout', 'vsdatatableService', function ($compile, $timeout, vsdatatableService) {
+    .directive('vstooltip', ['$compile', '$timeout', 'vsdtServ', function ($compile, $timeout, vsdtServ) {
         return {
             restrict: 'A',
             scope: false,
@@ -1207,7 +1130,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 }
 
                 function showTooltip() {
-                    vsdatatableService.getTemplate('datatabletooltip.html').then(function (tpl) {
+                    vsdtServ.getTemplate('datatabletooltip.html').then(function (tpl) {
                         tooltip = angular.element(tpl.data);
                         tooltip.css('margin-left', element.prop('offsetLeft') + 'px');
                         tooltip.text(attrs.vstooltip);
@@ -1249,7 +1172,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
  * @name colResizer
  * @description colResizer directive implements column resize of the vsdatatable.
  */
-    .directive('colResizer', ['$compile', '$document', 'vsdatatableService', function ($compile, $document, vsdatatableService) {
+    .directive('colResizer', ['$compile', '$document', 'vsdtServ', function ($compile, $document, vsdtServ) {
         return {
             restrict: 'A',
             scope: false,
@@ -1261,7 +1184,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                     event.preventDefault();
                     startPos = event.clientX;
                     nextElem = element.next();
-                    if (!vsdatatableService.isEqual(nextElem.prop('id'), 'headerColAction')) {
+                    if (!vsdtServ.isEqual(nextElem.prop('id'), 'headerColAction')) {
                         currWidth = element.prop('offsetWidth');
                         nextWidth = nextElem.prop('offsetWidth');
                         headerWidth = element.parent().prop('offsetWidth');
@@ -1317,7 +1240,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.0.5.html"])
                 function init() {
                     if (scope.options.columnResize) {
                         // Create column resizer
-                        vsdatatableService.getTemplate('datatablecolresizer.html').then(function (tpl) {
+                        vsdtServ.getTemplate('datatablecolresizer.html').then(function (tpl) {
                             colResizer = angular.element(tpl.data);
                             colResizer.on('mousedown', onResizeStart);
                             element.css('background-clip', 'padding-box');

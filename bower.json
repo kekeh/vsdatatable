@@ -1,7 +1,7 @@
 {
   "name": "vsdatatable",
   "description": "Simple single page datatable - AngularJS reusable UI component",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "homepage": "http://kekeh.github.io/vsdatatable",
   "license": "MIT",
   "authors": [
@@ -12,8 +12,8 @@
     "url": "https://github.com/kekeh/vsdatatable.git"
   },
   "main": [
-    "dist/min/vsdatatable-0.0.5.min.css",
-    "dist/min/vsdatatable-0.0.5.min.js"
+    "dist/min/vsdatatable-0.1.0.min.css",
+    "dist/min/vsdatatable-0.1.0.min.js"
   ],
   "keywords": [
     "AngularJS",

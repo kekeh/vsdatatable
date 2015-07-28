@@ -1,0 +1,27 @@
+<div class="caption">
+    <table style="width:100%">
+        <tr>
+            <td class="captionColToggler" ng-show="options.columnToggler.visible" ng-click="$event.stopPropagation()">
+                <div col-toggle-menu></div>
+            </td>
+            <td class="captionTitle"><span ng-if="options.caption.text!==undefined">{{options.caption.text}}</span></td>
+            <td class="captionFilter">
+                <div ng-show="options.filter.global!==undefined&&options.filter.global||options.filter.column!==undefined&&options.filter.column">
+                    <span ng-show="filterFocus&&options.filter.global">
+                        <input class="filterTxtBox" placeholder="{{options.filter.globalPlaceholder}}" type="text"
+                               ng-model="globalFilter"
+                               ng-model-options="{debounce:options.filter.autoFilter.useAutoFilter?options.filter.autoFilter.filterDelay:config.FILTER_EXECUTION_DELAY}"
+                               data-ng-trim="false" filter-focus/>
+                        <span class="icon icon-check actionIcon filterIcon"
+                              ng-show="{{options.filter.global&&options.filter.filterBtn.visible}}"
+                              vstooltip="{{options.filter.filterBtn.filterBtnTooltip}}" ng-click="execFilterAndSort()"
+                              ng-keydown="checkEvent($event)?execFilterAndSort():null" tabindex="0"></span>
+                    </span>
+                    <span class="icon icon-search actionIcon searchIcon"
+                          vstooltip="{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}"
+                          ng-click="filterBtnClick($event)" ng-keydown="filterBtnClick($event)" tabindex="0"></span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

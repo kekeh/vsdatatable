@@ -3,10 +3,10 @@ describe('vsdatatable', function () {
 
     beforeEach(module('vsdatatable'));
 
-    beforeEach(inject(function ($rootScope, $compile, vsdatatableEvent) {
+    beforeEach(inject(function ($rootScope, $compile, vsdtEvent) {
         scope = $rootScope;
 
-        eventapi = vsdatatableEvent;
+        eventapi = vsdtEvent;
 
         // Header column filter templates
         var colInputFilterTemplate =
@@ -37,7 +37,6 @@ describe('vsdatatable', function () {
                 extDataPagination: false
             },
             caption: {
-                visible: true,
                 text: 'vsdatatable example'
             },
             busyIcon: {         // Currently this works only if the extDataPagination is true
@@ -210,7 +209,7 @@ describe('vsdatatable', function () {
     });
 
     it('captionFilter span', function () {
-        expect(elm[0].querySelectorAll('.captionFilter span').length).toBe(2);
+        expect(elm[0].querySelectorAll('.captionFilter span').length).toBe(3);
     });
 
     it('tableRows tableHeader headerRow', function () {
