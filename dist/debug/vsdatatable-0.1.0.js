@@ -14,15 +14,25 @@ angular.module("templates/vscaption.html", []).run(["$templateCache", function (
         "<div class=\"caption\">\n" +
         "    <table style=\"width:100%\">\n" +
         "        <tr>\n" +
-        "            <td class=\"captionColToggler\" ng-show=\"options.columnToggler.visible\" ng-click=\"$event.stopPropagation()\"><div col-toggle-menu></div></td>\n" +
+        "            <td class=\"captionColToggler\" ng-show=\"options.columnToggler.visible\" ng-click=\"$event.stopPropagation()\">\n" +
+        "                <div col-toggle-menu></div>\n" +
+        "            </td>\n" +
         "            <td class=\"captionTitle\"><span ng-if=\"options.caption.text!==undefined\">{{options.caption.text}}</span></td>\n" +
         "            <td class=\"captionFilter\">\n" +
         "                <div ng-show=\"options.filter.global!==undefined&&options.filter.global||options.filter.column!==undefined&&options.filter.column\">\n" +
         "                    <span ng-show=\"filterFocus&&options.filter.global\">\n" +
-        "                        <input class=\"filterTxtBox\" placeholder=\"{{options.filter.globalPlaceholder}}\" type=\"text\" ng-model=\"globalFilter\" ng-model-options=\"{debounce:options.filter.autoFilter.useAutoFilter?options.filter.autoFilter.filterDelay:config.FILTER_EXECUTION_DELAY}\" data-ng-trim=\"false\" filter-focus/>\n" +
-        "                        <span class=\"icon icon-check actionIcon filterIcon\" ng-show=\"{{options.filter.global&&options.filter.filterBtn.visible}}\" vstooltip=\"{{options.filter.filterBtn.filterBtnTooltip}}\" ng-click=\"execFilterAndSort()\" ng-keydown=\"checkEvent($event)?execFilterAndSort():null\" tabindex=\"0\"></span>\n" +
+        "                        <input class=\"filterTxtBox\" placeholder=\"{{options.filter.globalPlaceholder}}\" type=\"text\"\n" +
+        "                               ng-model=\"globalFilter\"\n" +
+        "                               ng-model-options=\"{debounce:options.filter.autoFilter.useAutoFilter?options.filter.autoFilter.filterDelay:config.FILTER_EXECUTION_DELAY}\"\n" +
+        "                               data-ng-trim=\"false\" filter-focus/>\n" +
+        "                        <span class=\"icon icon-check actionIcon filterIcon\"\n" +
+        "                              ng-show=\"{{options.filter.global&&options.filter.filterBtn.visible}}\"\n" +
+        "                              vstooltip=\"{{options.filter.filterBtn.filterBtnTooltip}}\" ng-click=\"execFilterAndSort()\"\n" +
+        "                              ng-keydown=\"checkEvent($event)?execFilterAndSort():null\" tabindex=\"0\"></span>\n" +
         "                    </span>\n" +
-        "                    <span class=\"icon icon-search actionIcon searchIcon\" vstooltip=\"{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}\" ng-click=\"filterBtnClick($event)\" ng-keydown=\"filterBtnClick($event)\" tabindex=\"0\"></span>\n" +
+        "                    <span class=\"icon icon-search actionIcon searchIcon\"\n" +
+        "                          vstooltip=\"{{!filterFocus?options.filter.showFilterBtnTooltip:options.filter.hideFilterBtnTooltip}}\"\n" +
+        "                          ng-click=\"filterBtnClick($event)\" ng-keydown=\"filterBtnClick($event)\" tabindex=\"0\"></span>\n" +
         "                </div>\n" +
         "            </td>\n" +
         "        </tr>\n" +
@@ -33,13 +43,18 @@ angular.module("templates/vscaption.html", []).run(["$templateCache", function (
 angular.module("templates/vscoltogglemenu.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/vscoltogglemenu.html",
     "<div>\n" +
-    "    <span class=\"icon icon-selections actionIcon\" ng-click=\"colTogglerShowClicked($event)\" ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\" vstooltip=\"{{options.columnToggler.btnTooltip}}\"></span>\n" +
+    "    <span class=\"icon icon-selections actionIcon\" ng-click=\"colTogglerShowClicked($event)\"\n" +
+    "          ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\"\n" +
+    "          vstooltip=\"{{options.columnToggler.btnTooltip}}\"></span>\n" +
     "    <div class=\"colTogglerMenu\" ng-show=\"colTogglerShow\">\n" +
     "        <div class=\"colTogglerTitle\" ng-show=\"options.columnToggler.menuTitle !== undefined\">\n" +
-    "            <span class=\"colTogglerTitleTxt\">{{options.columnToggler.menuTitle}}</span> \n" +
-    "            <span class=\"icon icon-cross actionIcon colTogglerCloseIcon\" ng-click=\"colTogglerShowClicked($event)\" ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\"></span>\n" +
+    "            <span class=\"colTogglerTitleTxt\">{{options.columnToggler.menuTitle}}</span>\n" +
+    "            <span class=\"icon icon-cross actionIcon colTogglerCloseIcon\" ng-click=\"colTogglerShowClicked($event)\"\n" +
+    "                  ng-keydown=\"colTogglerShowClicked($event)\" tabindex=\"0\"></span>\n" +
     "        </div>\n" +
-    "        <div class=\"colTogglerMenuItem\" ng-repeat=\"h in options.columns\" ng-class=\"{'selectedColTogglerMenuItem':h.visible}\" ng-click=\"colToggleMenuClicked($event,h)\" ng-keydown=\"colToggleMenuClicked($event,h)\" ng-model=\"h.visible\" tabindex=\"0\">\n" +
+    "        <div class=\"colTogglerMenuItem\" ng-repeat=\"h in options.columns\"\n" +
+    "             ng-class=\"{'selectedColTogglerMenuItem':h.visible}\" ng-click=\"colToggleMenuClicked($event,h)\"\n" +
+    "             ng-keydown=\"colToggleMenuClicked($event,h)\" ng-model=\"h.visible\" tabindex=\"0\">\n" +
     "            <div class=\"colTogglerMenuItemTxt\">{{h.label}}</div>\n" +
     "            <div class=\"colTogglerMenuItemIcon\">\n" +
     "                <span class=\"icon icon-check actionIcon\" ng-show=\"h.visible\"></span>\n" +
@@ -57,33 +72,60 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "        <div caption-bar></div>\n" +
       "        <table class=\"tableRows\">\n" +
       "            <thead class=\"tableHeader\" ng-if=\"options.headerVisible\">\n" +
-      "                <tr class=\"headerRow\">\n" +
-      "                    <th class=\"headerCol textOverflow\" col-resizer ng-if=\"h.visible===undefined||h.visible\" ng-style=\"{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}\" ng-class=\"sort.col===h.prop&&h.sorting?'selectedHeaderCol':''\" ng-repeat=\"h in options.columns\" ng-click=\"h.sorting?sortByCol($event,h.prop):null\" ng-keydown=\"h.sorting?sortByCol($event,h.prop):null\">\n" +
-      "                        {{h.label}}\n" +
-      "                        <span class=\"icon sortColIcon\" ng-if=\"h.sorting\" ng-class=\"{'selectedHeaderCol':sort.col===h.prop&&h.sorting, 'icon-sort':h.sorting&&sort.col!==h.prop, 'icon-down':sort.col===h.prop&&sort.reverse, 'icon-up':sort.col===h.prop&&!sort.reverse}\" tabindex=\"0\"></span>\n" +
-      "                        <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\" ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=\"0\"></span>\n" +
-      "                    </th>\n" +
-      "                    <th id=\"headerColAction\" class=\"headerCol headerColAction\" ng-if=\"options.useTemplates\" ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\">\n" +
-      "                        <span>{{options.actionColumnText}}</span>\n" +
-      "                        <span class=\"icon icon-plus actionIcon addItemIcon\" ng-if=\"options.templates.add.actionBtnShow\" ng-click=\"addRow();\" ng-keydown=\"checkEvent($event)?addRow():null\" vstooltip=\"{{options.templates.add.btnTooltip}}\" tabindex=\"0\"></span>\n" +
-      "                    </th>\n" +
-      "                </tr>\n" +
-      "                <tr ng-if=\"options.filter.column!==undefined&&options.filter.column&&filterFocus\">\n" +
-      "                    <th class=\"headerCol\" ng-repeat=\"h in options.columns\" ng-show=\"h.visible===undefined||h.visible\" col-filter-template=\"h\"></th>\n" +
-      "                    <th class=\"headerCol headerColAction\"></th>\n" +
-      "                </tr>\n" +
+      "            <tr class=\"headerRow\">\n" +
+      "                <th class=\"headerCol textOverflow\" col-resizer ng-if=\"h.visible===undefined||h.visible\"\n" +
+      "                    ng-style=\"{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}\"\n" +
+      "                    ng-class=\"sort.col===h.prop&&h.sorting?'selectedHeaderCol':''\" ng-repeat=\"h in options.columns\"\n" +
+      "                    ng-click=\"h.sorting?sortByCol($event,h.prop):null\"\n" +
+      "                    ng-keydown=\"h.sorting?sortByCol($event,h.prop):null\">\n" +
+      "                    {{h.label}}\n" +
+      "                    <span class=\"icon sortColIcon\" ng-if=\"h.sorting\"\n" +
+      "                          ng-class=\"{'selectedHeaderCol':sort.col===h.prop&&h.sorting, 'icon-sort':h.sorting&&sort.col!==h.prop, 'icon-down':sort.col===h.prop&&sort.reverse, 'icon-up':sort.col===h.prop&&!sort.reverse}\"\n" +
+      "                          tabindex=\"0\"></span>\n" +
+      "                    <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\"\n" +
+      "                          ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=\"0\"></span>\n" +
+      "                </th>\n" +
+      "                <th id=\"headerColAction\" class=\"headerCol headerColAction\" ng-if=\"options.useTemplates\"\n" +
+      "                    ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\">\n" +
+      "                    <span>{{options.actionColumnText}}</span>\n" +
+      "                    <span class=\"icon icon-plus actionIcon addItemIcon\" ng-if=\"options.templates.add.actionBtnShow\"\n" +
+      "                          ng-click=\"addRow();\" ng-keydown=\"checkEvent($event)?addRow():null\"\n" +
+      "                          vstooltip=\"{{options.templates.add.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                </th>\n" +
+      "            </tr>\n" +
+      "            <tr ng-if=\"options.filter.column!==undefined&&options.filter.column&&filterFocus\">\n" +
+      "                <th class=\"headerCol\" ng-repeat=\"h in options.columns\" ng-show=\"h.visible===undefined||h.visible\"\n" +
+      "                    col-filter-template=\"h\"></th>\n" +
+      "                <th class=\"headerCol headerColAction\"></th>\n" +
+      "            </tr>\n" +
       "            </thead>\n" +
       "            <tbody class=\"tableBody\">\n" +
-      "                <tr class=\"bodyRow\" ng-repeat=\"obj in !extDataPagination?filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):filteredItems track by $index\" ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\" ng-click=\"rowClicked($event, obj)\" ng-keydown=\"rowClicked($event, obj)\" ng-class=\"{'selectedRow':isRowSelected(obj)}\" table-body-row tabindex=\"0\">\n" +
-      "                    <td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\" ng-style=\"{'text-align':col.textAlign}\" ng-class=\"getColumnStyle(obj,col)\" overlay-window=\"{{getPropertyValue(obj,col.prop)}}\">\n" +
-      "                        {{getPropertyValue(obj,col.prop)}}\n" +
-      "                    </td>\n" +
-      "                    <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
-      "                        <span class=\"icon icon-edit actionIcon\" ng-if=\"options.templates.edit.actionBtnShow\" ng-click=\"editRow($event, obj);$event.stopPropagation()\" ng-keydown=\"editRow($event, obj);$event.stopPropagation()\" vstooltip=\"{{options.templates.edit.btnTooltip}}\" tabindex=\"0\"></span>\n" +
-      "                        <span class=\"icon icon-clear actionIcon\" ng-if=\"options.templates.delete.actionBtnShow\" ng-click=\"deleteRow($event, obj);$event.stopPropagation()\" ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\" vstooltip=\"{{options.templates.delete.btnTooltip}}\" tabindex=\"0\"></span>\n" +
-      "                        <span class=\"icon icon-view actionIcon\" ng-if=\"options.templates.view.actionBtnShow\" ng-click=\"viewRow($event, obj);$event.stopPropagation()\" ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\" vstooltip=\"{{options.templates.view.btnTooltip}}\" tabindex=\"0\"></span>\n" +
-      "                    </td>\n" +
-      "                </tr>\n" +
+      "            <tr class=\"bodyRow\"\n" +
+      "                ng-repeat=\"obj in !extDataPagination?filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):filteredItems track by $index\"\n" +
+      "                ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\" ng-click=\"rowClicked($event, obj)\"\n" +
+      "                ng-keydown=\"rowClicked($event, obj)\" ng-class=\"{'selectedRow':isRowSelected(obj)}\" table-body-row\n" +
+      "                tabindex=\"0\">\n" +
+      "                <td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\"\n" +
+      "                    ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\"\n" +
+      "                    ng-style=\"{'text-align':col.textAlign}\" ng-class=\"getColumnStyle(obj,col)\"\n" +
+      "                    overlay-window=\"{{getPropertyValue(obj,col.prop)}}\">\n" +
+      "                    {{getPropertyValue(obj,col.prop)}}\n" +
+      "                </td>\n" +
+      "                <td class=\"bodyCol bodyColAction\" ng-if=\"options.useTemplates\">\n" +
+      "                    <span class=\"icon icon-edit actionIcon\" ng-if=\"options.templates.edit.actionBtnShow\"\n" +
+      "                          ng-click=\"editRow($event, obj);$event.stopPropagation()\"\n" +
+      "                          ng-keydown=\"editRow($event, obj);$event.stopPropagation()\"\n" +
+      "                          vstooltip=\"{{options.templates.edit.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                    <span class=\"icon icon-clear actionIcon\" ng-if=\"options.templates.delete.actionBtnShow\"\n" +
+      "                          ng-click=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
+      "                          ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\"\n" +
+      "                          vstooltip=\"{{options.templates.delete.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                    <span class=\"icon icon-view actionIcon\" ng-if=\"options.templates.view.actionBtnShow\"\n" +
+      "                          ng-click=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
+      "                          ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\"\n" +
+      "                          vstooltip=\"{{options.templates.view.btnTooltip}}\" tabindex=\"0\"></span>\n" +
+      "                </td>\n" +
+      "            </tr>\n" +
       "            </tbody>\n" +
       "        </table>\n" +
       "        <div class=\"tableFooter\" table-paginator></div>\n" +
@@ -98,7 +140,8 @@ angular.module("templates/vsdatatable.html", []).run(["$templateCache", function
       "    </script>\n" +
     "\n" +
       "    <script type=\"text/ng-template\" id=\"datatablecolresizer.html\">\n" +
-      "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\" style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize\"></div>\n" +
+      "        <div class=\"colresizer\" ng-click=\"$event.stopPropagation()\"\n" +
+      "             style=\"position:absolute;border:1px solid transparent;background-color:transparent;top:0;bottom:0;right:0;width:6px;cursor:col-resize\"></div>\n" +
       "    </script>\n" +
     "\n" +
       "    <script type=\"text/ng-template\" id=\"datatablebusyicon.html\">\n" +
@@ -124,12 +167,16 @@ angular.module("templates/vspaginator.html", []).run(["$templateCache", function
     "        <td>\n" +
       "            <button class=\"paginatorBtn\" ng-style=\"{'margin-left':$index>0?'-1px':'0'}\"\n" +
       "                    ng-class=\"{'selectedPaginatorBtn':b.id===paginator.visiblePageIdx+1, 'disabledPaginatorBtn':isDisabledBtn(b), 'paginatorBtnNbr': !isNavigateBtn(b), 'paginatorBtnSet': b===btnPrevSet||b===btnNextSet, 'paginatorBtnAll': b===btnFirst||b===btnLast}\"\n" +
-      "                    ng-click=\"paginatorBtnClick(b,$index)\" ng-repeat=\"b in paginatorButtons track by $index\">{{b.label}}</button>\n" +
+      "                    ng-click=\"paginatorBtnClick(b,$index)\" ng-repeat=\"b in paginatorButtons track by $index\">{{b.label}}\n" +
+      "            </button>\n" +
     "        </td>\n" +
     "        <td>\n" +
     "            <div style=\"float:right;\">\n" +
     "                <span class=\"paginatorTxt\">{{options.paginator.pageSizeTxt}}</span>\n" +
-      "                <button class=\"paginatorBtn paginatorBtnPageSize\" ng-style=\"{'margin-left':$index>0?'-1px':'0'}\" ng-class=\"{'selectedPaginatorBtn':o.rows===pageSize.rows}\" ng-click=\"pageSizeButtonClick(o)\" ng-repeat=\"o in pageSizeOptions track by $index\">{{o.label}}</button>\n" +
+      "                <button class=\"paginatorBtn paginatorBtnPageSize\" ng-style=\"{'margin-left':$index>0?'-1px':'0'}\"\n" +
+      "                        ng-class=\"{'selectedPaginatorBtn':o.rows===pageSize.rows}\" ng-click=\"pageSizeButtonClick(o)\"\n" +
+      "                        ng-repeat=\"o in pageSizeOptions track by $index\">{{o.label}}\n" +
+      "                </button>\n" +
     "            </div>\n" +
     "        </td>\n" +
     "    </tr>\n" +
