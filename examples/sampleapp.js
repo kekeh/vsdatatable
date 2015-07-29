@@ -192,6 +192,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf, vsdtEve
                 textAlign: 'right',
                 sorting: true,
                 filter: {template: colInputFilterTemplate, match: 'contain'},
+                //filter: {template: colInputFilterTemplate, match: 'daterange',dateFormat: 'yyyy-mm-dd'}, // 2012-10-22 - 2012-11-28
                 width: {number: 15, unit: '%'},
                 visible: true
             },

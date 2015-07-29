@@ -24,14 +24,16 @@ angular.module('vsdatatable', [])
         EXT_SORT: 's',
         EXT_FLT: 'f',
         EXT_BTN: 'b',
-        FILTER_CONTAIN: 'contain',
-        FILTER_EXACT: 'exact',
         ROW_SELECT: 'SELECT',
         ROW_DESELECT: 'DESELECT',
         COL_RESIZER_MIN_COL_WIDTH: 35,
         DEFAULT_ACTION_COL_WIDTH: 90,
         COLUMN_PROP_VALUE: 'COLUMN_PROP_VALUE',
-        DOT_SEPARATOR: '.'
+        DOT_SEPARATOR: '.',
+        YEAR: 'yyyy',
+        MONTH: 'mm',
+        DAY: 'dd',
+        DATES_SEPARATOR: ' - '
     })
 
 /**
@@ -122,7 +124,7 @@ angular.module('vsdatatable', [])
                 $scope.totalCount = 0;
                 $scope.sort = {col: '', reverse: false};
                 $scope.globalFilter = '';
-                $scope.columnFilter = {contain: {}, exact: {}};
+                $scope.columnFilter = {contain: {}, exact: {}, daterange: {}};
             }],
             link: function (scope, element, attrs) {
                 var extPendingOper = null;
@@ -753,6 +755,7 @@ angular.module('vsdatatable', [])
                 var filterFocusWatch = null;
                 var orderItems = $filter('orderBy');
                 var filterItems = $filter('filter');
+                var filterDateRange = $filter('dateRangeFilter');
                 var refreshFlag = true;
 
                 scope.filterBtnClick = function (event) {
@@ -780,6 +783,7 @@ angular.module('vsdatatable', [])
                     scope.globalFilter = '';
                     resetColumnFilter(scope.columnFilter.contain);
                     resetColumnFilter(scope.columnFilter.exact);
+                    resetColumnFilter(scope.columnFilter.daterange);
                     if (!scope.options.filter.autoFilter.useAutoFilter && refresh) {
                         scope.execFilterAndSort();
                     }
@@ -822,8 +826,36 @@ angular.module('vsdatatable', [])
                             return vsdtServ.isEqual(a.toString(), b) || vsdtServ.isEqual(b, '');
                         });
                     }
+
+                    var drFilter = getFilterExpression(scope.columnFilter.daterange);
+                    if (!vsdtServ.isEqual(drFilter, {})) {
+                        angular.forEach(drFilter, function (v, k) {
+                            var dates = v.split(scope.config.DATES_SEPARATOR);
+                            if (vsdtServ.isEqual(dates.length, 2) && vsdtServ.isEqual(dates[0].length, 10) && vsdtServ.isEqual(dates[1].length, 10)) {
+                                var fmt = getDateFormat(k);
+                                scope.filteredItems = filterDateRange(scope.filteredItems, k, createDate(dates[0], fmt), createDate(dates[1], fmt));
+                            }
+                        });
+                    }
+
                     scope.totalCount = scope.filteredItems.length;
                 };
+
+                function getDateFormat(prop) {
+                    for (var i in scope.options.columns) {
+                        if (vsdtServ.isEqual(scope.options.columns[i].prop, prop)) {
+                            return scope.options.columns[i].filter.dateFormat;
+                        }
+                    }
+                }
+
+                function createDate(dateStr, fmt) {
+                    fmt = fmt.toLowerCase();
+                    var y = fmt.indexOf(scope.config.YEAR);
+                    var m = fmt.indexOf(scope.config.MONTH);
+                    var d = fmt.indexOf(scope.config.DAY);
+                    return new Date(parseInt(dateStr.substring(y, y + 4)), parseInt(dateStr.substring(m, m + 2)) - 1, parseInt(dateStr.substring(d, d + 2)));
+                }
 
                 function getFilterExpression(filterData) {
                     var exp = {};
@@ -901,6 +933,23 @@ angular.module('vsdatatable', [])
         };
     }])
 
+/**
+ * @ngdoc object
+ * @name dateRangeFilter
+ * @description dateRangeFilter filter which filters items by date range.
+ */
+    .filter("dateRangeFilter", function () {
+        return function (items, key, from, to) {
+            var result = [];
+            angular.forEach(items, function (item) {
+                var date = new Date(item[key]);
+                if (date >= from && date <= to) {
+                    result.push(item);
+                }
+            });
+            return result;
+        };
+    })
 
 /**
  * @ngdoc object

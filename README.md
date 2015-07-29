@@ -1,4 +1,4 @@
-# vsdatatable v. 0.1.0
+# vsdatatable v. 0.1.1
 
 **Simple single page datatable - AngularJS reusable UI component**
 
@@ -25,7 +25,7 @@ AngularJS directive which implements the datatable with many useful and configur
 * built in global filter
 * column filter can be optionally added by using a HTML template
 * the global and the column filter works also if the data is paginated from the external data source
-* contain and exact match can be used
+* contain, exact and date range match can be used
 * internal filtering uses AngularJS filter
 
 ### 3. sorting
@@ -74,10 +74,10 @@ AngularJS directive which implements the datatable with many useful and configur
 
 ## Usage
 
-* include the **vsdatatable-0.1.0.min.js** and the **vsdatatable-0.1.0.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
+* include the **vsdatatable-0.1.1.min.js** and the **vsdatatable-0.1.1.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
 ```html
-<script src="vsdatatable-0.1.0.min.js"></script>
-<link href="vsdatatable-0.1.0.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.1.1.min.js"></script>
+<link href="vsdatatable-0.1.1.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
@@ -240,7 +240,7 @@ Example of the column configuration. See description of the properties below the
 | label | Visible column name. |
 | textAlign | Column text alignment (left, center or right). |
 | sorting | Is column sorting used (true or false). Adds sortinh icon to the column header. |
-| filter | Column filter. HTML template is needed. Each filter template must contain this **ng-model="COLUMN_PROP_VALUE"**. See example **column filter template** of the input box filter below. Also type of match needs to defined. It can be **exact** or **contain** |
+| filter | Column filter. HTML template is needed. Each filter template must contain this **ng-model="COLUMN_PROP_VALUE"**. See example **column filter template** of the input box filter below. Also type of match needs to defined. It can be **exact**, **contain** or **daterange** |
 | width | Width of the column. Contains number and unit. Unit can be **%** or **px** |
 | visible | Is column initially visible or not.(true or false) If this is false the user can later toggle column visible from the column toggle menu. |
 | rules | Array of objects. Each object contains the style definition to the column. If array has more than on object, first style of match is used and the rest styles are ignored.|
