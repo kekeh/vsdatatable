@@ -1,0 +1,374 @@
+.dpdaterangepicker {
+    min-width: 60px;
+    border-radius: 2px;
+    line-height: 1.1;
+}
+
+.dpdaterangepicker * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.dpdaterangepicker .dpselector {
+    margin-top: 3px;
+    margin-left: -1px;
+    position: absolute;
+    max-width: 262px;
+    padding: 3px;
+    border-radius: 2px;
+    background-color: #DDD;
+    z-index: 100;
+}
+
+.dpdaterangepicker .dpselectiongroup {
+    position: relative;
+    display: table;
+    border: none;
+    background-color: #FFF;
+}
+
+.dpdaterangepicker .dpselection {
+    background-color: #FFF;
+    display: table-cell;
+    position: absolute;
+    width: 100%;
+    text-align: left;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0 64px 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.dpdaterangepicker .dpselbtngroup {
+    position: relative;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 1%;
+    display: table-cell;
+    text-align: right;
+    font-size: 0;
+}
+
+.dpdaterangepicker .dpbtnpicker,
+.dpdaterangepicker .dpbtnclear {
+    height: 100%;
+    width: 30px;
+    border: none;
+    border-left: 1px solid #999;
+    padding: 0px;
+    cursor: pointer;
+    outline: 0;
+    -moz-user-select: none;
+    font: inherit;
+}
+
+.dpdaterangepicker .dpbtnpicker,
+.dpdaterangepicker .dpbtnclear,
+.dpdaterangepicker .dpheadertodaybtn,
+.dpdaterangepicker .dpfooterbtn {
+    background: #FAFAFA;
+    background-image: -webkit-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -moz-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -o-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -ms-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+}
+
+.dpdaterangepicker .dptitlearea {
+    height: 30px;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.dpdaterangepicker .dptitleareatxt {
+    height: 26px;
+    line-height: 26px;
+    font-size: 14px;
+}
+
+.dpdaterangepicker .dpfooterarea {
+    margin-top: 4px;
+    padding: 3px;
+    text-align: center;
+    background-color: #FAFAFA;
+}
+
+.dpdaterangepicker .dpheader {
+    width: 100%;
+    height: 36px;
+    margin-bottom: -1px;
+    background-color: #FAFAFA;
+}
+
+.dpdaterangepicker .dpheader td {
+    vertical-align: middle;
+    border: none;
+}
+
+.dpdaterangepicker .dpheader td:nth-child(1) {
+    font-size: 16px;
+    text-align: left;
+    padding-left: 4px;
+}
+
+.dpdaterangepicker .dpheader td:nth-child(2) {
+    text-align: center;
+
+}
+
+.dpdaterangepicker .dpheader td:nth-child(3) {
+    font-size: 16px;
+    text-align: right;
+    padding-right: 4px;
+}
+
+.dpdaterangepicker .dptable {
+    table-layout: fixed;
+    width: 100%;
+    background-color: #FFF;
+    font-size: 14px;
+}
+
+.dpdaterangepicker .dptable,
+.dpdaterangepicker .dptable th,
+.dpdaterangepicker .dptable td {
+    border-collapse: collapse;
+    color: #003366;
+    line-height: 1.1;
+}
+
+.dpdaterangepicker .dptable th,
+.dpdaterangepicker .dptable td {
+    padding: 5px;
+    text-align: center;
+}
+
+.dpdaterangepicker .dptable th {
+    background-color: #DDD;
+    font-size: 12px;
+}
+
+.dpdaterangepicker .dptable td {
+    cursor: pointer;
+}
+
+.dpdaterangepicker .dpprevmonth {
+    color: #CCC;
+}
+
+.dpdaterangepicker .dpcurrmonth {
+    color: #000;
+    font-weight: bold;
+}
+
+.dpdaterangepicker .dpnextmonth {
+    color: #CCC;
+}
+
+.dpdaterangepicker .dpsunday {
+    color: #C30000;
+}
+
+.dpdaterangepicker .dpcurrmonth {
+    background-color: #FAFAFA;
+}
+
+.dpdaterangepicker .dpcurrday {
+    background-color: #64E986;
+    text-decoration: underline;
+}
+
+.dpdaterangepicker .dpselectedday {
+    background-color: #3BB9FF;
+}
+
+.dpdaterangepicker .dpselectmenu {
+    height: 24px;
+    width: 60px
+}
+
+.dpdaterangepicker .dpheaderbtn {
+    background-color: #FAFAFA;
+    cursor: pointer;
+    display: table-cell;
+}
+
+.dpdaterangepicker,
+.dpdaterangepicker .dpselector,
+.dpdaterangepicker .dptitlearea,
+.dpdaterangepicker .dpfooterarea,
+.dpdaterangepicker .dpheader,
+.dpdaterangepicker .dptable,
+.dpdaterangepicker .dptable th,
+.dpdaterangepicker .dptable td,
+.dpdaterangepicker .dpheadertodaybtn,
+.dpdaterangepicker .dpfooterbtn,
+.dpdaterangepicker .vstooltip {
+    border: 1px solid #AAA;
+}
+
+.dpdaterangepicker .dpbtnpicker,
+.dpdaterangepicker .dpbtnclear,
+.dpdaterangepicker .dpheaderbtn,
+.dpdaterangepicker .dpheadermonthtxt,
+.dpdaterangepicker .dpheaderyeartxt,
+.dpdaterangepicker .dpheadertodaybtn,
+.dpdaterangepicker .dpselection,
+.dpdaterangepicker .dpfooterbtn {
+    color: #000;
+}
+
+.dpdaterangepicker .dpheadertodaybtn,
+.dpdaterangepicker .dpfooterbtn {
+    padding: 4px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.dpdaterangepicker .dpfooterbtn {
+    width: 80px;
+}
+
+.dpdaterangepicker button::-moz-focus-inner {
+    border: 0;
+}
+
+.dpdaterangepicker .dpheadermonthtxt,
+.dpdaterangepicker .dpheaderyeartxt {
+    width: 40px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.dpdaterangepicker .dpbtnclear:focus,
+.dpdaterangepicker .dpbtnpicker:focus,
+.dpdaterangepicker .dpbtnclear:hover,
+.dpdaterangepicker .dpbtnpicker:hover {
+    background: #ADD8E6;
+}
+
+.dpdaterangepicker .icon-calendar,
+.dpdaterangepicker .icon-cross {
+    font-size: 16px;
+}
+
+.dpdaterangepicker .icon-left,
+.dpdaterangepicker .icon-right {
+    font-size: 14px;
+}
+
+.dpdaterangepicker .icon-left:hover,
+.dpdaterangepicker .icon-right:hover {
+    color: #63B2CC;
+}
+
+.dpdaterangepicker .dptitlerangeok {
+    background-color: #AEE99F;
+    color: #008700;
+}
+
+.dpdaterangepicker .dptitlerangenotok {
+    background-color: #EBC0D2;
+    color: #C30000;
+}
+
+.dpdaterangepicker .vstooltip {
+    background-color: #FFFFCC;
+    color: #000;
+    padding: 6px;
+    z-index: 1003;
+    white-space: nowrap;
+    font-weight: normal;
+    font-size: 13px;
+    border-radius: 4px;
+    margin: 2px 0 0 20px;
+}
+
+.dpdaterangepicker .vstooltip:before {
+    border-right: 10px solid #888;
+    left: -10px;
+}
+
+.dpdaterangepicker .vstooltip:after {
+    border-right: 8px solid #FFFFCC;
+    left: -8px;
+}
+
+.dpdaterangepicker .vstooltip:before,
+.dpdaterangepicker .vstooltip:after {
+    content: ' ';
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    position: absolute;
+    z-index: 1003;
+    top: 5px;
+}
+
+.dpdaterangepicker .vstooltiptext {
+
+}
+
+.dpdaterangepicker .vstooltip {
+    position: absolute;
+    -moz-box-shadow: 0 0 14px #000;
+    -webkit-box-shadow: 0 0 14px #000;
+    box-shadow: 0 0 14px #000;
+}
+
+.dpdaterangepicker .dpbtndisable {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.dpdaterangepicker table {
+    display: table;
+}
+
+.dpdaterangepicker table td {
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'dpdaterangepicker';
+    src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAALAIAAAwAwT1MvMg8SAssAAAC8AAAAYGNtYXDMUczTAAABHAAAAGxnYXNwAAAAEAAAAYgAAAAIZ2x5ZmFQ1q4AAAGQAAABbGhlYWQGZuTFAAAC/AAAADZoaGVhB4IDyQAAAzQAAAAkaG10eBYAAnAAAANYAAAAIGxvY2EBdAE0AAADeAAAABJtYXhwABUAPgAAA4wAAAAgbmFtZQ5R9RkAAAOsAAABnnBvc3QAAwAAAAAFTAAAACAAAwOaAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADmBwPA/8AAQAPAAEAAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAUAAAABAAEAADAAAAAQAg5gDmAuYF5gf//f//AAAAAAAg5gDmAuYF5gf//f//AAH/4xoEGgMaARoAAAMAAQAAAAAAAAAAAAAAAAAAAAAAAQAB//8ADwABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAAMAEAAAAPAA4AABAAJAA4AEwAYAB0AIgAnACwAMQA2ADsAABMRMxEjFyE1IRUDITUhFQERMxEjJRUzNSMTFTM1IzMVMzUjMxUzNSMBFTM1IzMVMzUjMxUzNSMTFTM1I0Bzc0ADAP0AQAOA/IADDXNz/ZOAgCCAgMCAgMCAgP6AgIDAgIDAgIAggIADAP1AAsBzc3P9c3NzAwD9QALAgMDA/sCAgICAgID/AICAgICAgAJAwMAAAAAAAgBwADADkANQAAQACQAANwEnARcDATcBB+kCp3n9WXl5Aqd5/Vl5MAKnef1ZeQKn/Vl5Aqd5AAABAOAAAAMgA4AAAwAAAQMBJQMgA/3DASADgPyAAcPfAAEA4AAAAyADgAADAAA3EwEF4AMCPf7gAAOA/j3fAAAAAQAAAAEAAF0/BsNfDzz1AAsEAAAAAADRxFAkAAAAANHEUCQAAAAAA8ADgAAAAAgAAgAAAAAAAAABAAADwP/AAAAEAAAAAAADwAABAAAAAAAAAAAAAAAAAAAACAQAAAAAAAAAAAAAAAIAAAAEAABABAAAcAQAAOAEAADgAAAAAAAKABQAHgB6AJYApgC2AAAAAQAAAAgAPAAMAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA4ArgABAAAAAAABAAkAAAABAAAAAAACAAcAcgABAAAAAAADAAkAPAABAAAAAAAEAAkAhwABAAAAAAAFAAsAGwABAAAAAAAGAAkAVwABAAAAAAAKABoAogADAAEECQABABIACQADAAEECQACAA4AeQADAAEECQADABIARQADAAEECQAEABIAkAADAAEECQAFABYAJgADAAEECQAGABIAYAADAAEECQAKADQAvHZzZHBpY2tlcgB2AHMAZABwAGkAYwBrAGUAclZlcnNpb24gMS4wAFYAZQByAHMAaQBvAG4AIAAxAC4AMHZzZHBpY2tlcgB2AHMAZABwAGkAYwBrAGUAcnZzZHBpY2tlcgB2AHMAZABwAGkAYwBrAGUAclJlZ3VsYXIAUgBlAGcAdQBsAGEAcnZzZHBpY2tlcgB2AHMAZABwAGkAYwBrAGUAckZvbnQgZ2VuZXJhdGVkIGJ5IEljb01vb24uAEYAbwBuAHQAIABnAGUAbgBlAHIAYQB0AGUAZAAgAGIAeQAgAEkAYwBvAE0AbwBvAG4ALgAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.dpdaterangepicker .icon {
+    font-family: 'dpdaterangepicker';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.dpdaterangepicker .icon-calendar:before {
+    content: "\e600";
+}
+
+.dpdaterangepicker .icon-cross:before {
+    content: "\e602";
+}
+
+.dpdaterangepicker .icon-left:before {
+    content: "\e605";
+}
+
+.dpdaterangepicker .icon-right:before {
+    content: "\e607";
+}

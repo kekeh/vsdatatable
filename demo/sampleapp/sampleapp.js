@@ -3,7 +3,7 @@
  * @name sampleapp
  * @description Sample application module. Injects the vsdatatable module.
  */
-var sampleapp = angular.module('sampleapp', ['vsdatatable']);
+var sampleapp = angular.module('sampleapp', ['vsdatatable', 'dpdaterangepicker']);
 
 /**
  * @ngdoc object
@@ -42,7 +42,13 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf, vsdtEve
         '<select class="selectMenu" ng-click="$event.stopPropagation();" ng-model="COLUMN_PROP_VALUE" ng-options="features.value as features.label for features in [{label: \'Choose\', value:undefined},{label: \'Set 1\', value:\'1\'},{label: \'Set 2\', value:\'2\'},{label: \'Set 3\', value:\'3\'}]"></select>' +
         '</div>';
 
+    var colSelectDateRangeTemplate =
+        '<div class="columnTemplate">' +
+        '<dpdaterangepicker ng-model="COLUMN_PROP_VALUE" width="100%" height="22px" options="{}"></dpdaterangepicker>' +
+        '</div>';
+
     $scope.jsonData = [];
+    $scope.optdrp = {};
 
     // data operation (add, edit or delete) callback
     var onDataOperation = function (phase, operation, dataOld, dataNew) {
@@ -187,7 +193,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf, vsdtEve
                 label: 'Date',
                 textAlign: 'right',
                 sorting: true,
-                filter: {template: colInputFilterTemplate, match: 'contain'},
+                filter: {template: colSelectDateRangeTemplate, match: 'daterange', dateFormat: 'yyyy-mm-dd'},
                 width: {number: 15, unit: '%'},
                 visible: true
             },
