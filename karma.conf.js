@@ -4,8 +4,8 @@ module.exports = function(config) {
     basePath: '.',
     frameworks: ['jasmine'],
     files: [
-        'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js',
-        'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-mocks.js',
+        'http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js',
+        'http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-mocks.js',
         'dist/debug/*.js',
         'test/*.spec.js'
     ],

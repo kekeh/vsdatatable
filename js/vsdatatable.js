@@ -198,9 +198,7 @@ angular.module('vsdatatable', [])
                     scope.filteredItems = value.data;
                     scope.totalCount = value.totalCount;
 
-                    if (!vsdtServ.isEqual(extPendingOper, scope.config.EXT_BTN)
-                        && !vsdtServ.isEqual(extPendingOper, scope.config.OPER_EDIT)
-                        && !vsdtServ.isEqual(extPendingOper, scope.config.EXT_SORT)) {
+                    if (!vsdtServ.isEqual(extPendingOper, scope.config.EXT_BTN) && !vsdtServ.isEqual(extPendingOper, scope.config.OPER_EDIT) && !vsdtServ.isEqual(extPendingOper, scope.config.EXT_SORT)) {
                         vsdtServ.paginatorEvent(scope);
                     }
 
@@ -254,6 +252,7 @@ angular.module('vsdatatable', [])
                 };
 
                 scope.paginationOperation = function (oper) {
+                    // External pagination
                     if (scope.extDataPagination) {
                         if (scope.options.busyIcon.visible) {
                             scope.busyIcon = true;
@@ -281,6 +280,7 @@ angular.module('vsdatatable', [])
                 };
 
                 scope.checkEvent = function (event) {
+                    // Mouse or enter key
                     return (vsdtServ.isEqual(event.which, 1) || vsdtServ.isEqual(event.which, 13)) && !scope.busyIcon;
                 };
 
@@ -307,7 +307,7 @@ angular.module('vsdatatable', [])
                 }
 
                 function itemsLengthWatchFn() {
-                    // Not external pagination
+                    // Internal pagination
                     scope.filteredItems = scope.options.data.items;
                     scope.totalCount = scope.filteredItems.length;
                     resetFilterAndSort(false);
@@ -315,6 +315,7 @@ angular.module('vsdatatable', [])
                 }
 
                 function getTableRow(event) {
+                    // Returns table row based on the click of the row icon
                     return angular.element(event.target).parent().parent();
                 }
 
@@ -338,6 +339,7 @@ angular.module('vsdatatable', [])
                 }
 
                 function dataOperation(phase) {
+                    // Notify the parent if the data operation callback is defined
                     if (!vsdtServ.isUndefined(scope.options.data.dataOperationCb)) {
                         scope.options.data.dataOperationCb(
                             phase, operObject.oper, operObject.dataOld,
@@ -411,7 +413,7 @@ angular.module('vsdatatable', [])
                     var colOpt = scope.$eval(attrs.colFilterTemplate);
                     if (!vsdtServ.isUndefined(colOpt.filter) && !vsdtServ.isUndefined(colOpt.filter.template)
                         && !vsdtServ.isUndefined(colOpt.filter.match)) {
-                        // Add column filter
+                        // Add the column filter template
                         var colTpl = angular.copy(colOpt.filter.template);
                         colTpl = colTpl.replace(scope.config.COLUMN_PROP_VALUE, 'columnFilter' + scope.config.DOT_SEPARATOR + colOpt.filter.match + scope.config.DOT_SEPARATOR + colOpt.prop + '"');
                         var elem = angular.element(colTpl);
@@ -428,7 +430,7 @@ angular.module('vsdatatable', [])
 /**
  * @ngdoc object
  * @name tableBodyRow
- * @description tableBodyRow directive handles row clicks done by user. It also hove the row in case defined in
+ * @description tableBodyRow directive handles row clicks done by user. It also hover the row in case defined in
  * the configuration.
  */
     .directive('tableBodyRow', ['vsdtServ', function (vsdtServ) {
@@ -436,11 +438,6 @@ angular.module('vsdatatable', [])
             restrict: 'A',
             scope: false,
             link: function (scope, element, attrs) {
-                if (scope.options.row.hover) {
-                    element.on('mouseenter', onMouseEnter);
-                    element.on('mouseleave', onMouseLeave);
-                }
-
                 scope.rowClicked = function (event, data) {
                     if (checkEvent(event)) {
                         var oper = scope.config.ROW_SELECT;
@@ -489,6 +486,15 @@ angular.module('vsdatatable', [])
                         element.off('mouseleave', onMouseLeave);
                     }
                 });
+
+                function init() {
+                    if (scope.options.row.hover) {
+                        element.on('mouseenter', onMouseEnter);
+                        element.on('mouseleave', onMouseLeave);
+                    }
+                }
+
+                init();
             }
         };
     }])
@@ -505,10 +511,8 @@ angular.module('vsdatatable', [])
             templateUrl: 'templates/vspaginator.html',
             link: function (scope, element, attrs) {
                 scope.paginator = {visiblePageIdx: 0, pageFirstIdx: 0};
-                scope.paginatorButtons = [];
-                scope.disabledButtons = [];
-                var initBtnCount = 0;
-                var filteredBtnCount = 0;
+                scope.paginatorButtons = [], scope.disabledButtons = [];
+                var initBtnCount = 0, filteredBtnCount = 0;
 
                 scope.pageSizeButtonClick = function (value) {
                     scope.pageSize = scope.pageSizeOptions[scope.pageSizeOptions.indexOf(value)];
