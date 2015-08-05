@@ -1,22 +1,23 @@
 /* 
  *  Name: dpdaterangepicker
  *  Description: Date range picker - AngularJS reusable UI component
- *  Version: 0.1.0
+ *  Version: 0.1.1
  *  Author: kekeh
  *  Homepage: http://kekeh.github.io/dpdaterangepicker
  *  License: MIT
- *  Date: 2015-07-30
+ *  Date: 2015-08-05
  */
-angular.module('template-dpdaterangepicker-0.1.0.html', ['templates/dpdaterangepicker.html']);
+angular.module('template-dpdaterangepicker-0.1.1.html', ['templates/dpdaterangepicker.html']);
 
 angular.module("templates/dpdaterangepicker.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("templates/dpdaterangepicker.html",
         "<div class=\"dpdaterangepicker\" ng-style=\"{'width':width}\">\n" +
+        "    <div class=\"vstooltip\" ng-show=\"showTooltip\" ng-mouseleave=\"showTooltip=false\"><span class=\"vstooltiptext\">{{selectedRangeTxt}}</span></div>\n" +
         "    <div class=\"dpselectiongroup\" ng-click=\"picker($event)\">\n" +
         "        <span class=\"dpselection\" ng-style=\"{'line-height': height}\" ng-click=\"picker($event)\" tooltip-window>{{selectedRangeTxt}}</span>\n" +
         "        <span class=\"dpselbtngroup\" ng-style=\"{'height': height}\">\n" +
-        "            <button class=\"dpbtnclear\" ng-show=\"selectedRangeTxt.length > 0\" ng-click=\"clearSelection($event)\" ng-mouseenter=\"$event.stopPropagation()\"><span class=\"icon icon-cross\"></span></button>\n" +
-        "            <button class=\"dpbtnpicker\" ng-click=\"picker($event)\" ng-mouseenter=\"$event.stopPropagation()\"><span class=\"icon icon-calendar\"></span></button>\n" +
+        "            <button class=\"dpbtnclear\" ng-show=\"selectedRangeTxt.length > 0\" ng-click=\"clearSelection($event)\"><span class=\"icon icon-cross\"></span></button>\n" +
+        "            <button class=\"dpbtnpicker\" ng-click=\"picker($event)\"><span class=\"icon icon-calendar\"></span></button>\n" +
         "        </span>\n" +
         "    </div>\n" +
         "    <div class=\"dpselector\" ng-if=\"showSelector\">\n" +
@@ -33,7 +34,7 @@ angular.module("templates/dpdaterangepicker.html", []).run(["$templateCache", fu
         "                    </div>\n" +
         "                </td>\n" +
         "                <td>\n" +
-        "                    <button class=\"dpheadertodaybtn\" ng-click=\"today()\">{{options.buttons.todayBtnText!== undefined?options.buttons.todayBtnText:cf.buttons.todayBtnText}}</button>\n" +
+        "                    <button class=\"dpheadertodaybtn\" ng-click=\"today()\">{{options.buttons.todayBtnText!==undefined?options.buttons.todayBtnText:cf.buttons.todayBtnText}}</button>\n" +
         "                </td>\n" +
         "                <td>\n" +
         "                    <div style=\"float:right\">\n" +
@@ -60,14 +61,10 @@ angular.module("templates/dpdaterangepicker.html", []).run(["$templateCache", fu
         "            <button class=\"dpfooterbtn\" ng-class=\"{'dpbtndisable': !rangeOk}\" ng-disabled=\"!rangeOk\" ng-show=\"!beginDateStep\" ng-click=\"accept()\">{{options.buttons.okBtnText!==undefined?options.buttons.okBtnText:cf.buttons.okBtnText}}</button>\n" +
         "        </div>\n" +
         "    </div>\n" +
-        "\n" +
-        "    <script type=\"text/ng-template\" id=\"daterangepickertooltip.html\">\n" +
-        "        <div class=\"vstooltip\" ng-click=\"closeTooltip($event)\"><span class=\"vstooltiptext\">{{selectedRangeTxt}}</span></div>\n" +
-        "    </script>\n" +
         "</div>");
 }]);
 
-angular.module('dpdaterangepicker', ["template-dpdaterangepicker-0.1.0.html"])
+angular.module('dpdaterangepicker', ["template-dpdaterangepicker-0.1.1.html"])
 
 /**
  * @ngdoc object
@@ -126,20 +123,6 @@ angular.module('dpdaterangepicker', ["template-dpdaterangepicker-0.1.0.html"])
 
 /**
  * @ngdoc object
- * @name dpdatepickerService
- * @description dpdatepickerService contain common code of the dpdatepicker.
- */
-    .service('dpdaterangepickerService', ['$http', '$templateCache', function ($http, $templateCache) {
-        this.getTemplate = function (name) {
-            var p = $http.get(name, {cache: $templateCache}).success(function (resp) {
-                return resp.data;
-            });
-            return p;
-        };
-    }])
-
-/**
- * @ngdoc object
  * @name dpdaterangepicker
  * @description dpdaterangepicker is main directive of the component and it implements the date range picker.
  */
@@ -153,6 +136,7 @@ angular.module('dpdaterangepicker', ["template-dpdaterangepicker-0.1.0.html"])
             },
             controller: ['$scope', 'dpdaterangeConfig', function ($scope, dpdaterangeConfig) {
                 $scope.cf = dpdaterangeConfig;
+                $scope.showTooltip = false;
             }],
             link: function (scope, element, attrs) {
                 scope.dates = [], scope.weekDays = [];
@@ -442,10 +426,6 @@ angular.module('dpdaterangepicker', ["template-dpdaterangepicker-0.1.0.html"])
                     }
                 }
 
-                scope.$on('$destroy', function () {
-                    $document.off("click", onOutClick);
-                });
-
                 function getMonthLabels() {
                     return !angular.isUndefined(scope.options.monthLabels) ? scope.options.monthLabels : scope.cf.monthLabels;
                 }
@@ -453,6 +433,10 @@ angular.module('dpdaterangepicker', ["template-dpdaterangepicker-0.1.0.html"])
                 function getDayLabels() {
                     return !angular.isUndefined(scope.options.dayLabels) ? scope.options.dayLabels : scope.cf.dayLabels;
                 }
+
+                scope.$on('$destroy', function () {
+                    $document.off("click", onOutClick);
+                });
 
                 function init() {
                     // Selection element height/width
@@ -486,53 +470,25 @@ angular.module('dpdaterangepicker', ["template-dpdaterangepicker-0.1.0.html"])
  * @name tooltipWindow
  * @description tooltipWindow directive implements the tooltip window.
  */
-    .directive('tooltipWindow', ['$compile', '$timeout', 'dpdaterangepickerService', function ($compile, $timeout, dpdaterangepickerService) {
+    .directive('tooltipWindow', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
             scope: false,
             link: function (scope, element, attrs) {
-                var pElem = null;
-                var tooltip = null;
-                var timer = null;
-
-                scope.closeTooltip = function (event) {
-                    event.stopPropagation();
-                    onMouseLeave();
-                };
-
                 function onMouseEnter() {
                     if (element[0].scrollWidth > element[0].offsetWidth) {
-                        timer = $timeout(function () {
-                            dpdaterangepickerService.getTemplate('daterangepickertooltip.html').then(function (tpl) {
-                                tooltip = angular.element(tpl.data);
-                                pElem.prepend($compile(tooltip)(scope));
-                            });
+                        $timeout(function () {
+                            scope.showTooltip = true;
                         }, scope.cf.TOOLTIP_SHOW_DELAY);
                     }
                 }
 
-                function onMouseLeave() {
-                    cancelTimer();
-                    if (tooltip !== null) {
-                        tooltip.remove();
-                        tooltip = null;
-                    }
-                }
-
-                function cancelTimer() {
-                    $timeout.cancel(timer);
-                    timer = null;
-                }
-
                 scope.$on('$destroy', function () {
-                    pElem.off('mouseenter', onMouseEnter);
-                    pElem.off('mouseleave', onMouseLeave);
+                    element.off('mouseenter', onMouseEnter);
                 });
 
                 function init() {
-                    pElem = element.parent();
-                    pElem.on('mouseenter', onMouseEnter);
-                    pElem.on('mouseleave', onMouseLeave);
+                    element.on('mouseenter', onMouseEnter);
                 }
 
                 init();

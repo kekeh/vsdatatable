@@ -1,5 +1,5 @@
 .dpdaterangepicker {
-    min-width: 70px;
+    min-width: 80px;
     border-radius: 2px;
     line-height: 1.1;
 }
@@ -28,7 +28,7 @@
     position: relative;
     display: table;
     border: none;
-    background-color: #FAFAFA;
+    background-color: #FFF;
 }
 
 .dpdaterangepicker .dpselection {
@@ -290,7 +290,7 @@
     font-weight: normal;
     font-size: 13px;
     border-radius: 4px;
-    margin: 2px 0 0 20px;
+    margin: 0 0 0 20px;
 }
 
 .dpdaterangepicker .vstooltip:before {
@@ -352,7 +352,6 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
