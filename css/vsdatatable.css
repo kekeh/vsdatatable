@@ -328,6 +328,10 @@
     cursor: default;
 }
 
+.vsdatatable .tableRows .headerColFilter {
+    overflow: hidden;
+}
+
 .vsdatatable .textOverflow {
     white-space: nowrap;
     overflow: hidden;

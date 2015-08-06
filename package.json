@@ -2,11 +2,11 @@
   "author": "kekeh",
   "description": "Simple single page datatable - AngularJS reusable UI component",
   "name": "vsdatatable",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "homepage": "http://kekeh.github.io/vsdatatable",
   "dependencies": {
-    "angular": "~1.3.x"
+    "angular": "~1.4.x"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

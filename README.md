@@ -1,4 +1,4 @@
-# vsdatatable v. 0.1.2
+# vsdatatable v. 0.1.3
 
 **Simple single page datatable - AngularJS reusable UI component**
 
@@ -74,10 +74,10 @@ AngularJS directive which implements the datatable with many useful and configur
 
 ## Usage
 
-* include the **vsdatatable-0.1.2.min.js** and the **vsdatatable-0.1.2.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
+* include the **vsdatatable-0.1.3.min.js** and the **vsdatatable-0.1.3.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
 ```html
-<script src="vsdatatable-0.1.2.min.js"></script>
-<link href="vsdatatable-0.1.2.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.1.3.min.js"></script>
+<link href="vsdatatable-0.1.3.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
@@ -351,7 +351,7 @@ vsdtEvent.setExtPaginationData($scope, pagedItems, totalItems);
 In the **examples** folder of this project has the sample application and the online demo is [here](http://kekeh.github.io/vsdatatable)
 
 ## Dependencies
-Depends on AngularJS. Implemented using the AngularJS version 1.3.15. No other dependencies.
+Depends on AngularJS. Implemented using the AngularJS version 1.4.3. No other dependencies.
 
 ## Build project
 * Build can be done by executing the **grunt** command. It creates the **dist/debug** and the **dist/min** folders and put needed files to these folders.
