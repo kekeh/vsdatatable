@@ -7,7 +7,16 @@ module.exports = function (grunt) {
             dist: {
                 options: {
                     base: '.',
-                    module: 'template-<%= pkg.name %>-<%= pkg.version %>.html'
+                    module: 'template-<%= pkg.name %>-<%= pkg.version %>.html',
+                    singleModule: true,
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true
+                    }
                 },
                 files: [{
                     expand: false,
