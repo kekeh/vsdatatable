@@ -24,7 +24,7 @@ sampleapp.controller('extenderctrl', function ($scope) {
  * @name sampleappctrl
  * @description Sample application controller. This controller uses the vsdatatable.
  */
-sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf, vsdtEvent) {
+sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf) {
 
     // Header column filter templates
     var colInputFilterTemplate =
