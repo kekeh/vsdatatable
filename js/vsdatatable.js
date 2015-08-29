@@ -38,15 +38,6 @@ angular.module('vsdatatable', [])
 
 /**
  * @ngdoc object
- * @name run
- * @description run adds the row extender template to the template cache.
- */
-    .run(['$templateCache', function ($templateCache) {
-        $templateCache.put('rowExtender.html', '<td class="bodyCol" colspan="{{visibleColCount+1}}"><div ng-include src="template.path"></div></td>');
-    }])
-
-/**
- * @ngdoc object
  * @name vsdtEvent
  * @description vsdtEvent provides one function which can be used to set pagination data to the
  * vsdatatable directive. This is used only when using pagination from external source (for example
@@ -73,7 +64,7 @@ angular.module('vsdatatable', [])
  * @name vsdtServ
  * @description vsdtServ provides internal functions to the vsdatable directives.
  */
-    .service('vsdtServ', ['$http', '$templateCache', 'vsdtConf', function ($http, $templateCache, vsdtConf) {
+    .service('vsdtServ', ['$templateCache', 'vsdtConf', function ($templateCache, vsdtConf) {
         var vsdts = {};
         vsdts.isUndefined = function (val) {
             return angular.isUndefined(val);
@@ -95,11 +86,8 @@ angular.module('vsdatatable', [])
             scope.$broadcast(vsdtConf.PAGINATOR_EVENT);
         };
 
-        vsdts.getTemplate = function (name) {
-            var p = $http.get(name, {cache: $templateCache}).success(function (resp) {
-                return resp.data;
-            });
-            return p;
+        vsdts.getTemplate = function (tpl) {
+            return angular.element($templateCache.get(tpl));
         };
         return vsdts;
     }])
@@ -321,7 +309,7 @@ angular.module('vsdatatable', [])
 
                 function createRowExtender(rowElem) {
                     removeRowExtender();
-                    rowExtender = angular.element($templateCache.get('rowExtender.html'));
+                    rowExtender = vsdtServ.getTemplate('templates/vsdtrowextender.html');
                     if (vsdtServ.isEqual(operObject.oper, scope.config.OPER_ADD)) {
                         rowElem.prepend(rowExtender);
                     }
@@ -508,7 +496,7 @@ angular.module('vsdatatable', [])
         return {
             restrict: 'A',
             scope: false,
-            templateUrl: 'templates/vspaginator.html',
+            templateUrl: 'templates/vsdtpaginator.html',
             link: function (scope, element, attrs) {
                 scope.paginator = {visiblePageIdx: 0, pageFirstIdx: 0};
                 scope.paginatorButtons = [], scope.disabledButtons = [];
@@ -724,7 +712,7 @@ angular.module('vsdatatable', [])
         return {
             restrict: 'A',
             scope: false,
-            templateUrl: 'templates/vscoltogglemenu.html',
+            templateUrl: 'templates/vsdtcoltogglemenu.html',
             link: function (scope, element, attrs) {
                 scope.colTogglerShowClicked = function (event) {
                     if (scope.checkEvent(event)) {
@@ -752,7 +740,7 @@ angular.module('vsdatatable', [])
         return {
             restrict: 'A',
             scope: false,
-            templateUrl: 'templates/vscaption.html',
+            templateUrl: 'templates/vsdtcaption.html',
             link: function (scope, element, attrs) {
                 scope.filterFocus = false;
                 var filterChangeWatch = null;
@@ -976,13 +964,11 @@ angular.module('vsdatatable', [])
                 function onMouseEnter() {
                     if (element[0].scrollWidth > element[0].offsetWidth) {
                         timer = $timeout(function () {
-                            vsdtServ.getTemplate('datatableoverlaywindow.html').then(function (tpl) {
-                                overlay = angular.element(tpl.data);
-                                overlay.css('margin-top', '-20px');
-                                overlay.css('margin-left', '14px');
-                                overlay.text(attrs.overlayWindow);
-                                element.append($compile(overlay)(scope));
-                            });
+                            overlay = vsdtServ.getTemplate('templates/vsdtoverlaywindow.html');
+                            overlay.css('margin-top', '-20px');
+                            overlay.css('margin-left', '14px');
+                            overlay.text(attrs.overlayWindow);
+                            element.append($compile(overlay)(scope));
                         }, scope.config.OVERLAY_SHOW_DELAY);
                     }
                 }
@@ -1045,12 +1031,10 @@ angular.module('vsdatatable', [])
                 }
 
                 function showTooltip() {
-                    vsdtServ.getTemplate('datatabletooltip.html').then(function (tpl) {
-                        tooltip = angular.element(tpl.data);
-                        tooltip.css('margin-left', element.prop('offsetLeft') + 'px');
-                        tooltip.text(attrs.vstooltip);
-                        element.append($compile(tooltip)(scope));
-                    });
+                    tooltip = vsdtServ.getTemplate('templates/vsdttooltip.html');
+                    tooltip.css('margin-left', element.prop('offsetLeft') + 'px');
+                    tooltip.text(attrs.vstooltip);
+                    element.append($compile(tooltip)(scope));
                 }
 
                 function hideTooltip() {
@@ -1155,13 +1139,11 @@ angular.module('vsdatatable', [])
                 function init() {
                     if (scope.options.columnResize) {
                         // Create column resizer
-                        vsdtServ.getTemplate('datatablecolresizer.html').then(function (tpl) {
-                            colResizer = angular.element(tpl.data);
-                            colResizer.on('mousedown', onResizeStart);
-                            element.css('background-clip', 'padding-box');
-                            element.css('position', 'relative');
-                            element.append($compile(colResizer)(scope));
-                        });
+                        colResizer = vsdtServ.getTemplate('templates/vsdtcolresizer.html');
+                        colResizer.on('mousedown', onResizeStart);
+                        element.css('background-clip', 'padding-box');
+                        element.css('position', 'relative');
+                        element.append($compile(colResizer)(scope));
                     }
                     if (scope.colInitDone) {
                         resetColumnsWidth();
