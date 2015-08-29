@@ -3,10 +3,8 @@ describe('vsdatatable', function () {
 
     beforeEach(module('vsdatatable'));
 
-    beforeEach(inject(function ($rootScope, $compile, vsdtEvent) {
+    beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope;
-
-        eventapi = vsdtEvent;
 
         // Header column filter templates
         var colInputFilterTemplate =

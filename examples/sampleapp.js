@@ -24,7 +24,7 @@ sampleapp.controller('extenderctrl', function ($scope) {
  * @name sampleappctrl
  * @description Sample application controller. This controller uses the vsdatatable.
  */
-sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf, vsdtEvent) {
+sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf) {
 
     // Header column filter templates
     var colInputFilterTemplate =
@@ -80,6 +80,13 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf, vsdtEve
             items: '',
             dataOperationCb: onDataOperation,
             extDataPagination: false
+            /*
+             extPaginationOperationCb: onPaginationOperation, // Used in case of external pagination
+             extItems: {
+                items: [],
+                totalCount: 0
+             }
+            */
         },
         caption: {
             text: 'vsdatatable example'

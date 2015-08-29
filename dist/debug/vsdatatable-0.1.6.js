@@ -1,13 +1,13 @@
 /* 
 *  Name: vsdatatable 
 *  Description: Simple single page datatable - AngularJS reusable UI component 
-*  Version: 0.1.5 
+*  Version: 0.1.6 
 *  Author: kekeh 
 *  Homepage: http://kekeh.github.io/vsdatatable 
 *  License: MIT 
 *  Date: 2015-08-29 
 */ 
-angular.module('template-vsdatatable-0.1.5.html', []).run(['$templateCache', function($templateCache) {
+angular.module('template-vsdatatable-0.1.6.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put("templates/vsdatatable.html",
     "<div class=vsdatatable ng-style=\"{'pointer-events':busyIcon?'none':'auto'}\"><div ng-if=options.busyIcon.visible ng-include=\"'templates/vsdtbusyicon.html'\"></div><div ng-style=\"{'opacity':busyIcon?'0.4':'1'}\"><div caption-bar></div><table class=tableRows><thead class=tableHeader ng-if=options.headerVisible><tr class=headerRow><th style=position:static class=\"headerCol textOverflow\" col-resizer ng-if=\"h.visible===undefined||h.visible\" ng-style=\"{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}\" ng-class=\"sort.col===h.prop&&h.sorting?'selectedHeaderCol':''\" ng-repeat=\"h in options.columns\" ng-click=h.sorting?sortByCol($event,h.prop):null ng-keydown=h.sorting?sortByCol($event,h.prop):null>{{h.label}} <span class=\"icon sortColIcon\" ng-if=h.sorting ng-class=\"{'selectedHeaderCol':sort.col===h.prop&&h.sorting, 'icon-sort':h.sorting&&sort.col!==h.prop, 'icon-down':sort.col===h.prop&&sort.reverse, 'icon-up':sort.col===h.prop&&!sort.reverse}\" tabindex=0></span> <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\" ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=0></span></th><th id=headerColAction class=\"headerCol headerColAction\" ng-if=options.useTemplates ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\"><span>{{options.actionColumnText}}</span> <span class=\"icon icon-plus actionIcon addItemIcon\" ng-if=options.templates.add.actionBtnShow ng-click=addRow(); ng-keydown=checkEvent($event)?addRow():null vstooltip={{options.templates.add.btnTooltip}} tabindex=0></span></th></tr><tr ng-if=\"options.filter.column!==undefined&&options.filter.column&&filterFocus\"><th class=\"headerCol headerColFilter\" ng-repeat=\"h in options.columns\" ng-show=\"h.visible===undefined||h.visible\" col-filter-template=h></th><th class=\"headerCol headerColAction\"></th></tr></thead><tbody class=tableBody><tr class=bodyRow ng-repeat=\"obj in !extDataPagination?filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):filteredItems track by $index\" ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\" ng-click=\"rowClicked($event, obj)\" ng-keydown=\"rowClicked($event, obj)\" ng-class=\"{'selectedRow':isRowSelected(obj)}\" table-body-row tabindex=0><td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\" ng-style=\"{'text-align':col.textAlign}\" ng-class=getColumnStyle(obj,col) overlay-window={{getPropertyValue(obj,col.prop)}}>{{getPropertyValue(obj,col.prop)}}</td><td class=\"bodyCol bodyColAction\" ng-if=options.useTemplates><span class=\"icon icon-edit actionIcon\" ng-if=options.templates.edit.actionBtnShow ng-click=\"editRow($event, obj);$event.stopPropagation()\" ng-keydown=\"editRow($event, obj);$event.stopPropagation()\" vstooltip={{options.templates.edit.btnTooltip}} tabindex=0></span> <span class=\"icon icon-clear actionIcon\" ng-if=options.templates.delete.actionBtnShow ng-click=\"deleteRow($event, obj);$event.stopPropagation()\" ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\" vstooltip={{options.templates.delete.btnTooltip}} tabindex=0></span> <span class=\"icon icon-view actionIcon\" ng-if=options.templates.view.actionBtnShow ng-click=\"viewRow($event, obj);$event.stopPropagation()\" ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\" vstooltip={{options.templates.view.btnTooltip}} tabindex=0></span></td></tr></tbody></table><div class=tableFooter table-paginator></div></div></div>");
   $templateCache.put("templates/vsdtbusyicon.html",
@@ -28,7 +28,7 @@ angular.module('template-vsdatatable-0.1.5.html', []).run(['$templateCache', fun
     "<div class=tooltip></div>");
 }]);
 
-angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
+angular.module('vsdatatable', ["template-vsdatatable-0.1.6.html"])
 
 /**
  * @ngdoc object
@@ -43,7 +43,6 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
         PAGINATOR_MAX_BTN_COUNT: 6,
         PAGINATOR_EVENT: 'vsdatatable.paginatorEvent',
         FILTER_FOCUS_EVENT: 'vsdatatable.filterFocusEvent',
-        SET_EXT_PAGINATION_DATA_EVENT: 'vsdatatable.setExtPaginationData',
         OPER_PHASE_BEGIN: 'BEGIN',
         OPER_PHASE_END: 'END',
         OPER_ADD: 'ADD',
@@ -65,29 +64,6 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
         DAY: 'dd',
         DATES_SEPARATOR: ' - '
     })
-
-/**
- * @ngdoc object
- * @name vsdtEvent
- * @description vsdtEvent provides one function which can be used to set pagination data to the
- * vsdatatable directive. This is used only when using pagination from external source (for example
- * from database).
- */
-    .factory('vsdtEvent', ['vsdtConf', function (vsdtConf) {
-        var vsdtf = {};
-        /**
-         * @ngdoc function
-         * @description External pagination function to the parent. Called by the parent.
-         * @name setExtPaginationData
-         * @param $scope of the parent (caller)
-         * @param data array of objects used in the vsdatatable. Array length is same as page size.
-         * @param totalCount count of the items match the search criteria.
-         */
-        vsdtf.setExtPaginationData = function ($scope, data, totalCount) {
-            $scope.$broadcast(vsdtConf.SET_EXT_PAGINATION_DATA_EVENT, {data: data, totalCount: totalCount});
-        };
-        return vsdtf;
-    }])
 
 /**
  * @ngdoc object
@@ -128,7 +104,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
  * @description vsdatatable is main directive of the vsdatatable. Options is passed as an attribute to this
  * directive.
  */
-    .directive('vsdatatable', ['$compile', '$templateCache', 'vsdtConf', 'vsdtServ', function ($compile, $templateCache, vsdtConf, vsdtServ) {
+    .directive('vsdatatable', ['$compile', 'vsdtConf', 'vsdtServ', function ($compile, vsdtConf, vsdtServ) {
         return {
             restrict: 'EA',
             templateUrl: 'templates/vsdatatable.html',
@@ -148,7 +124,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
                 var extPendingOper = null;
                 var rowExtender = null;
                 var operObject = {};
-                var itemsLengthWatch = null;
+                var itemsChangeWatch = null;
 
                 scope.addRow = function () {
                     operObject = {
@@ -210,20 +186,6 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
                         scope.options.row.rowSelectCb(oper, data);
                     }
                 };
-
-                scope.$on(scope.config.SET_EXT_PAGINATION_DATA_EVENT, function (event, value) {
-                    // External pagination event contains paged data and total count
-                    scope.filteredItems = value.data;
-                    scope.totalCount = value.totalCount;
-
-                    if (!vsdtServ.isEqual(extPendingOper, scope.config.EXT_BTN) && !vsdtServ.isEqual(extPendingOper, scope.config.OPER_EDIT) && !vsdtServ.isEqual(extPendingOper, scope.config.EXT_SORT)) {
-                        vsdtServ.paginatorEvent(scope);
-                    }
-
-                    if (scope.options.busyIcon.visible) {
-                        scope.busyIcon = false;
-                    }
-                });
 
                 scope.getColumns = function () {
                     return scope.options.columns;
@@ -324,12 +286,26 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
                     scope.resetFilter(refresh);
                 }
 
-                function itemsLengthWatchFn() {
+                function itemsChangeIntWatchFn() {
                     // Internal pagination
                     scope.filteredItems = scope.options.data.items;
                     scope.totalCount = scope.filteredItems.length;
                     resetFilterAndSort(false);
                     vsdtServ.paginatorEvent(scope);
+                }
+
+                function itemsChangeExtWatchFn(val) {
+                    // External pagination
+                    scope.filteredItems = val.items;
+                    scope.totalCount = val.totalCount;
+                    if (!vsdtServ.isEqual(extPendingOper, scope.config.EXT_BTN)
+                        && !vsdtServ.isEqual(extPendingOper, scope.config.OPER_EDIT)
+                        && !vsdtServ.isEqual(extPendingOper, scope.config.EXT_SORT)) {
+                        vsdtServ.paginatorEvent(scope);
+                    }
+                    if (scope.options.busyIcon.visible) {
+                        scope.busyIcon = false;
+                    }
                 }
 
                 function getTableRow(event) {
@@ -368,7 +344,10 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
                 function init() {
                     scope.extDataPagination = scope.options.data.extDataPagination;
                     if (!scope.extDataPagination) {
-                        itemsLengthWatch = scope.$watch('options.data.items.length', itemsLengthWatchFn);
+                        itemsChangeWatch = scope.$watch('options.data.items.length', itemsChangeIntWatchFn);
+                    }
+                    else {
+                        itemsChangeWatch = scope.$watchCollection('options.data.extItems', itemsChangeExtWatchFn);
                     }
 
                     var width = 90 / scope.options.columns.length;
@@ -382,10 +361,7 @@ angular.module('vsdatatable', ["template-vsdatatable-0.1.5.html"])
                 }
 
                 scope.$on('$destroy', function () {
-                    if (!vsdtServ.isEqual(itemsLengthWatch, null)) {
-                        itemsLengthWatch();
-                    }
-                    scope.$off(scope.config.SET_EXT_PAGINATION_DATA_EVENT);
+                    itemsChangeWatch();
                     element.off('click', tableAreaClick);
                 });
 

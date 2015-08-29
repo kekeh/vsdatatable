@@ -1,4 +1,4 @@
-# vsdatatable v. 0.1.5
+# vsdatatable v. 0.1.6
 
 **Simple single page datatable - AngularJS reusable UI component**
 
@@ -74,10 +74,10 @@ AngularJS directive which implements the datatable with many useful and configur
 
 ## Usage
 
-* include the **vsdatatable-0.1.5.min.js** and the **vsdatatable-0.1.5.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
+* include the **vsdatatable-0.1.6.min.js** and the **vsdatatable-0.1.6.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
 ```html
-<script src="vsdatatable-0.1.5.min.js"></script>
-<link href="vsdatatable-0.1.5.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.1.6.min.js"></script>
+<link href="vsdatatable-0.1.6.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
@@ -110,10 +110,13 @@ angular.module('vssampleapp', ['vsdatatable']);
 | Attribute | Description | Values | Mandatory |
 | :------------ |:---------------|:---------------|:---------------|
 | **data** | Object which contain sub properties. | See below. | yes |
-| data.**items** | Array of data shown in the vsdatable. Contains all items. This is used when **not** using external pagination. | array of objects | Depends on is external pagination used. yes/no |
+| data.**items** | Array of data shown in the vsdatatable. Contains all items. This is used when **not** using external pagination. | array of objects | yes if internal pagination used. |
 | data.**dataOperationCb** | Data operation (add, edit, delete or view) callback. The function is called twice (OPER_PHASE_BEGIN and OPER_PHASE_END) during one operation. | function. See the **dataOperationCb** chapter below. | no |
-| data.**extDataPagination** | Boolean indicating is external or internal data pagination used. If **true** the data is paged from external source and the function **vsdtEvent.setExtPaginationData** is used. If **false** the all data is given with the data.**items** property.| true/false | yes |
-| data.**extPaginationOperationCb** | Data pagination callback used only if the previous property is **true**. | function. See the **extPaginationOperationCb** chapter below. | no |
+| data.**extDataPagination** | Boolean indicating is external or internal data pagination used. If **true** the data is paged from external source and the next 4 properties will be used. If **false** the all data is given with the data.**items** property. See above. | true or false | yes |
+| data.**extPaginationOperationCb** | Data pagination callback used only if the previous property is **true**. | function. See the **extPaginationOperationCb** chapter below. | yes if external pagination used. |
+| data.**extItems** | Object which contain sub properties. | See below. | yes if external pagination used. |
+| data.extItems.**items** | Array of data shown in the vsdatatable. One page of items. | array | yes if external pagination used. |
+| data.extItems.**totalCount** | Total count of items match to the search criteria (normally total count = page size * page count) | number | yes if external pagination used. |
 | **caption** | Object which contain sub properties. | See below. | yes |
 | caption.**text** | Caption text. | User defined text. | no |
 | **busyIcon** | Object which contain sub properties. | See below. | yes |
@@ -325,30 +328,14 @@ templates: {
 ### Javascript example
 ```js
 var sampleapp = angular.module('vssampleapp', ['vsdatatable']);
-sampleapp.controller('vsDatatableCtrl', function ($scope, vsdtConf, vsdtEvent) {
+sampleapp.controller('vsDatatableCtrl', function ($scope, vsdtConf) {
 ```
 
 By injecting the **vsdtConf** the parent can change some of the default configuration values of the vsdatatable.
-By injecting the **vsdtEvent** the parent can send pagination data to the vsdatatable. This method is used only 
-if the data is paginated from external data source and the parent handles paging, filtering and sorting.
 
-Example of the function. See description of the parameters below the example.
-
-```js
-vsdtEvent.setExtPaginationData($scope, pagedItems, totalItems);
-```
-
-| Function | Parameters | Description | 
-| :------------ |:---------------|:---------------|
-| setExtPaginationData | $scope, pagedItems, totalItems | Set external paginated dat to the vsdatatable. |
-
-## Parameters
-* $scope - sender scope
-* pagedItems - array of objects viewed in the table. Size of the array is one page in the vsdatatable.
-* totalItems - number of total items match to the search criteria.
 
 ## Demo
-In the **examples** folder of this project has the sample application and the online demo is [here](http://kekeh.github.io/vsdatatable)
+In the **examples** folder of this project has the sample application (internal pagination) and the online demo is [here](http://kekeh.github.io/vsdatatable)
 
 ## Dependencies
 Depends on AngularJS. Implemented using the AngularJS version 1.4.4. No other dependencies.

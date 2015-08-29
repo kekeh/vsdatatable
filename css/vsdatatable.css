@@ -393,7 +393,7 @@
 .vsdatatable .busyIconContainer {
     display: table;
     background-color: #FAFAFA;
-    padding: 6px;
+    padding: 8px;
     z-index: 4;
     left: 50%;
     top: 50%;

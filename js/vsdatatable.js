@@ -13,7 +13,6 @@ angular.module('vsdatatable', [])
         PAGINATOR_MAX_BTN_COUNT: 6,
         PAGINATOR_EVENT: 'vsdatatable.paginatorEvent',
         FILTER_FOCUS_EVENT: 'vsdatatable.filterFocusEvent',
-        SET_EXT_PAGINATION_DATA_EVENT: 'vsdatatable.setExtPaginationData',
         OPER_PHASE_BEGIN: 'BEGIN',
         OPER_PHASE_END: 'END',
         OPER_ADD: 'ADD',
@@ -35,29 +34,6 @@ angular.module('vsdatatable', [])
         DAY: 'dd',
         DATES_SEPARATOR: ' - '
     })
-
-/**
- * @ngdoc object
- * @name vsdtEvent
- * @description vsdtEvent provides one function which can be used to set pagination data to the
- * vsdatatable directive. This is used only when using pagination from external source (for example
- * from database).
- */
-    .factory('vsdtEvent', ['vsdtConf', function (vsdtConf) {
-        var vsdtf = {};
-        /**
-         * @ngdoc function
-         * @description External pagination function to the parent. Called by the parent.
-         * @name setExtPaginationData
-         * @param $scope of the parent (caller)
-         * @param data array of objects used in the vsdatatable. Array length is same as page size.
-         * @param totalCount count of the items match the search criteria.
-         */
-        vsdtf.setExtPaginationData = function ($scope, data, totalCount) {
-            $scope.$broadcast(vsdtConf.SET_EXT_PAGINATION_DATA_EVENT, {data: data, totalCount: totalCount});
-        };
-        return vsdtf;
-    }])
 
 /**
  * @ngdoc object
@@ -98,7 +74,7 @@ angular.module('vsdatatable', [])
  * @description vsdatatable is main directive of the vsdatatable. Options is passed as an attribute to this
  * directive.
  */
-    .directive('vsdatatable', ['$compile', '$templateCache', 'vsdtConf', 'vsdtServ', function ($compile, $templateCache, vsdtConf, vsdtServ) {
+    .directive('vsdatatable', ['$compile', 'vsdtConf', 'vsdtServ', function ($compile, vsdtConf, vsdtServ) {
         return {
             restrict: 'EA',
             templateUrl: 'templates/vsdatatable.html',
@@ -118,7 +94,7 @@ angular.module('vsdatatable', [])
                 var extPendingOper = null;
                 var rowExtender = null;
                 var operObject = {};
-                var itemsLengthWatch = null;
+                var itemsChangeWatch = null;
 
                 scope.addRow = function () {
                     operObject = {
@@ -180,20 +156,6 @@ angular.module('vsdatatable', [])
                         scope.options.row.rowSelectCb(oper, data);
                     }
                 };
-
-                scope.$on(scope.config.SET_EXT_PAGINATION_DATA_EVENT, function (event, value) {
-                    // External pagination event contains paged data and total count
-                    scope.filteredItems = value.data;
-                    scope.totalCount = value.totalCount;
-
-                    if (!vsdtServ.isEqual(extPendingOper, scope.config.EXT_BTN) && !vsdtServ.isEqual(extPendingOper, scope.config.OPER_EDIT) && !vsdtServ.isEqual(extPendingOper, scope.config.EXT_SORT)) {
-                        vsdtServ.paginatorEvent(scope);
-                    }
-
-                    if (scope.options.busyIcon.visible) {
-                        scope.busyIcon = false;
-                    }
-                });
 
                 scope.getColumns = function () {
                     return scope.options.columns;
@@ -294,12 +256,26 @@ angular.module('vsdatatable', [])
                     scope.resetFilter(refresh);
                 }
 
-                function itemsLengthWatchFn() {
+                function itemsChangeIntWatchFn() {
                     // Internal pagination
                     scope.filteredItems = scope.options.data.items;
                     scope.totalCount = scope.filteredItems.length;
                     resetFilterAndSort(false);
                     vsdtServ.paginatorEvent(scope);
+                }
+
+                function itemsChangeExtWatchFn(val) {
+                    // External pagination
+                    scope.filteredItems = val.items;
+                    scope.totalCount = val.totalCount;
+                    if (!vsdtServ.isEqual(extPendingOper, scope.config.EXT_BTN)
+                        && !vsdtServ.isEqual(extPendingOper, scope.config.OPER_EDIT)
+                        && !vsdtServ.isEqual(extPendingOper, scope.config.EXT_SORT)) {
+                        vsdtServ.paginatorEvent(scope);
+                    }
+                    if (scope.options.busyIcon.visible) {
+                        scope.busyIcon = false;
+                    }
                 }
 
                 function getTableRow(event) {
@@ -338,7 +314,10 @@ angular.module('vsdatatable', [])
                 function init() {
                     scope.extDataPagination = scope.options.data.extDataPagination;
                     if (!scope.extDataPagination) {
-                        itemsLengthWatch = scope.$watch('options.data.items.length', itemsLengthWatchFn);
+                        itemsChangeWatch = scope.$watch('options.data.items.length', itemsChangeIntWatchFn);
+                    }
+                    else {
+                        itemsChangeWatch = scope.$watchCollection('options.data.extItems', itemsChangeExtWatchFn);
                     }
 
                     var width = 90 / scope.options.columns.length;
@@ -352,10 +331,7 @@ angular.module('vsdatatable', [])
                 }
 
                 scope.$on('$destroy', function () {
-                    if (!vsdtServ.isEqual(itemsLengthWatch, null)) {
-                        itemsLengthWatch();
-                    }
-                    scope.$off(scope.config.SET_EXT_PAGINATION_DATA_EVENT);
+                    itemsChangeWatch();
                     element.off('click', tableAreaClick);
                 });
 
