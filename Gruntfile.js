@@ -29,7 +29,22 @@ module.exports = function (grunt) {
         uglify: {
             dist: {
                 files: {
-                    'build/<%= pkg.name %>.min.js': ['js/<%= pkg.name %>.js']
+                    'build/<%= pkg.name %>.min.js': [
+                        'build/vsdtmodule.js',
+                        'js/config/vsdtconfig.js',
+                        'js/service/vsdtservice.js',
+                        'js/filter/vsdtdaterange.js',
+                        'js/directive/<%= pkg.name %>.js',
+                        'js/directive/vsdtfilterfocus.js',
+                        'js/directive/vsdtcolfiltertemplate.js',
+                        'js/directive/vsdttablebodyrow.js',
+                        'js/directive/vsdtpaginator.js',
+                        'js/directive/vsdtcoltogglemenu.js',
+                        'js/directive/vsdtcaptionbar.js',
+                        'js/directive/vsdtoverlaywindow.js',
+                        'js/directive/vsdttooltip.js',
+                        'js/directive/vsdtcolresizer.js'
+                    ]
                 }
             }
         },
@@ -45,14 +60,7 @@ module.exports = function (grunt) {
                     '*  Homepage: <%= grunt.config.get("pkg.homepage") %> \n' +
                     '*  License: <%= grunt.config.get("pkg.license") %> \n' +
                     '*  Date: <%= grunt.template.today("yyyy-mm-dd") %> \n' +
-                    '*/ \n',
-                process: function (src, filepath) {
-                    if (filepath === 'build/' + grunt.config.get('pkg.name') + '.min.js' || filepath === 'js/' + grunt.config.get('pkg.name') + '.js') {
-                        var newStr = 'template-' + grunt.config.get('pkg.name') + '-' + grunt.config.get('pkg.version') + '.html';
-                        return src.replace('[]', '["' + newStr + '"]');
-                    }
-                    return src;
-                }
+                    '*/ \n'
             },
             dist_min: {
                 files: {
@@ -61,7 +69,23 @@ module.exports = function (grunt) {
             },
             dist_debug: {
                 files: {
-                    'dist/debug/<%= pkg.name %>-<%= pkg.version %>.js': ['build/**/*.html.js', 'js/**/*.js']
+                    'dist/debug/<%= pkg.name %>-<%= pkg.version %>.js': [
+                        'build/**/*.html.js',
+                        'build/vsdtmodule.js',
+                        'js/config/vsdtconfig.js',
+                        'js/service/vsdtservice.js',
+                        'js/filter/vsdtdaterange.js',
+                        'js/directive/<%= pkg.name %>.js',
+                        'js/directive/vsdtfilterfocus.js',
+                        'js/directive/vsdtcolfiltertemplate.js',
+                        'js/directive/vsdttablebodyrow.js',
+                        'js/directive/vsdtpaginator.js',
+                        'js/directive/vsdtcoltogglemenu.js',
+                        'js/directive/vsdtcaptionbar.js',
+                        'js/directive/vsdtoverlaywindow.js',
+                        'js/directive/vsdttooltip.js',
+                        'js/directive/vsdtcolresizer.js'
+                    ]
                 }
             }
         },
@@ -79,6 +103,18 @@ module.exports = function (grunt) {
         },
 
         copy: {
+            module: {
+                files: [{
+                    src: 'js/module/vsdtmodule.js',
+                    dest: 'build/vsdtmodule.js'
+                }],
+                options: {
+                    process: function (src, filepath) {
+                        var newStr = 'template-' + grunt.config.get('pkg.name') + '-' + grunt.config.get('pkg.version') + '.html';
+                        return src.replace('[]', '["' + newStr + '"]');
+                    }
+                }
+            },
             dest_min: {
                 files: [{
                     src: 'build/<%= pkg.name %>.min.css',
@@ -123,6 +159,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask('default', ['clean:all', 'html2js', 'uglify', 'concat', 'cssmin', 'copy', 'clean:build']);
-    grunt.registerTask('test', ['clean:all', 'html2js', 'uglify', 'concat', 'cssmin', 'copy', 'karma', 'clean:build']);
+    grunt.registerTask('default', ['clean:all', 'html2js', 'copy:module', 'uglify', 'concat', 'cssmin', 'copy:dest_debug', 'copy:dest_min', 'clean:build']);
+    grunt.registerTask('test', ['clean:all', 'html2js', 'uglify', 'concat', 'cssmin', 'copy:dest_debug', 'copy:dest_min', 'karma', 'clean:build']);
 };
