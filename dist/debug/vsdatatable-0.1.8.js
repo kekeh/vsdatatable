@@ -1,13 +1,13 @@
 /* 
 *  Name: vsdatatable 
 *  Description: Simple single page datatable - AngularJS reusable UI component 
-*  Version: 0.1.7 
+*  Version: 0.1.8 
 *  Author: kekeh 
 *  Homepage: http://kekeh.github.io/vsdatatable 
 *  License: MIT 
-*  Date: 2015-09-04 
+*  Date: 2015-09-16 
 */ 
-angular.module('template-vsdatatable-0.1.7.html', []).run(['$templateCache', function($templateCache) {
+angular.module('template-vsdatatable-0.1.8.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put("templates/vsdatatable.html",
     "<div class=vsdatatable ng-style=\"{'pointer-events':busyIcon?'none':'auto'}\"><div ng-if=options.busyIcon.visible ng-include=\"'templates/vsdtbusyicon.html'\"></div><div ng-style=\"{'opacity':busyIcon?'0.4':'1'}\"><div caption-bar></div><table class=tableRows><thead class=tableHeader ng-if=options.headerVisible><tr class=headerRow><th style=position:static class=\"headerCol textOverflow\" col-resizer ng-if=\"h.visible===undefined||h.visible\" ng-style=\"{'width':h.width.number+h.width.unit, 'cursor':h.sorting?'pointer':'default'}\" ng-class=\"sort.col===h.prop&&h.sorting?'selectedHeaderCol':''\" ng-repeat=\"h in options.columns\" ng-click=h.sorting?sortByCol($event,h.prop):null ng-keydown=h.sorting?sortByCol($event,h.prop):null>{{h.label}} <span class=\"icon sortColIcon\" ng-if=h.sorting ng-class=\"{'selectedHeaderCol':sort.col===h.prop&&h.sorting, 'icon-sort':h.sorting&&sort.col!==h.prop, 'icon-down':sort.col===h.prop&&sort.reverse, 'icon-up':sort.col===h.prop&&!sort.reverse}\" tabindex=0></span> <span class=\"icon icon-cross sortColIcon\" ng-if=\"h.sorting&&sort.col===h.prop\" ng-click=\"sortByCol($event,'')\" ng-keydown=\"sortByCol($event,'')\" tabindex=0></span></th><th id=headerColAction class=\"headerCol headerColAction\" ng-if=options.useTemplates ng-style=\"{'width': config.DEFAULT_ACTION_COL_WIDTH + 'px'}\"><span>{{options.actionColumnText}}</span> <span class=\"icon icon-plus actionIcon addItemIcon\" ng-if=options.templates.add.actionBtnShow ng-click=addRow(); ng-keydown=checkEvent($event)?addRow():null vstooltip={{options.templates.add.btnTooltip}} tabindex=0></span></th></tr><tr ng-if=\"options.filter.column!==undefined&&options.filter.column&&filterFocus\"><th class=\"headerCol headerColFilter\" ng-repeat=\"h in options.columns\" ng-show=\"h.visible===undefined||h.visible\" col-filter-template=h></th><th class=\"headerCol headerColAction\"></th></tr></thead><tbody class=tableBody><tr class=bodyRow ng-repeat=\"obj in !extDataPagination?filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):filteredItems track by $index\" ng-class-odd=\"'oddRow'\" ng-class-even=\"'evenRow'\" ng-click=\"rowClicked($event, obj)\" ng-keydown=\"rowClicked($event, obj)\" ng-class=\"{'selectedRow':isRowSelected(obj)}\" table-body-row tabindex=0><td class=\"bodyCol textOverflow\" ng-repeat=\"col in options.columns track by $index\" ng-if=\"options.columns[$index].visible===undefined||options.columns[$index].visible\" ng-style=\"{'text-align':col.textAlign}\" ng-class=getColumnStyle(obj,col) overlay-window={{getPropertyValue(obj,col.prop)}}>{{getPropertyValue(obj,col.prop)}}</td><td class=\"bodyCol bodyColAction\" ng-if=options.useTemplates><span class=\"icon icon-edit actionIcon\" ng-if=options.templates.edit.actionBtnShow ng-click=\"editRow($event, obj);$event.stopPropagation()\" ng-keydown=\"editRow($event, obj);$event.stopPropagation()\" vstooltip={{options.templates.edit.btnTooltip}} tabindex=0></span> <span class=\"icon icon-clear actionIcon\" ng-if=options.templates.delete.actionBtnShow ng-click=\"deleteRow($event, obj);$event.stopPropagation()\" ng-keydown=\"deleteRow($event, obj);$event.stopPropagation()\" vstooltip={{options.templates.delete.btnTooltip}} tabindex=0></span> <span class=\"icon icon-view actionIcon\" ng-if=options.templates.view.actionBtnShow ng-click=\"viewRow($event, obj);$event.stopPropagation()\" ng-keydown=\"viewRow($event, obj);$event.stopPropagation()\" vstooltip={{options.templates.view.btnTooltip}} tabindex=0></span></td></tr></tbody></table><div class=tableFooter table-paginator></div></div></div>");
   $templateCache.put("templates/vsdtbusyicon.html",
@@ -28,7 +28,7 @@ angular.module('template-vsdatatable-0.1.7.html', []).run(['$templateCache', fun
     "<div class=tooltip></div>");
 }]);
 
-var vsdt = angular.module('vsdatatable', ["template-vsdatatable-0.1.7.html"]);
+var vsdt = angular.module('vsdatatable', ["template-vsdatatable-0.1.8.html"]);
 
 /**
  * @ngdoc object

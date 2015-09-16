@@ -1,4 +1,4 @@
-# vsdatatable v. 0.1.7
+# vsdatatable v. 0.1.8
 
 **Simple single page datatable - AngularJS reusable UI component**
 
@@ -74,10 +74,10 @@ AngularJS directive which implements the datatable with many useful and configur
 
 ## Usage
 
-* include the **vsdatatable-0.1.7.min.js** and the **vsdatatable-0.1.7.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
+* include the **vsdatatable-0.1.8.min.js** and the **vsdatatable-0.1.8.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
 ```html
-<script src="vsdatatable-0.1.7.min.js"></script>
-<link href="vsdatatable-0.1.7.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.1.8.min.js"></script>
+<link href="vsdatatable-0.1.8.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
