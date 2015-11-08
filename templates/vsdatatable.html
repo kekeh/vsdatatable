@@ -23,10 +23,10 @@
             <tbody class="tableBody">
             <tr class="bodyRow" ng-repeat="obj in !extDataPagination?filteredItems.slice(paginator.visiblePageIdx*pageSize.rows, paginator.visiblePageIdx*pageSize.rows+pageSize.rows):filteredItems track by $index"
                 ng-class-odd="'oddRow'" ng-class-even="'evenRow'" ng-click="rowClicked($event, obj)" ng-keydown="rowClicked($event, obj)" ng-class="{'selectedRow':isRowSelected(obj)}" table-body-row tabindex="0">
-                <td class="bodyCol textOverflow" ng-repeat="col in options.columns track by $index" ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible" ng-style="{'text-align':col.textAlign}" ng-class="getColumnStyle(obj,col)" overlay-window="{{getPropertyValue(obj,col.prop)}}">
+                <td class="bodyCol textOverflow {{getColumnStyle(obj,col)}}" ng-repeat="col in options.columns track by $index" ng-if="options.columns[$index].visible===undefined||options.columns[$index].visible" ng-style="{'text-align':col.textAlign}" ng-class="{'removeVerticalBorder': !options.showVerticalBorder}" overlay-window="{{getPropertyValue(obj,col.prop)}}">
                     {{getPropertyValue(obj,col.prop)}}
                 </td>
-                <td class="bodyCol bodyColAction" ng-if="options.useTemplates">
+                <td class="bodyCol bodyColAction" ng-class="{'removeVerticalBorder': !options.showVerticalBorder}" ng-if="options.useTemplates">
                     <span class="icon icon-edit actionIcon" ng-if="options.templates.edit.actionBtnShow" ng-click="editRow($event, obj);$event.stopPropagation()" ng-keydown="editRow($event, obj);$event.stopPropagation()" vstooltip="{{options.templates.edit.btnTooltip}}" tabindex="0"></span>
                     <span class="icon icon-clear actionIcon" ng-if="options.templates.delete.actionBtnShow" ng-click="deleteRow($event, obj);$event.stopPropagation()" ng-keydown="deleteRow($event, obj);$event.stopPropagation()" vstooltip="{{options.templates.delete.btnTooltip}}" tabindex="0"></span>
                     <span class="icon icon-view actionIcon" ng-if="options.templates.view.actionBtnShow" ng-click="viewRow($event, obj);$event.stopPropagation()" ng-keydown="viewRow($event, obj);$event.stopPropagation()" vstooltip="{{options.templates.view.btnTooltip}}" tabindex="0"></span>

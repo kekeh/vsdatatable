@@ -1,4 +1,4 @@
-# vsdatatable v. 0.1.7
+# vsdatatable v. 0.1.8
 
 **Simple single page datatable - AngularJS reusable UI component**
 
@@ -74,10 +74,10 @@ AngularJS directive which implements the datatable with many useful and configur
 
 ## Usage
 
-* include the **vsdatatable-0.1.7.min.js** and the **vsdatatable-0.1.7.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
+* include the **vsdatatable-0.1.8.min.js** and the **vsdatatable-0.1.8.min.css** files into your project. See the **Build project** and the **Installation** chapters below.
 ```html
-<script src="vsdatatable-0.1.7.min.js"></script>
-<link href="vsdatatable-0.1.7.min.css" rel="stylesheet" type="text/css">
+<script src="vsdatatable-0.1.8.min.js"></script>
+<link href="vsdatatable-0.1.8.min.css" rel="stylesheet" type="text/css">
 ```
 * inject the **vsdatatable** module into your application module.
 ```js
@@ -124,6 +124,7 @@ angular.module('vssampleapp', ['vsdatatable']);
 | busyIcon.**text** | Busy icon text. | User defined text. | yes |
 | **showTooltips** | Is tooltips shown or not. | true or false | yes |
 | **showOverlay** | Is overlay shown or not. Overlay pops up if the width of the column is not enough to the value of the column. | true or false | yes |
+| **showVerticalBorder** | Is vertical borders of the columns visible or not. | true or false | yes |
 | **headerVisible** | Is vsdatatable header visible or not. | true or false | yes |
 | **columnResize** | Is column resize enable ot not. | true or false | yes |
 | **columns** | Array of objects defining the columns of the vsdatatable. | See the **column configuration object** chapter below. | yes |

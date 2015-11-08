@@ -79,11 +79,11 @@
 
 .rowExtender .rowExtenderBtnColor {
     background: #FAFAFA;
-    background-image: -webkit-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: -moz-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: -o-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: -ms-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: linear-gradient(#F0F0F0 30%, #AEC2E1 100%)
+    background-image: -webkit-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: -moz-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: -o-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: -ms-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: linear-gradient(#F0F0F0 1%, #AEC2E1 100%)
 }
 
 .rowExtender .rowExtenderBtn {

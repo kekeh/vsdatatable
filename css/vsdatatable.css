@@ -49,29 +49,29 @@
 .vsdatatable .headerCol,
 .vsdatatable .extenderTitle {
     background: #FAFAFA;
-    background-image: -webkit-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: -moz-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: -o-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: -ms-linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
-    background-image: linear-gradient(#FAFAFA 40%, #CCE0FF 100%);
+    background-image: -webkit-linear-gradient(#FAFAFA 1%, #EEE 100%);
+    background-image: -moz-linear-gradient(#FAFAFA 1%, #EEE 100%);
+    background-image: -o-linear-gradient(#FAFAFA 1%, #EEE 100%);
+    background-image: -ms-linear-gradient(#FAFAFA 1%, #EEE 100%);
+    background-image: linear-gradient(#FAFAFA 1%, #EEE 100%);
 }
 
 .vsdatatable .paginatorBtn {
     background: #FAFAFA;
-    background-image: -webkit-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: -moz-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: -o-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: -ms-linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
-    background-image: linear-gradient(#F0F0F0 30%, #AEC2E1 100%);
+    background-image: -webkit-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: -moz-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: -o-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: -ms-linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
+    background-image: linear-gradient(#F0F0F0 1%, #AEC2E1 100%);
 }
 
 .vsdatatable .tableRows .selectedHeaderCol {
     background: #CCE0FF;
-    background-image: -webkit-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: -moz-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: -o-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: -ms-linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
-    background-image: linear-gradient(#CCE0FF 30%, #FAFAFA 100%);
+    background-image: -webkit-linear-gradient(#CCE0FF 1%, #FAFAFA 100%);
+    background-image: -moz-linear-gradient(#CCE0FF 1%, #FAFAFA 100%);
+    background-image: -o-linear-gradient(#CCE0FF 1%, #FAFAFA 100%);
+    background-image: -ms-linear-gradient(#CCE0FF 1%, #FAFAFA 100%);
+    background-image: linear-gradient(#CCE0FF 1%, #FAFAFA 100%);
 }
 
 .vsdatatable .actionIcon {
@@ -420,6 +420,11 @@
     vertical-align: middle;
     padding-left: 8px;
     color: #3A87AD;
+}
+
+.vsdatatable .removeVerticalBorder {
+    border-left: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
 }
 
 @-moz-keyframes animate {
