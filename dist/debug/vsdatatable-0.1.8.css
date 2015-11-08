@@ -467,16 +467,16 @@
 }
 
 @media screen and (max-width: 500px) {
-    .paginatorBtnSet {
+    .vsdatatable .paginatorBtnSet {
         display: none;
     }
 }
 
 @media screen and (max-width: 700px) {
-    .paginatorBtnPageSize,
-    .paginatorTotalNbr,
-    .paginatorPagesNbr,
-    .paginatorBtnAll {
+    .vsdatatable .paginatorBtnPageSize,
+    .vsdatatable .paginatorTotalNbr,
+    .vsdatatable .paginatorPagesNbr,
+    .vsdatatable .paginatorBtnAll {
         display: none;
     }
 
@@ -491,8 +491,8 @@
 }
 
 @media screen and (max-width: 960px) {
-    .paginatorBtnNbr,
-    .paginatorTxt {
+    .vsdatatable .paginatorBtnNbr,
+    .vsdatatable .paginatorTxt {
         display: none;
     }
 }
