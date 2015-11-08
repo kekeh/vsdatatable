@@ -93,6 +93,7 @@ sampleapp.controller('sampleappctrl', function ($scope, $http, vsdtConf) {
         showTooltips: true,
         showOverlay: true,
         headerVisible: true,
+        showVerticalBorder: true,
         columnResize: true,
         columns: [
             {
